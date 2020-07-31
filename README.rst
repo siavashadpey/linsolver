@@ -1,7 +1,7 @@
 LinSolver
 =========
 
-|Build status| |Coverage|
+|Build status| |Coverage| |Code Factor|
 
 A linear solver library.
 
@@ -13,8 +13,8 @@ A linear solver library.
 .. |Coverage| image:: https://coveralls.io/repos/github/siavashadpey/linsolver/badge.svg?branch=master
     :target: https://coveralls.io/github/siavashadpey/linsolver?branch=master
 
-.. |Code Factor| image:: https://www.codefactor.io/repository/github/siavashadpey/rebalance/badge
-   :target: https://www.codefactor.io/repository/github/siavashadpey/rebalance
+.. |Code Factor| image:: https://www.codefactor.io/repository/github/siavashadpey/linsolver/badge
+   :target: https://www.codefactor.io/repository/github/siavashadpey/linsolver
 
 .. |Docs| image:: https://readthedocs.org/projects/rebalance/badge/?version=latest
 	:target: https://rebalance.readthedocs.io/en/latest/?badge=latest
