@@ -6,7 +6,7 @@ keyword=$1
 if [ $keyword == build ]; then
 	mkdir build_tests
 	cd build_tests || exit
-	cmake -DBUILD_TESTS=ON ..
+	cmake -DBUILD_TESTS=ON -DWITH_VALGRIND=ON ..
 	make
 	cd ..
 elif [ $keyword == run ]; then
