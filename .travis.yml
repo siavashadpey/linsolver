@@ -2,7 +2,6 @@ language: c++
 
 compiler:
   - clang
-  - gcc
 
 before_install:
   - pip install --user cpp-coveralls
@@ -17,7 +16,7 @@ before_script:
   - skip
 
 script:
-  - Skip
+  - skip
 
 after_success:
   - skip
@@ -37,7 +36,7 @@ jobs:
       script:
         - ./travis.sh run
       after_success:
-        - coveralls
+        - coveralls -e build_tests/googletest-src/
     - name:
         - Upstream
       stage:
