@@ -5,6 +5,9 @@ compiler:
 
 before_install:
   - pip install --user cpp-coveralls
+  - gcov --version
+  - sudo apt-get install ggcov
+  - sudo ln -sf /usr/bin/gcov-4.7 /usr/bin/gcov
 
 # only invoke travis-ci for certain branches
 branches:
@@ -26,7 +29,6 @@ stages:
   #- name: Upstream
   #  if: branch = master
 
-
 jobs:
   include:
     - name: Testing
@@ -46,7 +48,6 @@ jobs:
       script: echo "hello" # TODO: replace this by a script which pushes to upstream branch (e.g. dev -> master)
       after_success:
         - skip
-
 
 notifications:
   email:
