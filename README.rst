@@ -1,7 +1,7 @@
 LinSolver
 =========
 
-|Build status|
+|Build status| |Coverage|
 
 A linear solver library.
 
