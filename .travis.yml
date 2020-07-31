@@ -1,13 +1,12 @@
 language: c++
 
 compiler:
-  - clang
+  - gcc
 
 before_install:
-  - pip install --user cpp-coveralls
+  - pip3 install --user cpp-coveralls
+  - gcc --version
   - gcov --version
-  - sudo apt-get install ggcov
-  - sudo ln -sf /usr/bin/gcov-4.7 /usr/bin/gcov
 
 # only invoke travis-ci for certain branches
 branches:

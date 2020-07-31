@@ -9,9 +9,9 @@ A linear solver library.
 
 .. |Build Status| image:: https://travis-ci.org/siavashadpey/linsolver.svg?branch=master
 	:target: https://travis-ci.org/siavashadpey/linsolver.svg?branch=master
-	
-.. |Coverage| image:: https://coveralls.io/repos/github/siavashadpey/rebalance/badge.svg?branch=master
-	:target: https://coveralls.io/repos/github/siavashadpey/rebalance/badge.svg?branch=master
+
+.. |Coverage| .. image:: https://coveralls.io/repos/github/siavashadpey/linsolver/badge.svg?branch=master
+    :target: https://coveralls.io/github/siavashadpey/linsolver?branch=master
 
 .. |Code Factor| image:: https://www.codefactor.io/repository/github/siavashadpey/rebalance/badge
    :target: https://www.codefactor.io/repository/github/siavashadpey/rebalance
