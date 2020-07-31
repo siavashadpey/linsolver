@@ -5,8 +5,8 @@ compiler:
 
 before_install:
   - pip install --user cpp-coveralls
-  - gcc --version
-  - gcov --version
+  - valgrind --version
+  - sudo apt-get install valgrind
 
 # only invoke travis-ci for certain branches
 branches:
