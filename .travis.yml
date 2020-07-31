@@ -4,6 +4,9 @@ compiler:
   - clang
   - gcc
 
+before_install:
+  - pip install --user cpp-coveralls
+
 # only invoke travis-ci for certain branches
 branches:
   only:
