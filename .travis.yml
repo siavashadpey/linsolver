@@ -37,7 +37,7 @@ jobs:
       script:
         - ./travis.sh run
       after_success:
-        - coveralls -e build_tests/googletest-src/ --verbose
+        - coveralls -e build_tests/ -e include/ -e tests/
     - name:
         - Upstream
       stage:

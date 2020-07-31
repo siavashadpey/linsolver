@@ -12,8 +12,8 @@ if [ $keyword == build ]; then
 elif [ $keyword == run ]; then
 	cd build_tests
 	ctest
-elif [ $keyword == coverage ]; then
-	gcovr -r .. "src"  --html-details -o cov.html
+#elif [ $keyword == coverage ]; then
+#	gcovr -r .. "src"  --html-details -o cov.html
 else
 	echo "invalid keyword."
 fi
