@@ -37,7 +37,7 @@ jobs:
       script:
         - ./travis.sh run
       after_success:
-        - ./travis.sh coverage
+        - coveralls
     - name:
         - Upstream
       stage:
