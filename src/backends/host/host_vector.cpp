@@ -50,7 +50,7 @@ void HostVector<NumType>::copy(const BaseVector<NumType>& w)
 {
 	assert(this != &w);
 	const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
-	assert(w_host != NULL);
+	assert(w_host != nullptr);
 
 	if (w_host->size_ != this->size_) {
 		this->allocate(w_host->size_);
@@ -84,7 +84,7 @@ NumType HostVector<NumType>::dot(const BaseVector<NumType>& w) const
 {
 
 	const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
-	assert(w_host != NULL);
+	assert(w_host != nullptr);
 	assert(this->size_ == w_host->size_);
 
 	NumType val = static_cast<NumType>(0);
@@ -129,7 +129,7 @@ void HostVector<NumType>::add(NumType alpha, const BaseVector<NumType>& w, NumTy
 	} 
 	
 	const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
-	assert(w_host != NULL);
+	assert(w_host != nullptr);
 	assert(this->size_ == w_host->size_);
 
 	for (int i = 0; i < this->size_; i++) {
@@ -147,7 +147,7 @@ void HostVector<NumType>::add_scale(NumType alpha, const BaseVector<NumType>& w)
 	}
 
 	const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
-	assert(w_host != NULL);
+	assert(w_host != nullptr);
 	assert(this->size_ == w_host->size_);
 
 	for (int i = 0; i < this->size_; i++) {
@@ -159,7 +159,7 @@ template <typename NumType>
 void HostVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& w)
 {
 	const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
-	assert(w_host != NULL);
+	assert(w_host != nullptr);
 	assert(this->size_ == w_host->size_);
 
 	for (int i = 0; i < this->size_; i++) {

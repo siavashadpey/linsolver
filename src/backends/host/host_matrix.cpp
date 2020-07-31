@@ -68,7 +68,7 @@ void HostMatrix<NumType>::copy(const BaseMatrix<NumType>& B)
 {
 	assert(this != &B);
 	const HostMatrix<NumType>* B_host = dynamic_cast<const HostMatrix<NumType>*>(&B);
-	assert(B_host != NULL);
+	assert(B_host != nullptr);
 
 	if ((B_host->nnz_ != this->nnz_) or 
 		(B_host->m_ != this->m_) or
@@ -138,8 +138,8 @@ void HostMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 
 	const HostVector<NumType>* v_in_h = dynamic_cast<const HostVector<NumType>*>(&v_in);	
 	HostVector<NumType>* w_out_h = dynamic_cast<HostVector<NumType>*>(w_out);
-	assert(v_in_h != NULL);
-	assert(w_out_h != NULL);
+	assert(v_in_h != nullptr);
+	assert(w_out_h != nullptr);
 
 	const NumType zero = static_cast<NumType>(0);
 

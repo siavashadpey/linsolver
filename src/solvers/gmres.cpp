@@ -58,9 +58,9 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
 	const HostMatrix<NumType>* mat_h = dynamic_cast<const HostMatrix<NumType>*>(&mat);
 	const BaseVector<NumType>* rhs_h = dynamic_cast<const HostVector<NumType>*>(&rhs);
 	BaseVector<NumType>* soln_h = dynamic_cast<HostVector<NumType>*>(soln);
-	assert(mat_h != NULL);
-	assert(rhs_h != NULL);
-	assert(soln_h != NULL);
+	assert(mat_h  != nullptr);
+	assert(rhs_h  != nullptr);
+	assert(soln_h != nullptr);
 
 	prepare_solver_(mat_h->n());
 
