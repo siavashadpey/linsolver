@@ -23,8 +23,8 @@ after_success:
 
 stages:
   - Testing
-  - name: Upstream
-    if: branch = master
+  #- name: Upstream
+  #  if: branch = master
 
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
       script:
         - ./travis.sh run
       after_success:
-        - coveralls -e build_tests/googletest-src/
+        - coveralls -e build_tests/googletest-src/ --verbose
     - name:
         - Upstream
       stage:
