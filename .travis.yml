@@ -37,16 +37,16 @@ jobs:
       script:
         - ./travis.sh run
       after_success:
-        - coveralls -e build_tests/ -e include/ -e tests/
-    - name:
-        - Upstream
-      stage:
-        - Upstream
-      install:
-        - skip
-      script: echo "hello" # TODO: replace this by a script which pushes to upstream branch (e.g. dev -> master)
-      after_success:
-        - skip
+        - coveralls -e build_tests/googletest-src/ -e build_tests/googletest-build/ -e include/ -e tests/
+    #- name:
+    #    - Upstream
+    #  stage:
+    #    - Upstream
+    #  install:
+    #    - skip
+    #  script: echo "hello" # TODO: replace this by a script which pushes to upstream branch (e.g. dev -> master)
+    #  after_success:
+    #    - skip
 
 notifications:
   email:
