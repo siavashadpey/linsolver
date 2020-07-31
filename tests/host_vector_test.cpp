@@ -82,7 +82,6 @@ TEST(HostVector, test_1)
 	for (int i = 0; i < n_new; i++) {
 		w[i] = (double) 4.*(n_new - i);
 		w_new[i] = (double) 4.*(n_new - i);
-
 	}
 
 	v.copy(w);

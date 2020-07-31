@@ -80,6 +80,5 @@ protected:
 	 * Size of the vector.
 	 */
 	int size_;
-
 };
 #endif

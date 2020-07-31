@@ -50,7 +50,6 @@ NumType BaseIterativeSolver<NumType>::norm_(const BaseVector<NumType>& v) const 
 
 template <typename NumType>
 bool BaseIterativeSolver<NumType>::is_converged_() const {
-
 	return (res_norm_ <= abs_tol_) or
 		   (res_norm_ <= rel_tol_*init_res_norm_);
 }

@@ -11,7 +11,6 @@
 
 TEST(GMRES, test_1)
 {
-
 	HostMatrix<double> A = HostMatrix<double>();
 	int n = 4;
 	int nnz = 10;

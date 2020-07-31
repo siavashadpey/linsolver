@@ -147,8 +147,7 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
 		this->res_norm_ = std::abs(g_[0]);
 	}
 
-	clear();
-	
+	clear();	
 }
 
 template <typename NumType>

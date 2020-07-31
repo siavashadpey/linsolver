@@ -41,6 +41,5 @@ protected:
 private:
 	// befriending classes
 	friend class HostMatrix<NumType>;
-
 };
 #endif

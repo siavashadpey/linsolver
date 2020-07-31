@@ -82,7 +82,6 @@ NumType HostVector<NumType>::norm() const
 template <typename NumType>
 NumType HostVector<NumType>::dot(const BaseVector<NumType>& w) const
 {
-
 	const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
 	assert(w_host != nullptr);
 	assert(this->size_ == w_host->size_);
@@ -135,7 +134,6 @@ void HostVector<NumType>::add(NumType alpha, const BaseVector<NumType>& w, NumTy
 	for (int i = 0; i < this->size_; i++) {
 		this->vec_[i] = alpha*this->vec_[i] + beta*w_host->vec_[i];
 	}
-
 }
 
 template <typename NumType>

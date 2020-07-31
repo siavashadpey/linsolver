@@ -10,7 +10,6 @@
 
 TEST(HostMatrix, test_1)
 {
-
 	HostMatrix<double> A = HostMatrix<double>();
 	int m = 3;
 	int n = 4;
@@ -78,7 +77,6 @@ TEST(HostMatrix, test_1)
 	EXPECT_EQ(A.m(), 0);
 	EXPECT_EQ(A.n(), 0);
 	EXPECT_EQ(A.nnz(), 0);
-
 }
 
 int main(int argc, char **argv) {

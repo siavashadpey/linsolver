@@ -107,6 +107,5 @@ protected:
 	 * Number of non-zero entries in the matrix.
 	 */
 	int nnz_;
-
 };
 #endif
