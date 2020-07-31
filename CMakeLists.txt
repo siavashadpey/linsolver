@@ -7,11 +7,21 @@ set(LIB_NAME "LAS")
 option(WITH_CUDA "select whether CUDA is used or not" OFF)
 option(BUILD_TESTS "select whether to build tests or not" OFF)
 option(BUILD_DOCS "select whether to build docs or not" OFF)
+option(WITH_VALGRIND "select if valgrind is ON or OFF (for tests)" OFF)
+
+set(BUILD "DEBUG" CACHE STRING "select BUILD type: DEBUG or RELEASE")
 
 set(LINK_LIBS "")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(GNU_WARNINGS "-Wall -Wextra -Wnon-virtual-dtor -Wpedantic -Wshadow")
+
+if (${BUILD} MATCHES "DEBUG")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g --coverage")
+elseif (${BUILD} MATCHES "RELEASE")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+endif()
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GNU_WARNINGS}")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
@@ -30,6 +40,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_subdirectory(src)
 
 if (${BUILD_TESTS})
+	enable_testing()
 	add_subdirectory(tests)
 endif()
 

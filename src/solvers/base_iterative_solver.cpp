@@ -5,7 +5,7 @@
 template <typename NumType>
 BaseIterativeSolver<NumType>::BaseIterativeSolver()
 	:	abs_tol_(1E-12),
-		rel_tol_(1E-10),
+		rel_tol_(1E-12),
 		max_its_(1E3),
 		it_counter_(0),
 		init_res_norm_(1E10),

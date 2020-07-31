@@ -1,12 +1,15 @@
 #include <stdio.h>
+#include <cmath>
+
+#include "gtest/gtest.h"
 
 #include "backends/host/host_matrix.h"
 #include "backends/host/host_vector.h"
 
-int main(int argc, char const *argv[])
+#define tol 1E-13
+
+TEST(HostMatrix, test_1)
 {
-	(void) argc;
-	(void) argv;
 
 	HostMatrix<double> A = HostMatrix<double>();
 	int m = 3;
@@ -14,23 +17,29 @@ int main(int argc, char const *argv[])
 	int nnz = 7;
 
 	A.allocate(m, n, nnz);
-
-	printf("%d %d %d \n", A.m(), A.n(), A.nnz());
-	printf("%d \n\n", A.is_square());
+	EXPECT_EQ(A.m(), m);
+	EXPECT_EQ(A.n(), n);
+	EXPECT_EQ(A.nnz(), nnz);
+	EXPECT_FALSE(A.is_square());
 
 	double val[] = {2.0, 9.0, -1., 5.5, 6., 7.3, 3.3};
 	int row_ptr[] = {0, 2, 5, 7};
 	int col_idx[] = {1, 3, 0, 2, 3, 1, 3};
 	A.copy(val, row_ptr, col_idx);
-	
-	printf("%f\n\n", A.norm());
+
+	double norm_e = 0.;
+	for (int i = 0; i < nnz; i++) {
+		norm_e += val[i]*val[i];
+	}
+	norm_e = sqrt(norm_e);
+	EXPECT_NEAR(A.norm(), norm_e, tol); // frobenius norm
 
 	A.scale(3.0);
-	printf("%f\n\n", A.norm());
+	norm_e *= 3.0;
+	EXPECT_NEAR(A.norm(), norm_e, tol); // scale
 
 	A.scale(1.0);
-	printf("%f\n\n", A.norm());
-
+	EXPECT_NEAR(A.norm(), norm_e, tol); // scale (special scenario)
 
 	HostMatrix<double> B = HostMatrix<double>();
 	n = 4;
@@ -41,7 +50,13 @@ int main(int argc, char const *argv[])
 	int B_col_idx[] = {0, 2, 1, 2, 3, 0, 2, 3, 1, 2, 3};
 	B.copy(B_val, B_row_idx, B_col_idx);
 
-	A.copy(B);
+	A.copy(B); 
+
+	// copy from another class instance
+	EXPECT_EQ(A.m(), n);
+	EXPECT_EQ(A.n(), n);
+	EXPECT_EQ(A.nnz(), nnz);
+	EXPECT_TRUE(A.is_square());
 
 	HostVector<double> x = HostVector<double>();
 	HostVector<double> b = HostVector<double>();
@@ -53,11 +68,20 @@ int main(int argc, char const *argv[])
 	}
 
 	A.multiply(x,&b);
+
+	double b_e[] = {9., 6.3, 68., -11.4};
 	for (int i = 0; i < n; i++) {
-		printf("%f\n",b[i]);
+		EXPECT_NEAR(b[i], b_e[i], tol); // b = A*x
 	}
-	printf("\n");
 
+	A.clear();
+	EXPECT_EQ(A.m(), 0);
+	EXPECT_EQ(A.n(), 0);
+	EXPECT_EQ(A.nnz(), 0);
 
-	return 0;
+}
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }

@@ -1,18 +1,19 @@
 #include <stdio.h>
+#include "gtest/gtest.h"
+
+#include "gtest/gtest.h"
 
 #include "solvers/gmres.h"
 #include "backends/host/host_matrix.h"
 #include "backends/host/host_vector.h"
 
+#define tol 1E-9
 
-int main(int argc, char const *argv[])
+TEST(GMRES, test_1)
 {
-	(void) argc;
-	(void) argv;
-
-	int n = 4;
 
 	HostMatrix<double> A = HostMatrix<double>();
+	int n = 4;
 	int nnz = 10;
 	A.allocate(n, n, nnz);
 	double val[] = {3.0, 1.0, -3.0, -1.0, -5.5, 2.3, 4.3, 0.3, 3.2, -3.0};
@@ -22,31 +23,29 @@ int main(int argc, char const *argv[])
 	
 	HostVector<double> b = HostVector<double>();
 	b.allocate(n);
-	double b_vals[] = {9, 6.3, 68, -11.4};
-	b.copy(b_vals);
 
-	HostVector<double> x = HostVector<double>();
-	x.allocate(n);
-	x.zeros();
+	double x_e_vals[] = {9, 6.3, 68, -11.4};
+	HostVector<double> x_e = HostVector<double>();
+	x_e.allocate(n);
+	x_e.copy(x_e_vals);
+	
+	A.multiply(x_e, &b); // b = A*x
+	
+
+	HostVector<double> x_soln = HostVector<double>();
+	x_soln.allocate(n);
+	x_soln.zeros();
 
 	GMRES<double> solver = GMRES<double>();
-	solver.set_krylov_dimension(100);
-	solver.set_max_iterations(100);
 	
-	solver.solve(A, b, &x);
+	solver.solve(A, b, &x_soln);
 
 	for (int i = 0; i < n; i++) {
-		printf("%f\n", x[i]);
+		EXPECT_NEAR(x_soln[i], x_e[i], tol);
 	}
-	printf("\n");
+}
 
-	HostVector<double> b_gmres = HostVector<double>();
-	b_gmres.allocate(n);
-	A.multiply(x, &b_gmres);
-	for (int i = 0; i < n; i++) {
-		printf("%f\n", b_gmres[i]);
-	}
-	printf("\n");
-	
-	return 0;
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
