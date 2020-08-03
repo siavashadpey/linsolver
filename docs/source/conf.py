@@ -10,20 +10,18 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import subprocess, os
+import os
+import subprocess
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
 
+# -- Linking READTHEDOCS/SPHinx to Doxygen -----------------------------------
+# adapted from BREATHE
+read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
 
-# -- Project information -----------------------------------------------------
-master_doc = "index"
-project = 'rebalance'
-copyright = '2020, Siavosh Shadpey'
-author = 'Siavosh Shadpey'
+if read_the_docs_build:
 
-# The full version, including alpha/beta/rc tags
-release = '0.0.1'
-
+    subprocess.call('cd ..; doxygen Doxyfile.in', shell=True)
 
 # -- General configuration ---------------------------------------------------
 
@@ -39,8 +37,6 @@ extensions = [
     "sphinx.ext.viewcode",
 ]
 
-apidoc_module_dir = '../rebalance'
-apidoc_output_dir = 'source'
 apidoc_excluded_paths = ['tests', 'cases', 'setup.py']
 apidoc_separate_modules = True
 
@@ -59,15 +55,6 @@ napoleon_use_rtype = False
 
 todo_include_todos = False
 add_module_names = False
-
-#autoclass_content = "both"
-
-# Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
-
-
-autodoc_mock_imports = ['forex_python', 'yfinance', 'numpy', 'scipy', 'typing']
-autodoc_default_flags = ['members', 'show-inheritance']
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -101,9 +88,3 @@ def setup(app):
         "https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
     )
     app.add_css_file("default.css")
-
-read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
-
-if read_the_docs_build:
-
-    subprocess.call('cd ..; mkdir build_docs; cd build_docs; cmake -DBUILD_DOCS = ON; doxygen', shell=True)
