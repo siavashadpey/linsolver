@@ -6,9 +6,10 @@ Welcome to linSolver's documentation!
 .. include:: ../README.rst
 
 .. toctree::
-   :caption: Main Classes
+   :caption: API
    :maxdepth: 2
 
+   base_backends
    host_backends
    solvers
 
