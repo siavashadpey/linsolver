@@ -2,4 +2,7 @@
 
 Docs
 ====
-hello
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
