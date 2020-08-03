@@ -43,7 +43,10 @@ extensions = [
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "breathe",
 ]
+breathe_projects = { "linSolver": "../build/xml" }
+breathe_default_project = "linSolver"
 
 apidoc_excluded_paths = ['tests', 'cases', 'setup.py']
 apidoc_separate_modules = True
@@ -86,6 +89,9 @@ source_suffix = ['.rst', '.md']
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 #html_static_path = ['_static']
+
+# Add any paths that contain templates here, relative to this directory.
+templates_path = ['_templates']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "friendly"
