@@ -32,9 +32,16 @@ jobs:
     - name: Testing
       stage: Testing
       before_script:
-        - ./travis.sh build
+        - mkdir build_tests
+        - cd build_tests || exit
+        - cmake -DBUILD_TESTS=ON -DWITH_MEMCHECK=ON ..
+        - make
+        - cd ..
       script:
-        - ./travis.sh run
+        - cd build_tests || exit
+        - ctest
+        - ctest -T memcheck
+        - cd ..
       after_success:
         - coveralls -e build_tests/googletest-src/ -e build_tests/googletest-build/ -e build_tests/CMakeFiles/ -e include/ -e tests/
     #- name:
