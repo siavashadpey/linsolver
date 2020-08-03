@@ -1,4 +1,4 @@
-find_package(Doxygen)
+find_package(Doxygen REQUIRED)
 find_package(Sphinx REQUIRED)
 
 # Find all the public headers
