@@ -3,19 +3,20 @@
 Welcome to linSolver's documentation!
 =====================================
 
-.. include:: ../../README.rst
+.. include:: ../README.rst
 
 .. toctree::
    :maxdepth: 2
 
-   linSolver
-
+Host Backend
+==============
 .. doxygenclass:: HostVector
+	:project: linSolver
+
+.. doxygenclass:: HostMatrix
+	:project: linSolver
+
+Solvers  
+==============
+.. doxygenclass:: GMRES
    :members:
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
