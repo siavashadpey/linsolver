@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 cmake_policy(SET CMP0048 NEW)
 
-project(LAS VERSION 0.1)
-set(LIB_NAME "LAS")
+project(linSolver VERSION 0.0)
+set(LIB_NAME "linSolver")
 
 option(WITH_CUDA "select whether CUDA is used or not" OFF)
 option(BUILD_TESTS "select whether to build tests or not" OFF)
@@ -10,6 +10,8 @@ option(BUILD_DOCS "select whether to build docs or not" OFF)
 option(WITH_VALGRIND "select if valgrind is ON or OFF (for tests)" OFF)
 
 set(BUILD "DEBUG" CACHE STRING "select BUILD type: DEBUG or RELEASE")
+
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 set(LINK_LIBS "")
 

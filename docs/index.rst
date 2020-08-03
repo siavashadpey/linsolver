@@ -1,11 +1,7 @@
-.. title:: rebalance's Documentation
+…
 
-Welcome to rebalance's documentation!
-=====================================
+Docs
+====
 
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-
-   linSolver
+.. doxygenstruct:: linSolver
+   :members:
