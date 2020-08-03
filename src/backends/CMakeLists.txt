@@ -9,7 +9,7 @@ set(BASE_SRC
 )
 
 add_subdirectory(host)
-add_subdirectory(accelerator)
+add_subdirectory(device)
 
 set (HOST_SRC 
 	${HOST_SRC}

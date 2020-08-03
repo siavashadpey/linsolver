@@ -43,10 +43,6 @@ void BaseIterativeSolver<NumType>::set_max_iterations(int max_it)
 	max_its_ = max_it;
 }
 
-template <typename NumType>
-NumType BaseIterativeSolver<NumType>::norm_(const BaseVector<NumType>& v) const {
-	return v.norm();
-}
 
 template <typename NumType>
 bool BaseIterativeSolver<NumType>::is_converged_() const {
