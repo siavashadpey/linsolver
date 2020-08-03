@@ -6,17 +6,10 @@ Welcome to linSolver's documentation!
 .. include:: ../README.rst
 
 .. toctree::
+   :caption: Main Classes
    :maxdepth: 2
 
-Host Backend
-==============
-.. doxygenclass:: HostVector
-	:project: linSolver
+   host_backends
+   solvers
 
-.. doxygenclass:: HostMatrix
-	:project: linSolver
-
-Solvers  
-==============
-.. doxygenclass:: GMRES
-   :members:
+.. include:: contact.rst

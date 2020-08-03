@@ -5,6 +5,8 @@ LinSolver
 
 A linear solver library.
 
+TODO: Installation - include installation steps
+TODO: Usage - include steps for running a test case
 
 
 .. |Build Status| image:: https://travis-ci.org/siavashadpey/linsolver.svg?branch=master
