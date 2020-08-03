@@ -2,12 +2,16 @@
 Base Solver Classes
 ===================
 
+Base Linear Solver
+------------------
+
 .. doxygenclass:: BaseSolver
-   :caption: Base Linear Solver
    :project: linSolver
    :members:
 
+Base Iterative Linear Solver
+----------------------------
+
 .. doxygenclass:: BaseIterativeSolver
-   :caption: Base Iterative Linear Solver
    :project: linSolver
    :members:

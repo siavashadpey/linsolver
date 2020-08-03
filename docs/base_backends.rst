@@ -3,12 +3,16 @@
 Backend Base Classes
 ===================
 
+Base Vector
+-----------
+
 .. doxygenclass:: BaseVector
-   :caption: Base Vector
    :project: linSolver
    :members:
 
+Base Matrix
+-----------
+
 .. doxygenclass:: BaseMatrix
-   :caption: Base Matrix
    :project: linSolver
    :members:
