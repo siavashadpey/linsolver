@@ -5,9 +5,12 @@ Docs
 
 .. toctree::
    :maxdepth: 2
-   :hidden:
 
    linSolver
+
+
+.. doxygenclass:: HostVector
+   :members:
 
 Indices and tables
 ==================
