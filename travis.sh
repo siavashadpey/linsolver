@@ -2,6 +2,7 @@
 
 keyword=$1
 
+set -o pipefail
 
 if [ $keyword == build ]; then
 	mkdir build_tests
