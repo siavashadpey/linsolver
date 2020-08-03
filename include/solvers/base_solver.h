@@ -4,11 +4,14 @@
 #include "backends/base_vector.h"
 #include "backends/base_matrix.h"
 
+/**
+ * \brief Base class for Linear Solvers.
+ */
 template <typename NumType>
 class BaseSolver {
 public:
 	/**
-	 * Constructor.
+	 * Default constructor.
 	 */
 	BaseSolver();
 
@@ -18,7 +21,10 @@ public:
 	virtual ~BaseSolver();
 
 	/**
-	 * Solves for x in mat*x = rhs.
+	 * Solves for soln in mat*soln = rhs.
+	 * @param[in]  mat  The matrix in the above equation.
+	 * @param[in]  rhs  The vector in the above equation.
+	 * @param[out] soln The vector in the above equation.
 	 */
 	virtual void solve(const BaseMatrix<NumType>& mat, const BaseVector<NumType>& rhs, BaseVector<NumType>* soln) = 0;
 };

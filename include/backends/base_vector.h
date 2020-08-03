@@ -1,11 +1,14 @@
 #ifndef BASE_VECTOR_H
 #define BASE_VECTOR_H
 
+/**
+ * \brief Base vector class of HostVector and DeviceVector classes.
+ */
 template <typename NumType>
 class BaseVector {
 public:
 	/**
-	 * Constructor.
+	 * Default onstructor.
 	 */
 	BaseVector();
 
@@ -16,6 +19,7 @@ public:
 
 	/**
 	 * Allocate a size of n to the vector.
+	 * @param[in] n The size of vector.
 	 */
 	virtual void allocate(int n) = 0;
 
@@ -26,27 +30,31 @@ public:
 
 	/**
 	 * Copy data to the vector.
-	 * allocate() should be called first.
+	 * @note allocate should be called first.
+	 * @param[in] w The pointer to the data to copy.
 	 */
 	virtual void copy(const NumType* w) = 0;
 
 	/**
-	 * v = w, where v is this.
+	 * Copy a vector to itself.
+	 * @param[in] w The vector to copy.
 	 */
 	virtual void copy(const BaseVector<NumType>& w) = 0;
 
 	/** 
-	 * Returns the size of the vector.
+	 * \return The size of the vector.
 	 */
 	int n() const;
 
 	/**
-	 * Returns the l2 norm of the vector.
+	 * \return The L2 norm of the vector.
 	 */
 	virtual NumType norm() const = 0;
 
 	/**
-	 * Returns the dot product between v and w, where v is this.
+	 * Return the dot product between itself and another vector.
+	 * \param[in] w The other vector
+	 * \return The dot product.
 	 */
 	virtual NumType dot(const BaseVector<NumType>& w) const = 0;
 
@@ -56,22 +64,30 @@ public:
 	virtual void zeros() = 0;
 
 	/**
-	 * v = alpha*v, where v is this.
+	 * Scale the vector.
+	 * \param[in] alpha the value by which to scale the vector.
 	 */
 	virtual void scale(NumType alpha) = 0;
 
 	/**
-	 * v = alpha*v + beta*w, where v is this.
+	 * v = alpha*v + beta*w, where v is the vector itself.
+	 * \param[in] alpha The value in the above equation.
+	 * \param[in] w     The vector in the above equation.
+	 * \param[in] beta  The value in the above equation.
 	 */
 	virtual void add(NumType alpha, const BaseVector<NumType>& w, NumType beta) = 0;
 
 	/**
-	 * v = v + alpha*w, where v is this.
+	 * v = v + alpha*w, where v is the vector itself.
+	 * \param[in] alpha The value in the above equation.
+	 * \param[in] w     The vector in the above equation.
 	 */
 	virtual void add_scale(NumType alpha, const BaseVector<NumType>& w) = 0;
 
 	/**
-	 * v = alpha*v + w, where v is this.
+	 * v = alpha*v + w, where v is the vector itself.
+	 * \param[in] alpha The value in the above equation.
+	 * \param[in] w     The vector in the above equation.
 	 */
 	virtual void scale_add(NumType alpha, const BaseVector<NumType>& w) = 0;
 

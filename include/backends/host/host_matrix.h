@@ -8,14 +8,15 @@ template <typename Number>
 class HostVector;
 
 /**
- * \class HostMatrix.
- * Class for sparse matrix on host system using Compressed Row Storage (CRS).
+ * \brief Implementation of a Matrix class on the host system.
+ *
+ * This class uses the Compressed Row Storage (CRS) method.
  */
 template <typename NumType>
 class HostMatrix: public BaseMatrix<NumType> {
 public:
 	/**
-	 * Constructor.
+	 * Default constructor.
 	 */
 	HostMatrix();
 
@@ -37,9 +38,9 @@ public:
 	virtual void multiply(const BaseVector<NumType>& v_in, 
 		BaseVector<NumType>* w_out) const;
 
-private:
+protected:
 	/**
-	 * Values of non-zero entries in the matrix.
+	 * Values of non-zero entries in the matrix. (Compressed Row Storage)
 	 */
 	NumType* val_;
 
@@ -49,7 +50,7 @@ private:
 	NumType* row_ptr_;
 
 	/**
-	 * Column indices of the elements in val_, (Compressed Row Storage)
+	 * Column indices of the elements in val_. (Compressed Row Storage)
 	 */
 	NumType* col_idx_;
 };
