@@ -82,22 +82,8 @@ public:
 	 */
 	virtual void scale(NumType alpha) = 0;
 
-	/**
-	 * A = alpha*A + beta*B, where A is the matrix itself.
-	 * \param[in] alpha The value in the above equation.
-	 * \param[in] B     The matrix in the above equation.
-	 * \param[in] beta  The value in the above equation.
-	 */
 	//virtual void add(NumType alpha, const BaseMatrix<NumType>& B, NumType beta) = 0;
-
-	/**
-	 * A = A + alpha*B, where A is this.
-	 */
 	//virtual void add_scale(NumType alpha, const BaseMatrix<NumType>& B) = 0;
-
-	/**
-	 * A = alpha*A + B, where A is this.
-	 */
 	//virtual void scale_add(NumType alpha, const BaseMatrix<NumType>& B) = 0;
 
 	/**

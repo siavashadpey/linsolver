@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
 # adapted from BREATHE
 read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
 
-if read_the_docs_build:
+if True: #read_the_docs_build:
 
     subprocess.call('cd ..; doxygen Doxyfile.in', shell=True)
 

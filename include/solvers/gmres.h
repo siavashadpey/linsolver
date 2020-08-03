@@ -20,12 +20,12 @@ public:
 	 */
 	~GMRES();
 
-	/*
+	/**
 	 * Clear all dynamically allocated memory by this class' methods.
 	 */
 	void clear();
 
-	/*
+	/**
 	 * \param[in] K_dim The dimension (or size) of the Krylov space (default is 20).
 	 */
 	void set_krylov_dimension(int K_dim);

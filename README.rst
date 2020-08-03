@@ -1,7 +1,7 @@
 LinSolver
 =========
 
-|Build status| |Coverage| |Code Factor|
+|Build status| |Coverage| |Code Factor| |Docs|
 
 A linear solver library.
 
@@ -16,6 +16,6 @@ A linear solver library.
 .. |Code Factor| image:: https://www.codefactor.io/repository/github/siavashadpey/linsolver/badge
    :target: https://www.codefactor.io/repository/github/siavashadpey/linsolver
 
-.. |Docs| image:: https://readthedocs.org/projects/rebalance/badge/?version=latest
-	:target: https://rebalance.readthedocs.io/en/latest/?badge=latest
-	:alt: Documentation Status
+.. |Docs| image:: https://readthedocs.org/projects/linsolver/badge/?version=latest
+	:target: https://linsolver.readthedocs.io/en/latest/?badge=latest
+
