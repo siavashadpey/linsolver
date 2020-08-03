@@ -1,13 +1,14 @@
-…
+.. title:: linSolver's Documentation
 
-Docs
-====
+Welcome to linSolver's documentation!
+=====================================
+
+.. include:: ../../README.rst
 
 .. toctree::
    :maxdepth: 2
 
    linSolver
-
 
 .. doxygenclass:: HostVector
    :members:

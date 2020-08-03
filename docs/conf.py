@@ -64,9 +64,6 @@ extensions = [
 # Breathe Configuration
 breathe_default_project = "linSolver"
 
-apidoc_excluded_paths = ['tests', 'cases', 'setup.py']
-apidoc_separate_modules = True
-
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
@@ -90,7 +87,7 @@ add_module_names = False
 #
 html_add_permalinks = ""
 html_theme_path = ["."]
-#html_theme = "semantic_sphinx"
+html_theme = "semantic_sphinx"
 html_theme_options = {
     "navbar_links": [
     	("Home", master_doc),
