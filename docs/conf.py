@@ -87,7 +87,7 @@ add_module_names = False
 #
 html_add_permalinks = ""
 html_theme_path = ["."]
-html_theme = "semantic_sphinx"
+#html_theme = "semantic_sphinx"
 html_theme_options = {
     "navbar_links": [
     	("Home", master_doc),
