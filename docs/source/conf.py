@@ -23,8 +23,16 @@ if read_the_docs_build:
 
     subprocess.call('cd ..; doxygen Doxyfile.in', shell=True)
 
-# -- General configuration ---------------------------------------------------
+# -- Project information -----------------------------------------------------
+master_doc = "index"
+project = 'linSolver'
+copyright = '2020, Siavosh Shadpey'
+author = 'Siavosh Shadpey'
 
+# The full version, including alpha/beta/rc tags
+release = '0.0'
+
+# -- General configuration ---------------------------------------------------
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
