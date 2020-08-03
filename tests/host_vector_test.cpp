@@ -97,8 +97,6 @@ TEST(HostVector, test_1)
 
 	v.clear();
 	EXPECT_EQ(v.n(), 0); // cleared data
-
-	//double* a = new double[4];
 }
 
 int main(int argc, char **argv) {

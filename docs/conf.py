@@ -58,8 +58,11 @@ extensions = [
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
-    "breathe",
+    "breathe"
 ]
+
+# Breathe Configuration
+breathe_default_project = "linSolver"
 
 apidoc_excluded_paths = ['tests', 'cases', 'setup.py']
 apidoc_separate_modules = True
