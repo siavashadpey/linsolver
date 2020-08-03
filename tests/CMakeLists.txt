@@ -25,18 +25,18 @@ function(add_tests test_set)
   foreach(filename ${test_set})
     add_executable(${filename}_test ${filename}_test.cpp)
     target_link_libraries(${filename}_test ${LIB_NAME} gtest_main)
-    # test without valgrind
+    # test without memcheck
     add_test(NAME ${filename}_test COMMAND ./${filename}_test --gtest_output=xml:./${filename}_test_result.xml)
-    # test with valgrind
-    if (${WITH_VALGRIND})
-    	set(VALGRIND_XML_FILE ./${filename}_test_valgrind.xml)
-      	add_test(${NAME} ${filename}_test_valgrind COMMAND ${VALGRIND_COMMAND} --leak-check=full --show-reachable=yes --xml=yes --xml-file=${filename}_test_valgrind_result.xml ./${filename}_test --gtest_output=xml:./${filename}_test_result_mem.xml)
+    # test with memcheck
+    if (${WITH_MEMCHECK})
+    	set(VALGRIND_XML_FILE ./${filename}_test_memcheck.xml)
+      	add_test(${NAME} ${filename}_test_memcheck COMMAND ${MEMORYCHECK_COMMAND} --leak-check=full --show-reachable=yes --xml=yes --xml-file=${filename}_test_memcheck_result.xml ./${filename}_test --gtest_output=xml:./${filename}_test_result_mem.xml)
     endif()
   endforeach()
 endfunction(add_tests)
 
-if (${WITH_VALGRIND})
-	find_program(VALGRIND_COMMAND valgrind)
+if (${WITH_MEMCHECK})
+	find_program(MEMORYCHECK_COMMAND valgrind )
 endif()
 
 # do not add suffix _test.cpp here

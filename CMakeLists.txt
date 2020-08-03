@@ -7,7 +7,7 @@ set(LIB_NAME "linSolver")
 option(WITH_CUDA "select whether CUDA is used or not" OFF)
 option(BUILD_TESTS "select whether to build tests or not" OFF)
 option(BUILD_DOCS "select whether to build docs or not" OFF)
-option(WITH_VALGRIND "select if valgrind is ON or OFF (for tests)" OFF)
+option(WITH_MEMCHECK "select if memcheck with valgrind is ON or OFF (for tests)" OFF)
 
 set(BUILD "DEBUG" CACHE STRING "select BUILD type: DEBUG or RELEASE")
 
