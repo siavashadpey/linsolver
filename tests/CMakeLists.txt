@@ -28,10 +28,10 @@ function(add_tests test_set)
     # test without memcheck
     add_test(NAME ${filename}_test COMMAND ./${filename}_test --gtest_output=xml:./${filename}_test_result.xml)
     # test with memcheck
-    if (${WITH_MEMCHECK})
-    	set(VALGRIND_XML_FILE ./${filename}_test_memcheck.xml)
-      	add_test(${NAME} ${filename}_test_memcheck COMMAND ${MEMORYCHECK_COMMAND} --leak-check=full --show-reachable=yes --xml=yes --xml-file=${filename}_test_memcheck_result.xml ./${filename}_test --gtest_output=xml:./${filename}_test_result_mem.xml)
-    endif()
+    #if (${WITH_MEMCHECK})
+    #	set(VALGRIND_XML_FILE ./${filename}_test_memcheck.xml)
+    #  	add_test(${NAME} ${filename}_test_memcheck COMMAND ${MEMORYCHECK_COMMAND} --leak-check=full --show-reachable=yes --xml=yes --xml-file=${filename}_test_memcheck_result.xml ./${filename}_test --gtest_output=xml:./${filename}_test_result_mem.xml)
+    #endif()
   endforeach()
 endfunction(add_tests)
 

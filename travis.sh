@@ -12,6 +12,7 @@ if [ $keyword == build ]; then
 elif [ $keyword == run ]; then
 	cd build_tests || exit
 	ctest
+	ctest -T memcheck
 	cd ..
 #elif [ $keyword == coverage ]; then
 #	gcovr -r .. "src"  --html-details -o cov.html
