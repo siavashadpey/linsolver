@@ -21,7 +21,7 @@ TEST(HostVector, test_1)
 	}
 	norm_e = sqrt(norm_e);
 
-	EXPECT_EQ(n+1, v.n()); // size
+	EXPECT_EQ(n, v.n()); // size
 	EXPECT_NEAR(v.norm(), norm_e, tol); // l2-norm computation
 	for (int i = 0; i < n; i++) {
 		EXPECT_NEAR(v[i], v_e[i], tol); // values

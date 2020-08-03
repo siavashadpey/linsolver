@@ -34,7 +34,7 @@ jobs:
       before_script:
         - mkdir build_tests
         - cd build_tests || exit
-        - cmake -DBUILD_TESTS=ON -DWITH_MEMCHECK=ON ..
+        - cmake -DBUILD_TESTS=ON ..
         - make
         - cd ..
       script:
