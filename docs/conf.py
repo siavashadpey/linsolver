@@ -33,7 +33,7 @@ breathe_projects = {}
 
 if read_the_docs_build:
     input_dir = '..'
-    output_dir = '.'
+    output_dir = 'build'
     configureDoxyfile(input_dir, output_dir)
     subprocess.call('doxygen', shell=True)
     breathe_projects['linSolver'] = output_dir + '/xml'
@@ -60,8 +60,6 @@ extensions = [
     "sphinx.ext.viewcode",
     "breathe",
 ]
-breathe_projects = { "linSolver": "../build/xml" }
-breathe_default_project = "linSolver"
 
 apidoc_excluded_paths = ['tests', 'cases', 'setup.py']
 apidoc_separate_modules = True
