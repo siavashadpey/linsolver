@@ -34,12 +34,12 @@ jobs:
       before_script:
         - mkdir build_tests
         - cd build_tests || exit
-        - cmake -DBUILD_TESTS=ON ..
+        - cmake -DBUILD_TESTS=ON -DBUILD_DOCS=OFF ..
         - make
         - cd ..
       script:
         - cd build_tests || exit
-        - ctest
+        - ctest --verbose
         - ctest ctest --overwrite MemoryCheckCommandOptions="--leak-check=full --error-exitcode=100" -T memcheck
         - cd ..
       after_success:
