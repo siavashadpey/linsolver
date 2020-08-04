@@ -8,6 +8,9 @@ template <typename NumType>
 HostVector<NumType>::HostVector()
 	: vec_(nullptr)
 {
+#ifdef _OPENMP
+	//prepare_omp_settings()
+#endif
 }
 
 template <typename NumType>
@@ -40,6 +43,9 @@ void HostVector<NumType>::copy(const NumType* w)
 {
 	assert(this->size_ > 0);
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->size_; i++) {
 		this->vec_[i] = w[i];
 	}
@@ -56,6 +62,9 @@ void HostVector<NumType>::copy(const BaseVector<NumType>& w)
 		this->allocate(w_host->size_);
 	}
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->size_; i++) {
 		this->vec_[i] = w_host->vec_[i];
 	}
@@ -72,10 +81,12 @@ NumType HostVector<NumType>::norm() const
 {
 	NumType val = static_cast<NumType>(0);
 
+#ifdef _OPENMP
+	#pragma omp parallel for reduction(+:val)
+#endif
 	for (int i = 0; i < this->size_; i++) {
 		val += this->vec_[i]*this->vec_[i];
 	}
-
 	return sqrt(val);
 }
 
@@ -88,6 +99,9 @@ NumType HostVector<NumType>::dot(const BaseVector<NumType>& w) const
 
 	NumType val = static_cast<NumType>(0);
 
+#ifdef _OPENMP
+	#pragma omp parallel for reduction(+:val)
+#endif
 	for (int i = 0; i < this->size_; i++) {
 		val += this->vec_[i]*w_host->vec_[i];
 	}
@@ -98,6 +112,9 @@ template <typename NumType>
 void HostVector<NumType>::zeros() 
 {
 	const NumType zero = static_cast<NumType>(0);
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->size_; i++) {
 		this->vec_[i] = zero;
 	}
@@ -106,6 +123,9 @@ void HostVector<NumType>::zeros()
 template <typename NumType>
 void HostVector<NumType>::scale(NumType alpha)
 {
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->size_; i++) {
 		this->vec_[i] *= alpha;
 	}
@@ -131,6 +151,9 @@ void HostVector<NumType>::add(NumType alpha, const BaseVector<NumType>& w, NumTy
 	assert(w_host != nullptr);
 	assert(this->size_ == w_host->size_);
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->size_; i++) {
 		this->vec_[i] = alpha*this->vec_[i] + beta*w_host->vec_[i];
 	}
@@ -148,6 +171,9 @@ void HostVector<NumType>::add_scale(NumType alpha, const BaseVector<NumType>& w)
 	assert(w_host != nullptr);
 	assert(this->size_ == w_host->size_);
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->size_; i++) {
 		this->vec_[i] = this->vec_[i] + alpha*w_host->vec_[i];
 	}
@@ -160,6 +186,9 @@ void HostVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& w)
 	assert(w_host != nullptr);
 	assert(this->size_ == w_host->size_);
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->size_; i++) {
 		this->vec_[i] = alpha*this->vec_[i] + w_host->vec_[i];
 	}

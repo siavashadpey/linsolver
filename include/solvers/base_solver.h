@@ -21,7 +21,7 @@ public:
 	virtual ~BaseSolver();
 
 	/**
-	 * Solves for soln in mat*soln = rhs.
+	 * Solves for soln in \p mat * \p soln = \p rhs.
 	 * @param[in]  mat  The matrix in the above equation.
 	 * @param[in]  rhs  The vector in the above equation.
 	 * @param[out] soln The vector in the above equation.

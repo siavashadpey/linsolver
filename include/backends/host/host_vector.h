@@ -26,9 +26,9 @@ public:
 	virtual void copy(const BaseVector<NumType>& w);
 
 	/**
-	 * Return the i-th element of the vector.
+	 * Return the \p i -th element of the vector.
 	 * @param[in] i The index of the element of interest in the vector.
-	 * \return The i-th value of the vector (return by reference).
+	 * \return The \p i -th value of the vector (returns by reference).
 	 */
 	virtual NumType& operator[](int i);
 

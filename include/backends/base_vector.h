@@ -18,7 +18,7 @@ public:
 	virtual ~BaseVector();
 
 	/**
-	 * Allocate a size of n to the vector.
+	 * Allocate a size of \p n to the vector.
 	 * @param[in] n The size of vector.
 	 */
 	virtual void allocate(int n) = 0;
@@ -70,7 +70,7 @@ public:
 	virtual void scale(NumType alpha) = 0;
 
 	/**
-	 * v = alpha*v + beta*w, where v is the vector itself.
+	 * \p v = \p alpha * \p v + \p beta * \p w, where \p v is the vector itself.
 	 * \param[in] alpha The value in the above equation.
 	 * \param[in] w     The vector in the above equation.
 	 * \param[in] beta  The value in the above equation.
@@ -78,14 +78,14 @@ public:
 	virtual void add(NumType alpha, const BaseVector<NumType>& w, NumType beta) = 0;
 
 	/**
-	 * v = v + alpha*w, where v is the vector itself.
+	 * \p v = \p v + \p alpha * \p w, where \p v is the vector itself.
 	 * \param[in] alpha The value in the above equation.
 	 * \param[in] w     The vector in the above equation.
 	 */
 	virtual void add_scale(NumType alpha, const BaseVector<NumType>& w) = 0;
 
 	/**
-	 * v = alpha*v + w, where v is the vector itself.
+	 * \p v = \p alpha * \p v + \p w, where \p v is the vector itself.
 	 * \param[in] alpha The value in the above equation.
 	 * \param[in] w     The vector in the above equation.
 	 */

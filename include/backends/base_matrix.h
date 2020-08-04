@@ -24,7 +24,7 @@ public:
 	virtual ~BaseMatrix();
 
 	/**
-	 * Allocate a matrix of size m x n with nnz non-zero entries.
+	 * Allocate a matrix of size \p m x \p n with \p nnz non-zero entries.
 	 * @param[in] m The number of rows.
 	 * @param[in] n The number of columns.
 	 * @param[in] nnz The number of non-zero entries.
@@ -46,7 +46,7 @@ public:
 	virtual void copy(const NumType* val, const int* row_ptr, const int* col_idx) = 0;
 
 	/**
-	 * A = B, where A is the matrix itself.
+	 * \p A = \p B, where \p A is the matrix itself.
 	 * @param[in] B The matrix to copy.
 	 */
 	virtual void copy(const BaseMatrix<NumType>& B) = 0;
@@ -77,7 +77,7 @@ public:
 	virtual NumType norm() const = 0;
 
 	/**
-	 * A = alpha*A, where A is the matrix itself.
+	 * \p A = \p alpha * \p A, where \p A is the matrix itself.
 	 * \param[in] alpha The value by which to scale the entries in the matrix.
 	 */
 	virtual void scale(NumType alpha) = 0;
@@ -87,7 +87,7 @@ public:
 	//virtual void scale_add(NumType alpha, const BaseMatrix<NumType>& B) = 0;
 
 	/**
-	 * w_out = A*v_in, where A is the matrix itself.
+	 * \p w_out = \p A * \p v_in, where \p A is the matrix itself.
 	 * \param[in] v_in The vector right-multiplying the vector.
 	 * \param[out] w_out The outputted vector.
 	 */

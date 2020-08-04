@@ -5,8 +5,9 @@ project(linSolver VERSION 0.0)
 set(LIB_NAME "linSolver")
 
 option(WITH_CUDA "select whether CUDA is used or not" OFF)
-option(BUILD_TESTS "select whether to build tests or not" OFF)
-option(BUILD_DOCS "select whether to build docs or not" OFF)
+option(BUILD_TESTS "select whether to build tests or not" ON)
+option(BUILD_DOCS "select whether to build docs or not" ON)
+option(WITH_OPENMP "select whether OpenMP is used or not" ON)
 
 set(BUILD "DEBUG" CACHE STRING "select BUILD type: DEBUG or RELEASE")
 
@@ -37,6 +38,10 @@ if (${WITH_CUDA})
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
+
+if (${WITH_OPENMP})
+	find_package(OpenMP)
+endif()
 
 add_subdirectory(src)
 

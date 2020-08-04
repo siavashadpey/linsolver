@@ -1,8 +1,11 @@
+#include <stdio.h>
 #include <cmath>
 #include <cassert>
 
 #include "backends/host/host_matrix.h"
 #include "backends/host/host_vector.h"
+
+#include <omp.h>
 
 template <typename NumType>
 HostMatrix<NumType>::HostMatrix()
@@ -53,11 +56,17 @@ void HostMatrix<NumType>::copy(const NumType* val, const int* row_ptr, const int
 	assert(this->n_ > 0);
 	assert(this->nnz_ > 0);
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->nnz_; i++) {
 		this->val_[i] = val[i];
 		this->col_idx_[i] = col_idx[i];
 	}
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->m_ + 1; i++) {
 		this->row_ptr_[i] = row_ptr[i];
 	}
@@ -76,11 +85,17 @@ void HostMatrix<NumType>::copy(const BaseMatrix<NumType>& B)
 		this->allocate(B_host->m_, B_host->n_, B_host->nnz_);
 	}
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->nnz_; i++) {
 		this->val_[i] = B_host->val_[i];
 		this->col_idx_[i] = B_host->col_idx_[i];
 	}
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->m_ + 1; i++) {
 		this->row_ptr_[i] = B_host->row_ptr_[i];
 	}
@@ -90,8 +105,13 @@ template <typename NumType>
 NumType HostMatrix<NumType>::norm() const
 {
 	NumType val = static_cast<NumType>(0);
-
+	//printf("max threads: %d\n", omp_get_max_threads());
+	//omp_set_num_threads(omp_get_max_threads());
+#ifdef _OPENMP
+	#pragma omp parallel for reduction(+:val)
+#endif
 	for (int i = 0; i < this->nnz_; i++) {
+		printf("thread id: %d\n", omp_get_thread_num());
 		val += this->val_[i]*this->val_[i];
 	}
 	return sqrt(val);
@@ -106,6 +126,9 @@ void HostMatrix<NumType>::scale(NumType alpha)
 		return;
 	}
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int i = 0; i < this->nnz_; i++) {
 		this->val_[i] *= alpha;
 	}
@@ -143,6 +166,9 @@ void HostMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 
 	const NumType zero = static_cast<NumType>(0);
 
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
 	for (int irow = 0; irow < this->m_; irow++) {
 		NumType val_i = zero;
 		for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {

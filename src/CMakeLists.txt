@@ -9,7 +9,9 @@ set(SRC
 
 add_library(${LIB_NAME} SHARED ${SRC})
 target_link_libraries(${LIB_NAME} ${LINK_LIBS})
-
+IF (OPENMP_FOUND)
+	target_link_libraries(${LIB_NAME} OpenMP::OpenMP_CXX)
+endif()
 
 if (CUDA_ENABLED)
 	foreach(i ${CUDA_SRC})
