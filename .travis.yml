@@ -40,7 +40,7 @@ jobs:
       script:
         - cd build_tests || exit
         - ctest --verbose
-        - ctest ctest --overwrite MemoryCheckCommandOptions="--leak-check=full --error-exitcode=100" -T memcheck
+        - ctest --overwrite MemoryCheckCommandOptions="--leak-check=full --error-exitcode=100" -T memcheck
         - cd ..
       after_success:
         - coveralls -e build_tests/googletest-src/ -e build_tests/googletest-build/ -e build_tests/CMakeFiles/ -e include/ -e tests/

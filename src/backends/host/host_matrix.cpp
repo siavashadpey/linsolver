@@ -5,8 +5,6 @@
 #include "backends/host/host_matrix.h"
 #include "backends/host/host_vector.h"
 
-#include <omp.h>
-
 template <typename NumType>
 HostMatrix<NumType>::HostMatrix()
 	:	val_(nullptr),
@@ -105,13 +103,11 @@ template <typename NumType>
 NumType HostMatrix<NumType>::norm() const
 {
 	NumType val = static_cast<NumType>(0);
-	//printf("max threads: %d\n", omp_get_max_threads());
-	//omp_set_num_threads(omp_get_max_threads());
+
 #ifdef _OPENMP
 	#pragma omp parallel for reduction(+:val)
 #endif
 	for (int i = 0; i < this->nnz_; i++) {
-		printf("thread id: %d\n", omp_get_thread_num());
 		val += this->val_[i]*this->val_[i];
 	}
 	return sqrt(val);
