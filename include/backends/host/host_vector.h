@@ -35,6 +35,7 @@ public:
 	virtual NumType norm() const;
 	virtual NumType dot(const BaseVector<NumType>& w) const;
 	virtual void zeros();
+	virtual void ones();
 	virtual void scale(NumType alpha);
 	virtual void add(NumType alpha, const BaseVector<NumType>& w, NumType beta);
 	virtual void add_scale(NumType alpha, const BaseVector<NumType>& w);
@@ -49,5 +50,6 @@ protected:
 private:
 	// befriending classes
 	friend class HostMatrix<NumType>;
+	friend class HostMatrixCOO<NumType>;
 };
 #endif

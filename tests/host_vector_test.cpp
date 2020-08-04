@@ -95,6 +95,11 @@ TEST(HostVector, test_1)
 		EXPECT_NEAR(v[i], 0., tol); // zeroed
 	}
 
+	v.ones();
+	for (int i = 0; i < n; i++) {
+		EXPECT_NEAR(v[i], 1., tol); // oneed
+	}
+
 	v.clear();
 	EXPECT_EQ(v.n(), 0); // cleared data
 }

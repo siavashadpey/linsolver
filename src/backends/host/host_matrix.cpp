@@ -175,6 +175,15 @@ void HostMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 	}
 }
 
+template <typename NumType>
+bool HostMatrix<NumType>::read_matrix_market(const std::string filename) {
+	HostMatrixCOO<NumType> mat_coo = HostMatrixCOO<NumType>();
+	bool success = mat_coo.read_matrix_market(filename);
+	mat_coo.convert_to_CSR(*this);
+
+	return success;
+}
+
 // instantiate template classes
 template class HostMatrix<double>;
 template class HostMatrix<float>;

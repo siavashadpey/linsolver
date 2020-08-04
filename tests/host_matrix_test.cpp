@@ -79,6 +79,30 @@ TEST(HostMatrix, test_1)
 	EXPECT_EQ(A.nnz(), 0);
 }
 
+TEST(HostMatrix, test_2) 
+{
+	HostMatrix<double> A = HostMatrix<double>();
+	const std::string filename = "../tests/mm_test.mtx";
+	bool success = A.read_matrix_market(filename);
+
+	EXPECT_TRUE(success);
+
+	HostVector<double> x = HostVector<double>();
+	const int n = 4;
+	x.allocate(n);
+	x.ones();
+
+	HostVector<double> rhs = HostVector<double>();
+	rhs.allocate(n);
+
+	A.multiply(x, &rhs);
+
+	double rhs_e[] = { 38., 45., 65., 44.};
+	for (int i = 0; i < n; i++) {
+		EXPECT_NEAR(rhs_e[i], rhs[i], tol);
+	}
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

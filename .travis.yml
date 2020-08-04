@@ -31,7 +31,7 @@ stages:
 jobs:
   include:
     - name: Unit Testing
-      stage: Testing
+      stage: Unit Testing
       before_script:
         - mkdir build_tests
         - cd build_tests || exit
@@ -44,7 +44,6 @@ jobs:
         - cd ..
       after_success:
         - coveralls -e build_tests/googletest-src/ -e build_tests/googletest-build/ -e build_tests/CMakeFiles/ -e include/ -e tests/
-        - name: Testing
     - name: Memory Check
       stage: Memory Check
       before_script:

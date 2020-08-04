@@ -64,6 +64,11 @@ public:
 	virtual void zeros() = 0;
 
 	/**
+	 * Sets all values of the vector to one.
+	 */
+	virtual void ones() = 0;
+
+	/**
 	 * Scale the vector.
 	 * \param[in] alpha the value by which to scale the vector.
 	 */

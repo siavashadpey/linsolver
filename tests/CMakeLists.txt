@@ -34,6 +34,7 @@ endfunction(add_tests)
 set(SERIAL_TEST_SET
 	host_vector
 	host_matrix
+  host_matrix_coo
 	gmres
 )
 

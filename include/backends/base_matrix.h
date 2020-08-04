@@ -1,6 +1,8 @@
 #ifndef BASE_MATRIX_H
 #define BASE_MATRIX_H
 
+#include <string>
+
 #include "backends/base_vector.h"
 
 // forward declaration
@@ -35,15 +37,6 @@ public:
 	 * Clear matrix.
 	 */
 	virtual void clear() = 0;
-
-	/**
-	 * Copy data to the matrix.
-	 * @param[in] val The pointer to the values to copy.
-	 * @param[in] row_ptr The pointer to the indices of val starting a new row.
-	 * @param[in] col_idx The pointer to the column indices of the elements in val.
-	 * @note allocate should be called first.
-	 */
-	virtual void copy(const NumType* val, const int* row_ptr, const int* col_idx) = 0;
 
 	/**
 	 * \p A = \p B, where \p A is the matrix itself.
@@ -93,6 +86,13 @@ public:
 	 */
 	virtual void multiply(const BaseVector<NumType>& v_in, 
 		BaseVector<NumType>* w_out) const = 0;
+
+	/**
+	 * Read a matrix market.
+	 * @param[in] filename The matrix market file.
+	 * \returns True if successfully read, and False otherwise.
+	 */
+	virtual bool read_matrix_market(const std::string filename) = 0;
 
 protected:
 	/**

@@ -121,6 +121,18 @@ void HostVector<NumType>::zeros()
 }
 
 template <typename NumType>
+void HostVector<NumType>::ones() 
+{
+	const NumType one = static_cast<NumType>(1);
+#ifdef _OPENMP
+	#pragma omp parallel for
+#endif
+	for (int i = 0; i < this->size_; i++) {
+		this->vec_[i] = one;
+	}
+}
+
+template <typename NumType>
 void HostVector<NumType>::scale(NumType alpha)
 {
 #ifdef _OPENMP
