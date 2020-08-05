@@ -9,7 +9,23 @@
 
 #define tol 1E-13
 
-TEST(HostMatrixCOO, test_1)
+TEST(HostMatrix, test_1)
+{
+	HostMatrixCOO<double> A = HostMatrixCOO<double>();
+	const std::string filename = "mm_test.mtx";
+	bool success = A.read_matrix_market(filename);
+
+	EXPECT_TRUE(success);
+
+	double norm = sqrt(6641);
+	EXPECT_NEAR(A.norm(), norm, tol);	
+
+	const double c = 1.4;
+	A.scale(c);
+	EXPECT_NEAR(A.norm(), c*norm, tol);
+}
+
+TEST(HostMatrixCOO, test_2)
 {
 	HostMatrixCOO<double> A = HostMatrixCOO<double>();
 	const std::string filename = "mm_test.mtx";
