@@ -1,6 +1,6 @@
 #include <fstream>
 #include <cmath>
-#include <string>
+#include <cstring>
 
 #include "base/error.h"
 #include "backends/host/host_matrix_coo.h"
@@ -134,15 +134,15 @@ bool HostMatrixCOO<NumType>::read_matrix_market(const std::string filename)
 	// make sure matrix format type is coordinate
 	// and matrix type is real, double, or integer
 	// and symm_type is general
-	if (strcmp(format_type, "coordinate")) {
+	if (std::strcmp(format_type, "coordinate")) {
 		return false;
 	}
-	if (strcmp(mat_type, "real") and
-		strcmp(mat_type, "double") and 
-		strcmp(mat_type, "integer")) {
+	if (std::strcmp(mat_type, "real") and
+		std::strcmp(mat_type, "double") and 
+		std::strcmp(mat_type, "integer")) {
 		return false;
 	}
-	if (strcmp(symm_type, "general")) {
+	if (std::strcmp(symm_type, "general")) {
 		return false;
 	}
 
