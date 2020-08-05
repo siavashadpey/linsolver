@@ -222,6 +222,10 @@ void HostMatrixCOO<NumType>::convert_to_CSR(HostMatrix<NumType>& mat_csr) const
 	}
 
 	mat_csr.copy(csr_val, csr_row_ptr, csr_col_idx);
+
+	free(csr_row_ptr);
+	free(csr_col_idx);
+	free(csr_val);
 }
 
 // instantiate template classes
