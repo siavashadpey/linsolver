@@ -30,6 +30,12 @@ function(add_tests test_set)
   endforeach()
 endfunction(add_tests)
 
+function(copy_data_files data_files)
+  foreach(filename ${data_files})
+    configure_file(${filename} ${CMAKE_CURRENT_BINARY_DIR}/${filename} COPYONLY)
+  endforeach()
+endfunction(copy_data_files)
+
 # do not add suffix _test.cpp here
 set(SERIAL_TEST_SET
 	host_vector
@@ -38,5 +44,11 @@ set(SERIAL_TEST_SET
 	gmres
 )
 
+set(DATA_FILES 
+  mm_test.mtx
+  gre__115.mtx
+)
+
 add_tests("${SERIAL_TEST_SET}")
+copy_data_files("${DATA_FILES}")
 

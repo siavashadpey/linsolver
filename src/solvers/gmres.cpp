@@ -71,8 +71,6 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
 	const int nd = krylov_dim_;
 	const int ndp1 = krylov_dim_ + 1;
 
-
-
 	// V[0] = rhs - mat*x;
 	mat_h->multiply(*soln_h, &V_[0]);
 	V_[0].scale_add(minus_one, *rhs_h);
@@ -80,7 +78,7 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
 	g_[0] = V_[0].norm();
 	V_[0].scale(one/g_[0]);
 	this->init_res_norm_ = std::abs(g_[0]);
-
+	//printf("init res: %e \n", this->init_res_norm_);
 	while (not this->is_converged_()) {
 		++this->it_counter_;
 		if (this->it_counter_ > this->max_its_) {
@@ -118,6 +116,7 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
 			// have we converged?
 			// if no, no need to solve for y
 			this->res_norm_ = std::abs(g_[j+1]);
+			//printf("i: %d. j: %d. res: %e \n", this->it_counter_, j, g_[j+1]);
 			if (this->is_converged_()) {
 				break;
 			}
@@ -132,9 +131,9 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
 			}
 		}
 
-		//soln_h->add_scale(g_[0], V_[0]);
+		soln_h->add_scale(g_[0], V_[0]);
 		// update solution
-		for (int i = 0; i < j; i++) {
+		for (int i = 1; i < j; i++) {
 			soln_h->add_scale(g_[i], V_[i]);
 		}
 

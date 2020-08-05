@@ -57,12 +57,12 @@ protected:
 	/**
 	 * Holds indices of val_ starting a new row. (Compressed Row Storage)
 	 */
-	NumType* row_ptr_;
+	int* row_ptr_;
 
 	/**
 	 * Column indices of the elements in val_. (Compressed Row Storage)
 	 */
-	NumType* col_idx_;
+	int* col_idx_;
 
 	/**
 	 * Befriend HostMatrixCOO

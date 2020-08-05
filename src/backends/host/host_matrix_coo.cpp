@@ -1,5 +1,6 @@
 #include <fstream>
 #include <cmath>
+#include <string>
 
 #include "base/error.h"
 #include "backends/host/host_matrix_coo.h"
@@ -45,7 +46,7 @@ void HostMatrixCOO<NumType>::clear()
 }
 
 template <typename NumType>
-void HostMatrixCOO<NumType>::copy(const BaseMatrix<NumType>& B)
+void HostMatrixCOO<NumType>::copy(const BaseMatrix<NumType>& )
 {
 	Error("Method is not currently supported");
 }
@@ -85,7 +86,6 @@ template <typename NumType>
 void HostMatrixCOO<NumType>::multiply(const BaseVector<NumType>& v_in, 
 		BaseVector<NumType>* w_out) const
 {
-
 	assert(this->n_ > 0);
 	assert(this->m_ > 0);
 	assert(v_in.n() == this->n_);
@@ -134,15 +134,15 @@ bool HostMatrixCOO<NumType>::read_matrix_market(const std::string filename)
 	// make sure matrix format type is coordinate
 	// and matrix type is real, double, or integer
 	// and symm_type is general
-	if (strncmp(format_type, "coordinate", 10)) {
+	if (strcmp(format_type, "coordinate")) {
 		return false;
 	}
-	if (strncmp(mat_type, "real", 4) and
-		strncmp(mat_type, "double", 6) and 
-		strncmp(mat_type, "integer", 7)) {
+	if (strcmp(mat_type, "real") and
+		strcmp(mat_type, "double") and 
+		strcmp(mat_type, "integer")) {
 		return false;
 	}
-	if (strncmp(symm_type, "general", 7)) {
+	if (strcmp(symm_type, "general")) {
 		return false;
 	}
 
@@ -182,7 +182,8 @@ void HostMatrixCOO<NumType>::convert_to_CSR(HostMatrix<NumType>& mat_csr) const
 {
 	mat_csr.allocate(this->m_, this->n_, this->nnz_);
 	
-	int csr_row_ptr[this->m_ + 1];
+	int* csr_row_ptr;
+	csr_row_ptr = (int*) malloc((this->m_ + 1) * sizeof(int));
 	std::fill(csr_row_ptr, csr_row_ptr + this->m_, 0);
 
 	// count number of non-zero entries per row
@@ -199,8 +200,10 @@ void HostMatrixCOO<NumType>::convert_to_CSR(HostMatrix<NumType>& mat_csr) const
 	}
 	csr_row_ptr[this->m_] = this->nnz_;
 	
-	int csr_col_idx[this->nnz_];
-	NumType csr_val[this->nnz_];
+	int* csr_col_idx;
+	NumType* csr_val;
+	csr_col_idx = (int*) malloc((this->nnz_) * sizeof(int));
+	csr_val = (NumType*) malloc((this->nnz_) * sizeof(NumType));
 
 	// in case row and columns of COO matrix are not ordered
 	for (int i = 0; i < this->nnz_; i++) {

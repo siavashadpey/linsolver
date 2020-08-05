@@ -44,6 +44,35 @@ TEST(GMRES, test_1)
 	}
 }
 
+TEST(GMRES, test_2)
+{
+	HostMatrix<double> A = HostMatrix<double>();
+	const std::string filename = "gre__115.mtx";
+	bool success = A.read_matrix_market(filename);
+
+	EXPECT_TRUE(success);
+
+	HostVector<double> x_e = HostVector<double>();
+	x_e.allocate(A.n());
+	x_e.ones();
+
+	HostVector<double> rhs = HostVector<double>();
+	rhs.allocate(A.m());
+	A.multiply(x_e, &rhs);
+
+	HostVector<double> x_soln = HostVector<double>();
+	x_soln.allocate(A.n());
+	x_soln.zeros();
+
+	GMRES<double> solver = GMRES<double>();
+	
+	solver.solve(A, rhs, &x_soln);
+
+	for (int i = 0; i < A.n(); i++) {
+		EXPECT_NEAR(x_soln[i], x_e[i], tol);
+	}
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

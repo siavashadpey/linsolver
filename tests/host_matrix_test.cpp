@@ -82,7 +82,7 @@ TEST(HostMatrix, test_1)
 TEST(HostMatrix, test_2) 
 {
 	HostMatrix<double> A = HostMatrix<double>();
-	const std::string filename = "../tests/mm_test.mtx";
+	const std::string filename = "mm_test.mtx";
 	bool success = A.read_matrix_market(filename);
 
 	EXPECT_TRUE(success);
@@ -90,14 +90,15 @@ TEST(HostMatrix, test_2)
 	HostVector<double> x = HostVector<double>();
 	const int n = 4;
 	x.allocate(n);
-	x.ones();
+	double x_val[] = {1., 2., 3., 4.};
+	x.copy(x_val);
 
 	HostVector<double> rhs = HostVector<double>();
 	rhs.allocate(n);
 
 	A.multiply(x, &rhs);
 
-	double rhs_e[] = { 38., 45., 65., 44.};
+	double rhs_e[] = { 106., 113., 266., 176.};
 	for (int i = 0; i < n; i++) {
 		EXPECT_NEAR(rhs_e[i], rhs[i], tol);
 	}
