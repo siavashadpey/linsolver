@@ -1,28 +1,24 @@
-#ifndef HOST_VECTOR_H
-#define HOST_VECTOR_H
+#ifndef DEVICE_VECTOR_H
+#define DEVICE_VECTOR_H
 
 #include "backends/base_vector.h"
-#include "backends/host/host_matrix.h"
-
-#ifdef __CUDACC__
-#include "backends/device/device_vector.h"
-#endif
+//#include "backends/host/device_matrix.h"
 
 /**
- * \brief Implementation of a Vector class on the host system.
+ * \brief Implementation of a Vector class on the NVIDIA GPU system, referred to as the device system.
  */
 template <typename NumType>
-class HostVector: public BaseVector<NumType> {
+class DeviceVector: public BaseVector<NumType> {
 public:
 	/**
 	 * Default constructor.
 	 */
-	HostVector();
+	DeviceVector();
 
 	/**
 	 * Destructor.
 	 */
-	virtual ~HostVector();
+	virtual ~DeviceVector();
 
 	virtual void allocate(int n);
 	virtual void clear();
@@ -51,13 +47,14 @@ protected:
 	 */
 	NumType* vec_;
 
+	/**
+	 * Cublas handle.
+	 */
+	cublasHandle_t cublasHandle_;
+
 private:
 	// befriending classes
-	friend class HostMatrix<NumType>;
-	friend class HostMatrixCOO<NumType>;
-
-#ifdef __CUDACC__
-	friend class DeviceVector<NumType>;
-#endif
+	//friend class DeviceMatrix<NumType>;
+	
 };
 #endif

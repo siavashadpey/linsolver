@@ -14,10 +14,10 @@ IF (OPENMP_FOUND)
 endif()
 
 if (CUDA_ENABLED)
-	foreach(i ${CUDA_SRC})
+	foreach(i ${DEVICE_SRC})
     	set_source_files_properties(${i} PROPERTIES CUDA_SOURCE_PROPERTY_FORMAT OBJ)
   	endforeach()
 
-  	cuda_add_library(${LIB_NAME}_CUDA ${CUDA_SRC})
+  	cuda_add_library(${LIB_NAME}_CUDA SHARED ${DEVICE_SRC})
   	target_link_libraries(${LIB_NAME} ${LIB_NAME}_CUDA ${CUDA_LIBRARIES} ${CUDA_CUDART_LIBRARY})
 endif()

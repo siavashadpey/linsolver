@@ -37,7 +37,7 @@ function(copy_data_files data_files)
 endfunction(copy_data_files)
 
 # do not add suffix _test.cpp here
-set(SERIAL_TEST_SET
+set(HOST_TEST_SET
 	host_vector
 	host_matrix
   host_matrix_coo
@@ -49,6 +49,16 @@ set(DATA_FILES
   gre__115.mtx
 )
 
-add_tests("${SERIAL_TEST_SET}")
+add_tests("${HOST_TEST_SET}")
 copy_data_files("${DATA_FILES}")
+
+if (CUDA_ENABLED) 
+
+  set(DEVICE_TEST_SET
+    device_vector
+  )
+
+  add_tests("${DEVICE_TEST_SET}")
+
+endif()
 
