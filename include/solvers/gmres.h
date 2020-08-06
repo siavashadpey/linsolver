@@ -10,48 +10,48 @@
 template <typename NumType>
 class GMRES: public BaseIterativeSolver<NumType> {
 public:
-	/**
-	 * Default constructor.
-	 */
-	GMRES();
+    /**
+     * Default constructor.
+     */
+    GMRES();
 
-	/**
-	 * Destructor.
-	 */
-	~GMRES();
+    /**
+     * Destructor.
+     */
+    ~GMRES();
 
-	/**
-	 * Clear all dynamically allocated memory by this class' methods.
-	 */
-	void clear();
+    /**
+     * Clear all dynamically allocated memory by this class' methods.
+     */
+    void clear();
 
-	/**
-	 * \param[in] K_dim The dimension (or size) of the Krylov space (default is 20).
-	 */
-	void set_krylov_dimension(int K_dim);
+    /**
+     * \param[in] K_dim The dimension (or size) of the Krylov space (default is 20).
+     */
+    void set_krylov_dimension(int K_dim);
 
-	void solve(const BaseMatrix<NumType>& mat, const BaseVector<NumType>& rhs, BaseVector<NumType>* soln);
+    void solve(const BaseMatrix<NumType>& mat, const BaseVector<NumType>& rhs, BaseVector<NumType>* soln);
 
 private:
-	/** 
-	 * The dimension (or size) of the Krylov space (default is 20).
-	 */
-	int krylov_dim_;
+    /** 
+     * The dimension (or size) of the Krylov space (default is 20).
+     */
+    int krylov_dim_;
 
-	/** 
-	 * Vectors and matrices used in GMRES algorithm.
-	 */
-	HostVector<NumType> c_;
-	HostVector<NumType> s_;
-	HostVector<NumType> g_;
-	HostVector<NumType> H_;
-	HostVector<NumType>* V_;
+    /** 
+     * Vectors and matrices used in GMRES algorithm.
+     */
+    HostVector<NumType> c_;
+    HostVector<NumType> s_;
+    HostVector<NumType> g_;
+    HostVector<NumType> H_;
+    HostVector<NumType>* V_;
 
-	/**
-	 * Prepare the GMRES solver. This is called within solve.
-	 */
-	void prepare_solver_(int soln_dim);
+    /**
+     * Prepare the GMRES solver. This is called within solve.
+     */
+    void prepare_solver_(int soln_dim);
 
-	void rotate_inplace_(NumType c, NumType s, NumType& h, NumType& hp1) const;
+    void rotate_inplace_(NumType c, NumType s, NumType& h, NumType& hp1) const;
 };
 #endif

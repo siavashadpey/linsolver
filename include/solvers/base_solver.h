@@ -10,22 +10,22 @@
 template <typename NumType>
 class BaseSolver {
 public:
-	/**
-	 * Default constructor.
-	 */
-	BaseSolver();
+    /**
+     * Default constructor.
+     */
+    BaseSolver();
 
-	/**
-	 * Destructor.
-	 */
-	virtual ~BaseSolver();
+    /**
+     * Destructor.
+     */
+    virtual ~BaseSolver();
 
-	/**
-	 * Solves for soln in \p mat * \p soln = \p rhs.
-	 * @param[in]  mat  The matrix in the above equation.
-	 * @param[in]  rhs  The vector in the above equation.
-	 * @param[out] soln The vector in the above equation.
-	 */
-	virtual void solve(const BaseMatrix<NumType>& mat, const BaseVector<NumType>& rhs, BaseVector<NumType>* soln) = 0;
+    /**
+     * Solves for soln in \p mat * \p soln = \p rhs.
+     * @param[in]  mat  The matrix in the above equation.
+     * @param[in]  rhs  The vector in the above equation.
+     * @param[out] soln The vector in the above equation.
+     */
+    virtual void solve(const BaseMatrix<NumType>& mat, const BaseVector<NumType>& rhs, BaseVector<NumType>* soln) = 0;
 };
 #endif

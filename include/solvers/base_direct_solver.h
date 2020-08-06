@@ -9,14 +9,13 @@
 template <typename NumType>
 class BaseDirectSolver: public BaseSolver<NumType> {
 public:
-	/**
-	 * Default constructor.
-	 */
-	BaseDirectSolver();
+    /**
+     * Default constructor.
+     */
+    BaseDirectSolver();
 
-	/**
-	 * Destructor.
-	 */
-	virtual ~BaseDirectSolver();
+    /**
+     * Destructor.
+     */
+    virtual ~BaseDirectSolver();
 };
-#endif

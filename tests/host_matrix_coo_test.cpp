@@ -11,50 +11,50 @@
 
 TEST(HostMatrix, test_1)
 {
-	HostMatrixCOO<double> A = HostMatrixCOO<double>();
-	const std::string filename = "mm_test.mtx";
-	bool success = A.read_matrix_market(filename);
+    HostMatrixCOO<double> A = HostMatrixCOO<double>();
+    const std::string filename = "mm_test.mtx";
+    bool success = A.read_matrix_market(filename);
 
-	EXPECT_TRUE(success);
+    EXPECT_TRUE(success);
 
-	double norm = sqrt(6641);
-	EXPECT_NEAR(A.norm(), norm, tol);	
+    double norm = sqrt(6641);
+    EXPECT_NEAR(A.norm(), norm, tol);    
 
-	const double c = 1.4;
-	A.scale(c);
-	EXPECT_NEAR(A.norm(), c*norm, tol);
+    const double c = 1.4;
+    A.scale(c);
+    EXPECT_NEAR(A.norm(), c*norm, tol);
 }
 
 TEST(HostMatrixCOO, test_2)
 {
-	HostMatrixCOO<double> A = HostMatrixCOO<double>();
-	const std::string filename = "mm_test.mtx";
-	bool success = A.read_matrix_market(filename);
+    HostMatrixCOO<double> A = HostMatrixCOO<double>();
+    const std::string filename = "mm_test.mtx";
+    bool success = A.read_matrix_market(filename);
 
-	EXPECT_TRUE(success);
+    EXPECT_TRUE(success);
 
-	HostVector<double> x = HostVector<double>();
-	const int n = 4;
-	x.allocate(n);
-	double x_val[] = {1., 2., 3., 4.};
-	x.copy(x_val);
+    HostVector<double> x = HostVector<double>();
+    const int n = 4;
+    x.allocate(n);
+    double x_val[] = {1., 2., 3., 4.};
+    x.copy(x_val);
 
-	HostVector<double> rhs = HostVector<double>();
-	rhs.allocate(n);
+    HostVector<double> rhs = HostVector<double>();
+    rhs.allocate(n);
 
-	A.multiply(x, &rhs);
+    A.multiply(x, &rhs);
 
-	double rhs_e[] = { 106., 113., 266., 176.};
-	for (int i = 0; i < n; i++) {
-		EXPECT_NEAR(rhs_e[i], rhs[i], tol);
-	}
+    double rhs_e[] = { 106., 113., 266., 176.};
+    for (int i = 0; i < n; i++) {
+        EXPECT_NEAR(rhs_e[i], rhs[i], tol);
+    }
 
-	HostMatrix<double> B = HostMatrix<double>();
-	A.convert_to_CSR(B);
-	B.multiply(x, &rhs);
-	for (int i = 0; i < n; i++) {
-		EXPECT_NEAR(rhs_e[i], rhs[i], tol);
-	}
+    HostMatrix<double> B = HostMatrix<double>();
+    A.convert_to_CSR(B);
+    B.multiply(x, &rhs);
+    for (int i = 0; i < n; i++) {
+        EXPECT_NEAR(rhs_e[i], rhs[i], tol);
+    }
 }
 
 int main(int argc, char **argv) {

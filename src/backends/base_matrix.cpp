@@ -2,9 +2,9 @@
 
 template <typename NumType>
 BaseMatrix<NumType>::BaseMatrix()
-	: m_(0),
-	  n_(0),
-	  nnz_(0)
+    :   m_(0),
+        n_(0),
+        nnz_(0)
 {
 }
 
@@ -16,25 +16,25 @@ BaseMatrix<NumType>::~BaseMatrix()
 template <typename NumType>
 int BaseMatrix<NumType>::m() const
 {
-	return m_;
+    return m_;
 }
 
 template <typename NumType>
 int BaseMatrix<NumType>::n() const
 {
-	return n_;
+    return n_;
 }
 
 template <typename NumType>
 int BaseMatrix<NumType>::nnz() const
 {
-	return nnz_;
+    return nnz_;
 }
 
 template <typename NumType>
 bool BaseMatrix<NumType>::is_square() const
 {
-	return n_ == m_;
+    return n_ == m_;
 }
 
 // instantiate template classes

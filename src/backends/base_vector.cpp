@@ -2,7 +2,7 @@
 
 template <typename NumType>
 BaseVector<NumType>::BaseVector()
-	: size_(0)
+    :   size_(0)
 {
 }
 
@@ -14,7 +14,7 @@ BaseVector<NumType>::~BaseVector()
 template <typename NumType>
 int BaseVector<NumType>::n() const 
 {
-	return this->size_;
+    return this->size_;
 }
 
 // instantiate template classes
