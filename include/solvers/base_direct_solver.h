@@ -19,3 +19,5 @@ public:
      */
     virtual ~BaseDirectSolver();
 };
+
+#endif
