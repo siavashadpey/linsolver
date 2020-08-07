@@ -48,7 +48,7 @@ void HostMatrix<NumType>::clear()
 }
 
 template <typename NumType>
-void HostMatrix<NumType>::copy(const NumType* val, const int* row_ptr, const int* col_idx)
+void HostMatrix<NumType>::copy_from(const NumType* val, const int* row_ptr, const int* col_idx)
 {
     assert(this->m_ > 0);
     assert(this->n_ > 0);
@@ -71,7 +71,7 @@ void HostMatrix<NumType>::copy(const NumType* val, const int* row_ptr, const int
 }
 
 template <typename NumType>
-void HostMatrix<NumType>::copy(const BaseMatrix<NumType>& B)
+void HostMatrix<NumType>::copy_from(const BaseMatrix<NumType>& B)
 {
     assert(this != &B);
     const HostMatrix<NumType>* B_host = dynamic_cast<const HostMatrix<NumType>*>(&B);

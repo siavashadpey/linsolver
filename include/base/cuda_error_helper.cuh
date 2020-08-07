@@ -65,6 +65,14 @@
     }                                                                         \
 } while(0)
 
+#define CUSPARSE_CALL(status) do {                                            \
+    std::stringstream _error;                                                 \
+    if((status) != CUSPARSE_STATUS_SUCCESS) {                                 \
+        _error << "CUSPARSE Failure: " << _cudaGetErrorEnum(status);          \
+        FatalError(_error.str());                                             \
+    }                                                                         \
+} while(0)
+
 #define CUDNN_CALL(status) do {                                               \
     std::stringstream _error;                                                 \
     if ((status) != CUDNN_STATUS_SUCCESS) {                                   \

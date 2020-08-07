@@ -42,7 +42,7 @@ public:
      * \p A = \p B, where \p A is the matrix itself.
      * @param[in] B The matrix to copy.
      */
-    virtual void copy(const BaseMatrix<NumType>& B) = 0;
+    virtual void copy_from(const BaseMatrix<NumType>& B) = 0;
 
     /** 
      * \return The row dimension of the matrix.

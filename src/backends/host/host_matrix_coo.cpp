@@ -46,9 +46,9 @@ void HostMatrixCOO<NumType>::clear()
 }
 
 template <typename NumType>
-void HostMatrixCOO<NumType>::copy(const BaseMatrix<NumType>& )
+void HostMatrixCOO<NumType>::copy_from(const BaseMatrix<NumType>& )
 {
-    Error("Method is not currently supported");
+    Error("Method has not yet been implemented.");
 }
 
 template <typename NumType>
@@ -221,7 +221,7 @@ void HostMatrixCOO<NumType>::convert_to_CSR(HostMatrix<NumType>& mat_csr) const
         last = temp;
     }
 
-    mat_csr.copy(csr_val, csr_row_ptr, csr_col_idx);
+    mat_csr.copy_from(csr_val, csr_row_ptr, csr_col_idx);
 
     free(csr_row_ptr);
     free(csr_col_idx);

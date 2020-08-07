@@ -18,7 +18,7 @@ TEST(GMRES, test_1)
     double val[] = {3.0, 1.0, -3.0, -1.0, -5.5, 2.3, 4.3, 0.3, 3.2, -3.0};
     int row_idx[] = {0, 3, 5, 7, 10};
     int col_idx[] = {0, 1, 3, 1, 2, 0, 2, 1, 2, 3};
-    A.copy(val, row_idx, col_idx);
+    A.copy_from(val, row_idx, col_idx);
     
     HostVector<double> b = HostVector<double>();
     b.allocate(n);

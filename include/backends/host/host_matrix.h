@@ -36,8 +36,8 @@ public:
      * @param[in] col_idx The pointer to the column indices of the elements in val.
      * @note allocate should be called first.
      */
-    virtual void copy(const NumType* val, const int* row_ptr, const int* col_idx);
-    virtual void copy(const BaseMatrix<NumType>& B);
+    virtual void copy_from(const NumType* val, const int* row_ptr, const int* col_idx);
+    virtual void copy_from(const BaseMatrix<NumType>& B);
 
     virtual NumType norm() const;
     virtual void scale(NumType alpha);
@@ -63,10 +63,6 @@ protected:
      * Column indices of the elements in val_. (Compressed Row Storage)
      */
     int* col_idx_;
-
-    /**
-     * Befriend HostMatrixCOO
-     */
-     //friend class HostMatrixCOO<NumType>;
+    
 };
 #endif

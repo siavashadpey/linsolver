@@ -19,6 +19,6 @@ if (CUDA_ENABLED)
   	endforeach()
 
   	cuda_add_library(${LIB_NAME}_CUDA SHARED ${DEVICE_SRC})
-    target_link_libraries(${LIB_NAME}_CUDA ${CUDA_LIBRARIES} ${CUDA_CUDART_LIBRARY} ${CUDA_CUBLAS_LIBRARIES})
+    target_link_libraries(${LIB_NAME}_CUDA ${CUDA_LIBRARIES} ${CUDA_CUDART_LIBRARY} ${CUDA_CUBLAS_LIBRARIES} ${CUDA_cusparse_LIBRARY})
   	target_link_libraries(${LIB_NAME} ${LIB_NAME}_CUDA)
 endif()

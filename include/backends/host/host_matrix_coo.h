@@ -31,7 +31,7 @@ public:
     void allocate(int m, int n, int nnz);
     void clear();
 
-    void copy(const BaseMatrix<NumType>& B);
+    void copy_from(const BaseMatrix<NumType>& B);
     NumType norm() const;
     void scale(NumType alpha);
     void multiply(const BaseVector<NumType>& v_in, 

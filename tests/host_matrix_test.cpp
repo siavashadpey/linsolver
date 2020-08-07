@@ -24,7 +24,7 @@ TEST(HostMatrix, test_1)
     double val[] = {2.0, 9.0, -1., 5.5, 6., 7.3, 3.3};
     int row_ptr[] = {0, 2, 5, 7};
     int col_idx[] = {1, 3, 0, 2, 3, 1, 3};
-    A.copy(val, row_ptr, col_idx);
+    A.copy_from(val, row_ptr, col_idx);
 
     double norm_e = 0.;
     for (int i = 0; i < nnz; i++) {
@@ -47,9 +47,9 @@ TEST(HostMatrix, test_1)
     double B_val[] = {3.0, 2.0, -1., -5.5, 6.2, 2.3, 4.3, 13.2, 0.3, 0, -3.};
     int B_row_idx[] = {0, 2, 5, 8, 11};
     int B_col_idx[] = {0, 2, 1, 2, 3, 0, 2, 3, 1, 2, 3};
-    B.copy(B_val, B_row_idx, B_col_idx);
+    B.copy_from(B_val, B_row_idx, B_col_idx);
 
-    A.copy(B); 
+    A.copy_from(B); 
 
     // copy from another class instance
     EXPECT_EQ(A.m(), n);
