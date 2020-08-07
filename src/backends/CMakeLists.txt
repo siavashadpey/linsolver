@@ -3,8 +3,6 @@ include_directories(${project_include})
 set(BASE_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/base_vector.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/base_matrix.cpp 
-	${CMAKE_CURRENT_SOURCE_DIR}/backend_vector.cpp 
-	${CMAKE_CURRENT_SOURCE_DIR}/backend_matrix.cpp
 	PARENT_SCOPE
 )
 
