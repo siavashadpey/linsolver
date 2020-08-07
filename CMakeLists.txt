@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.12.2)
 cmake_policy(SET CMP0048 NEW)
 
 project(linSolver VERSION 0.0)
