@@ -9,8 +9,14 @@ Welcome to linSolver's documentation!
    :caption: API
    :maxdepth: 2
 
+Backends
+--------
    base_backends
    host_backends
+   device_backends
+
+Solver
+------
    solvers
 
 .. include:: contact.rst

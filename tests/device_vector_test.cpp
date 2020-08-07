@@ -61,7 +61,6 @@ TEST(DeviceVector, test_2)
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(v_host[i], v_data[i], float_tol);
     }
-
 }
 
 TEST(DeviceVecotr, test_3)
