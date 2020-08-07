@@ -1,7 +1,10 @@
 #ifndef DEVICE_VECTOR_H
 #define DEVICE_VECTOR_H
 
+#include <cublas_v2.h>
+
 #include "backends/base_vector.h"
+
 //#include "backends/host/device_matrix.h"
 
 /**
@@ -22,15 +25,36 @@ public:
 
     virtual void allocate(int n);
     virtual void clear();
-    virtual void copy(const NumType* w);
-    virtual void copy(const BaseVector<NumType>& w);
 
     /**
-     * Return the \p i -th element of the vector.
-     * @param[in] i The index of the element of interest in the vector.
-     * \return The \p i -th value of the vector (returns by reference).
+     * Copy from the inputted data to the vector.
+     * @param[in] w The pointer to the data (on the device system) to copy from.
+     * @note allocate should be called first.
      */
-    virtual NumType& operator[](int i);
+    virtual void copy_from(const NumType* w);
+    virtual void copy_from(const BaseVector<NumType>& w);
+
+    /**
+     * Copy from the inputted data to the vector.
+     * @param[in] w The pointer to the data (on the host system) to copy from.
+     * @note allocate should be called first.
+     */
+    virtual void copy_from_host(const NumType* w);
+
+    /**
+     * Output the vector's values.
+     * @param[out] w The pointer to the data (on the device system) to copy to.
+     * @note device memory should be allocated to \p w before calling this function.
+     */
+    virtual void copy_to(NumType* w) const;
+    virtual void copy_to(BaseVector<NumType>& w) const;
+
+    /**
+     * Output the vector's values.
+     * @param[out] w The pointer to the data (on the host system) to copy to.
+     * @note device memory should be allocated to \p w before calling this function.
+     */
+    virtual void copy_to_host(NumType* w) const;
 
     virtual NumType norm() const;
     virtual NumType dot(const BaseVector<NumType>& w) const;
@@ -54,7 +78,6 @@ protected:
 
 private:
     // befriending classes
-    //friend class DeviceMatrix<NumType>;
-    
+    //friend class DeviceMatrix<NumType>; 
 };
 #endif

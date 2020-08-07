@@ -49,6 +49,31 @@
     }                                                                         \
 } while(0)
 
+#define CURAND_CALL(status) do {                                              \
+    std::stringstream _error;                                                 \
+    if((status) != CURAND_STATUS_SUCCESS) {                                   \
+        _error << "CURAND Failure: " << _cudaGetErrorEnum(status);            \
+        FatalError(_error.str());                                             \
+    }                                                                         \
+} while(0)
+
+#define CUBLAS_CALL(status) do {                                              \
+    std::stringstream _error;                                                 \
+    if((status) != CUBLAS_STATUS_SUCCESS) {                                   \
+        _error << "CUBLAS Failure: " << _cudaGetErrorEnum(status);            \
+        FatalError(_error.str());                                             \
+    }                                                                         \
+} while(0)
+
+#define CUDNN_CALL(status) do {                                               \
+    std::stringstream _error;                                                 \
+    if ((status) != CUDNN_STATUS_SUCCESS) {                                   \
+      _error << "CUDNN failure: " << cudnnGetErrorString(status);             \
+      FatalError(_error.str());                                               \
+    }                                                                         \
+} while(0)
+
+
 // Note, it is required that your SDK sample to include the proper header files, please
 // refer the CUDA examples for examples of the needed CUDA headers, which may change depending
 // on which CUDA functions are used.
@@ -680,9 +705,7 @@ static const char *_cudaGetErrorEnum(cusolverStatus_t error)
        case CUSOLVER_STATUS_INVALID_LICENSE:
            return "CUSOLVER_STATUS_INVALID_LICENSE";
     }
-
     return "<unknown>";
-
 }
 #endif
 
@@ -1265,8 +1288,6 @@ inline bool checkCudaCapabilities(int major_version, int minor_version)
     }
 }
 #endif
-
-// end of CUDA Helper Functions
 
 
 #endif

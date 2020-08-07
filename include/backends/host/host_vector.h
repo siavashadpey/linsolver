@@ -26,8 +26,10 @@ public:
 
     virtual void allocate(int n);
     virtual void clear();
-    virtual void copy(const NumType* w);
-    virtual void copy(const BaseVector<NumType>& w);
+    virtual void copy_from(const NumType* w);
+    virtual void copy_from(const BaseVector<NumType>& w);
+    virtual void copy_to(NumType* w) const;
+    virtual void copy_to(BaseVector<NumType>& w) const;
 
     /**
      * Return the \p i -th element of the vector.

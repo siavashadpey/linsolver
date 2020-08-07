@@ -29,17 +29,30 @@ public:
     virtual void clear() = 0;
 
     /**
-     * Copy data to the vector.
+     * Copy from the inputted data to the vector.
+     * @param[in] w The pointer to the data to copy from.
      * @note allocate should be called first.
-     * @param[in] w The pointer to the data to copy.
      */
-    virtual void copy(const NumType* w) = 0;
+    virtual void copy_from(const NumType* w) = 0;
 
     /**
-     * Copy a vector to itself.
-     * @param[in] w The vector to copy.
+     * Copy from the inputted vector to itself.
+     * @param[in] w The vector to copy from.
      */
-    virtual void copy(const BaseVector<NumType>& w) = 0;
+    virtual void copy_from(const BaseVector<NumType>& w) = 0;
+
+    /**
+     * Output the vector's values.
+     * @param[out] w The pointer to the data to copy to.
+     * @note memory should be allocated to \p w before calling this function.
+     */
+    virtual void copy_to(NumType* w) const = 0;
+
+    /**
+     * Copy the vector to outputted vector.
+     * @param[out] w The vector to copy to.
+     */
+    virtual void copy_to(BaseVector<NumType>& w) const = 0;
 
     /** 
      * \return The size of the vector.

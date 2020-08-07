@@ -91,7 +91,7 @@ TEST(HostMatrix, test_2)
     const int n = 4;
     x.allocate(n);
     double x_val[] = {1., 2., 3., 4.};
-    x.copy(x_val);
+    x.copy_from(x_val);
 
     HostVector<double> rhs = HostVector<double>();
     rhs.allocate(n);

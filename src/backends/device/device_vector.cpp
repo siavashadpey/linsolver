@@ -17,13 +17,13 @@ template <typename NumType>
 DeviceVector<NumType>::DeviceVector()
     :   vec_(nullptr)
 {
-    CUBLAS_CALL( cublasCreate(&cublasHandle) );
+    CUBLAS_CALL( cublasCreate(&cublasHandle_) );
 }
 
 template <typename NumType>
 DeviceVector<NumType>::~DeviceVector()
 {
-    CUBLAS_CALL( cublasDestroy(&cublasHandle) );
+    CUBLAS_CALL( cublasDestroy(cublasHandle_) );
     this->clear();
 }
 
@@ -47,7 +47,7 @@ void DeviceVector<NumType>::clear()
 }
 
 template <typename NumType>
-void DeviceVector<NumType>::copy(const NumType* w)
+void DeviceVector<NumType>::copy_from(const NumType* w)
 {
     assert(this->size_ > 0);
 
@@ -55,7 +55,7 @@ void DeviceVector<NumType>::copy(const NumType* w)
 }
 
 template <typename NumType>
-void DeviceVector<NumType>::copy(const BaseVector<NumType>& w)
+void DeviceVector<NumType>::copy_from(const BaseVector<NumType>& w)
 {
     assert(this != &w);
     
@@ -64,7 +64,6 @@ void DeviceVector<NumType>::copy(const BaseVector<NumType>& w)
     
     // inputted vector is on device
     if (w_device != nullptr) {
-        printf("should not be here\n");
         if (w_device->size_ != this->size_) {
             this->allocate(w_device->size_);
         }
@@ -72,7 +71,6 @@ void DeviceVector<NumType>::copy(const BaseVector<NumType>& w)
     }
     // inputted vector is on host
     else if (w_host != nullptr) {
-        printf("should be here\n");
         if (w_host->size_ != this->size_) {
             this->allocate(w_host->size_);
         }
@@ -84,10 +82,54 @@ void DeviceVector<NumType>::copy(const BaseVector<NumType>& w)
 }
 
 template <typename NumType>
-NumType& DeviceVector<NumType>::operator[](int i)
+void DeviceVector<NumType>::copy_from_host(const NumType* w)
 {
-    Error("Method is not currently supported");
-    return static_cast<NumType>(1);
+    assert(this->size_ > 0);
+
+    CUDA_CALL(cudaMemcpy(this->vec_, w, this->size_ * sizeof(NumType), cudaMemcpyHostToDevice));
+}
+
+template <typename NumType>
+void DeviceVector<NumType>::copy_to(NumType* w) const
+{
+    assert(this->size_ > 0);
+
+    CUDA_CALL(cudaMemcpy(w, this->vec_, this->size_ * sizeof(NumType), cudaMemcpyDeviceToDevice));
+}
+
+template <typename NumType>
+void DeviceVector<NumType>::copy_to(BaseVector<NumType>& w) const
+{
+    assert(this != &w);
+    
+    DeviceVector<NumType>* w_device = dynamic_cast<DeviceVector<NumType>*>(&w);
+    HostVector<NumType>* w_host = dynamic_cast<HostVector<NumType>*>(&w);
+    
+    // inputted vector is on device
+    if (w_device != nullptr) {
+        if (w_device->size_ != this->size_) {
+           w_device->allocate(this->size_);
+        }
+        CUDA_CALL(cudaMemcpy(w_device->vec_, this->vec_, this->size_ * sizeof(NumType), cudaMemcpyDeviceToDevice));
+    }
+    // inputted vector is on host
+    else if (w_host != nullptr) {
+        if (w_host->size_ != this->size_) {
+            w_host->allocate(this->size_);
+        }
+        CUDA_CALL(cudaMemcpy(w_host->vec_, this->vec_, this->size_ * sizeof(NumType), cudaMemcpyDeviceToHost));
+    }
+    else {
+        Error("Cannot cast vector as DeviceVector or HostVector.");
+    }
+}
+
+template <typename NumType>
+void DeviceVector<NumType>::copy_to_host(NumType* w) const
+{
+    assert(this->size_ > 0);
+
+    CUDA_CALL(cudaMemcpy(w, this->vec_, this->size_ * sizeof(NumType), cudaMemcpyDeviceToHost));
 }
 
 template <typename NumType>
@@ -126,7 +168,7 @@ void DeviceVector<NumType>::zeros()
 {
     const NumType zero = static_cast<NumType>(0);
     thrust::device_ptr<NumType> thrust_dev_ptr(this->vec_);
-    thrust::fill(this->vec_, this->vec_ + this->size_, zero);
+    thrust::fill(thrust_dev_ptr, thrust_dev_ptr + this->size_, zero);
 }
 
 template <typename NumType>
@@ -134,14 +176,14 @@ void DeviceVector<NumType>::ones()
 {
     const NumType one = static_cast<NumType>(1);
     thrust::device_ptr<NumType> thrust_dev_ptr(this->vec_);
-    thrust::fill(this->vec_, this->vec_ + this->size_, one);
+    thrust::fill(thrust_dev_ptr, thrust_dev_ptr + this->size_, one);
 }
 
 template <typename NumType>
 void DeviceVector<NumType>::scale(NumType alpha)
 {
     assert(this->size_ > 0);
-    CUBLASS_CALL( cublasTscal(cublasHandle_,
+    CUBLAS_CALL( cublasTscal(cublasHandle_,
                               this->size_, 
                               &alpha,
                               this->vec_, 1 // increment of 1
@@ -172,11 +214,12 @@ void DeviceVector<NumType>::add(NumType alpha, const BaseVector<NumType>& w, Num
     const int block = 256;
     const int grid = (this->size_ + block - 1)/block;
 
-    add<<<grid, block>>>(this->size_,
-                               &alpha,
-                               &beta,
+    add_kernel<<<grid, block>>>(this->size_,
+                               alpha,
+                               beta,
                                w_device->vec_,
                                this->vec_);
+    CUDA_CALL( cudaDeviceSynchronize());
 }
 
 template <typename NumType>
@@ -209,11 +252,11 @@ void DeviceVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& 
     const int block = 256;
     const int grid = (this->size_ + block - 1)/block;
     
-    scale_add<<<grid, block>>>(this->size_,
-                               &alpha,
+    scale_add_kernel<<<grid, block>>>(this->size_,
+                               alpha,
                                w_device->vec_,
                                this->vec_);
-    // TODO: check error?
+    CUDA_CALL( cudaDeviceSynchronize());
 }
 
 // instantiate template classes

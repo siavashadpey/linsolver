@@ -39,7 +39,7 @@ void HostVector<NumType>::clear()
 }
 
 template <typename NumType>
-void HostVector<NumType>::copy(const NumType* w)
+void HostVector<NumType>::copy_from(const NumType* w)
 {
     assert(this->size_ > 0);
 
@@ -52,7 +52,7 @@ void HostVector<NumType>::copy(const NumType* w)
 }
 
 template <typename NumType>
-void HostVector<NumType>::copy(const BaseVector<NumType>& w)
+void HostVector<NumType>::copy_from(const BaseVector<NumType>& w)
 {
     assert(this != &w);
     const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
@@ -68,6 +68,25 @@ void HostVector<NumType>::copy(const BaseVector<NumType>& w)
     for (int i = 0; i < this->size_; i++) {
         this->vec_[i] = w_host->vec_[i];
     }
+}
+
+template <typename NumType>
+void HostVector<NumType>::copy_to(NumType* w) const
+{
+    assert(this->size_ > 0);
+
+#ifdef _OPENMP
+    #pragma omp parallel for
+#endif
+    for (int i = 0; i < this->size_; i++) {
+        w[i] = this->vec_[i];
+    }
+}
+
+template <typename NumType>
+void HostVector<NumType>::copy_to(BaseVector<NumType>& w) const
+{
+    w.copy_from(*this);
 }
 
 template <typename NumType>

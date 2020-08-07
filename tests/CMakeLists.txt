@@ -21,7 +21,6 @@ add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
                  EXCLUDE_FROM_ALL)
 
 function(add_tests test_set)
-  # note that we include/link against Armadillo and MPI header/libraries
   include_directories(${project_include})
   foreach(filename ${test_set})
     add_executable(${filename}_test ${filename}_test.cpp)
@@ -29,6 +28,16 @@ function(add_tests test_set)
     add_test(NAME ${filename}_test COMMAND ./${filename}_test --gtest_output=xml:./${filename}_test_result.xml)
   endforeach()
 endfunction(add_tests)
+
+function(cuda_add_tests test_set)
+  include_directories(${project_include})
+  foreach(filename ${test_set})
+    set_source_files_properties(${filename}_test.cpp PROPERTIES CUDA_SOURCE_PROPERTY_FORMAT OBJ)
+    cuda_add_executable(${filename}_test ${filename}_test.cpp)
+    target_link_libraries(${filename}_test ${LIB_NAME} gtest_main)
+    add_test(NAME ${filename}_test COMMAND ./${filename}_test --gtest_output=xml:./${filename}_test_result.xml)
+  endforeach()
+endfunction(cuda_add_tests)
 
 function(copy_data_files data_files)
   foreach(filename ${data_files})
@@ -58,7 +67,7 @@ if (CUDA_ENABLED)
     device_vector
   )
 
-  add_tests("${DEVICE_TEST_SET}")
+  cuda_add_tests("${DEVICE_TEST_SET}")
 
 endif()
 

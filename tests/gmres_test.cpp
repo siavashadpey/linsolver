@@ -26,7 +26,7 @@ TEST(GMRES, test_1)
     double x_e_vals[] = {9, 6.3, 68, -11.4};
     HostVector<double> x_e = HostVector<double>();
     x_e.allocate(n);
-    x_e.copy(x_e_vals);
+    x_e.copy_from(x_e_vals);
     
     A.multiply(x_e, &b); // b = A*x
     

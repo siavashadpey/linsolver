@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.18)
 cmake_policy(SET CMP0048 NEW)
 
 project(linSolver VERSION 0.0)
@@ -16,7 +16,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 set(LINK_LIBS "")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC")
 set(GNU_WARNINGS "-Wall -Wextra -Wnon-virtual-dtor -Wpedantic -Wshadow")
 
 if (${BUILD} MATCHES "DEBUG")
@@ -31,6 +31,8 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GNU_WARNINGS}")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
 if (${WITH_CUDA})
 	set(CUDA_ENABLED ON)
     SET(CUDA_SEPARABLE_COMPILATION ON)
@@ -39,9 +41,8 @@ if (${WITH_CUDA})
     cuda_select_nvcc_arch_flags(ARCH_FLAGS)
     LIST(APPEND CUDA_NVCC_FLAGS ${ARCH_FLAGS} -Wno-deprecated-gpu-targets --expt-relaxed-constexpr -rdc=true)
     set(CUDA_PROPAGATE_HOST_FLAG OFF)
+    include_directories(${CUDA_INCLUDE_DIRS})
 endif()
-
-include_directories(${CMAKE_SOURCE_DIR}/include)
 
 if (${WITH_OPENMP})
 	find_package(OpenMP)

@@ -33,7 +33,6 @@ TEST(HostVector, test_1)
         v_e[i] *= c;
         EXPECT_NEAR(v[i], v_e[i], tol); // scale
     }
-    printf("\n");
 
     HostVector<double> w = HostVector<double>();
     w.allocate(n);
@@ -45,7 +44,6 @@ TEST(HostVector, test_1)
         v_dot_w += w_e[i]*v_e[i];
     }
     EXPECT_NEAR(v.dot(w), v_dot_w, tol); // dot product
-
 
     v.add(2, w, 3);
     for (int i = 0; i < n; i++) {
@@ -71,9 +69,15 @@ TEST(HostVector, test_1)
     }
 
     double v_data[] = {10., 8., 15.4, 17, 20.};
-    v.copy(v_data);
+    v.copy_from(v_data);
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(v[i], v_data[i], tol); // copy from raw data
+    }
+
+    v.scale(c);
+    v.copy_to(v_data);
+    for (int i = 0; i < n; i++) {
+        EXPECT_NEAR(v[i], v_data[i], tol); // copy to raw data
     }
 
     const int n_new = 6;
@@ -84,10 +88,17 @@ TEST(HostVector, test_1)
         w_new[i] = (double) 4.*(n_new - i);
     }
 
-    v.copy(w);
+    v.copy_from(w);
     EXPECT_EQ(v.n(), n_new); // size
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(v[i], w_new[i], tol); // copy from another class instance
+    }
+
+    v.scale(c);
+    v.copy_to(w);
+    EXPECT_EQ(v.n(), n_new); // size
+    for (int i = 0; i < n; i++) {
+        EXPECT_NEAR(v[i], w[i], tol); // copy to another class instance
     }
 
     v.zeros();

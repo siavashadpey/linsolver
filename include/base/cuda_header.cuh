@@ -5,6 +5,7 @@
 
 // Device function attributes
 #include <cuda_runtime.h>
+#include <cublas_v2.h>
 #include "cuda_error_helper.cuh"
 
 #define CUDA_CALLABLE __host__ __device__
