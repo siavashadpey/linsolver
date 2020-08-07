@@ -44,6 +44,8 @@ public:
      */
     virtual void copy_from(const BaseMatrix<NumType>& B) = 0;
 
+    // TODO: implement virtual void copy_from(BaseMatrix<NumType>& B) const = 0;
+    
     /** 
      * \return The row dimension of the matrix.
      */

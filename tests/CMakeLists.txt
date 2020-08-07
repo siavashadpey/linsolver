@@ -65,6 +65,7 @@ if (CUDA_ENABLED)
 
   set(DEVICE_TEST_SET
     device_vector
+    device_matrix
   )
 
   cuda_add_tests("${DEVICE_TEST_SET}")

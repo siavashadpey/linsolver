@@ -60,12 +60,14 @@ void DeviceMatrix<NumType>::clear()
 template <typename NumType>
 void DeviceMatrix<NumType>::copy_from(const NumType* val, const int* row_ptr, const int* col_idx)
 {
+    // TODO: implement method
     Error("Method has not yet been implemented.");
 }
 
 template <typename NumType>
 void DeviceMatrix<NumType>::copy_from(const BaseMatrix<NumType>& B)
 {
+    // TODO: implement method
     Error("Method has not yet been implemented.");
 }
 
@@ -101,6 +103,7 @@ template <typename NumType>
 void DeviceMatrix<NumType>::multiply(const BaseVector<NumType>& v_in, 
         BaseVector<NumType>* w_out) const
 {
+    // TODO: implement method
     Error("Method has not yet been implemented.");
 }
 
