@@ -100,7 +100,7 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
             // factorizing H_j
             // apply previous rotations to new column
             for (int i = 0; i < j; i++) {
-                rotate_inplace_(c_[i], s_[i], H_[j*ndp1 + i], H_[j*ndp1 + i+1]);
+                GMRES<NumType>::rotate_inplace_(c_[i], s_[i], H_[j*ndp1 + i], H_[j*ndp1 + i+1]);
             }
             // construct new rotation
             NumType r = H_[j*ndp1 + j]; // H[j,j]
@@ -150,7 +150,7 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
 }
 
 template <typename NumType>
-void GMRES<NumType>::rotate_inplace_(NumType c, NumType s, NumType& h, NumType& hp1) const
+void GMRES<NumType>::rotate_inplace_(NumType c, NumType s, NumType& h, NumType& hp1)
 {
     NumType temp = h;
     h = c*h - s*hp1;
@@ -160,3 +160,5 @@ void GMRES<NumType>::rotate_inplace_(NumType c, NumType s, NumType& h, NumType& 
 // instantiate template classes
 template class GMRES<double>;
 template class GMRES<float>;
+
+// TODO: template MatType (HostMatrix and DeviceMatrix) and VecType (Hostvector and DeviceVector)

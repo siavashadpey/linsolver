@@ -52,6 +52,6 @@ private:
      */
     void prepare_solver_(int soln_dim);
 
-    void rotate_inplace_(NumType c, NumType s, NumType& h, NumType& hp1) const;
+    static void rotate_inplace_(NumType c, NumType s, NumType& h, NumType& hp1);
 };
 #endif

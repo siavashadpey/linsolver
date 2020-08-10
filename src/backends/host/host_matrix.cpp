@@ -80,7 +80,7 @@ void HostMatrix<NumType>::copy_from(const BaseMatrix<NumType>& B)
     if ((B_host->nnz_ != this->nnz_) or 
         (B_host->m_ != this->m_) or
         (B_host->n_ != this->n_)) {
-        this->allocate(B_host->m_, B_host->n_, B_host->nnz_);
+            this->allocate(B_host->m_, B_host->n_, B_host->nnz_);
     }
 
 #ifdef _OPENMP
@@ -97,6 +97,12 @@ void HostMatrix<NumType>::copy_from(const BaseMatrix<NumType>& B)
     for (int i = 0; i < this->m_ + 1; i++) {
         this->row_ptr_[i] = B_host->row_ptr_[i];
     }
+}
+
+template <typename NumType>
+void HostMatrix<NumType>::copy_to(BaseMatrix<NumType>& B) const
+{
+    B.copy_from(*this);
 }
 
 template <typename NumType>

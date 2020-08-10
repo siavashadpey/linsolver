@@ -37,9 +37,12 @@ public:
      * @param[in] row_ptr The pointer to the indices of val starting a new row.
      * @param[in] col_idx The pointer to the column indices of the elements in val.
      * @note allocate should be called first.
+     * @note All 3 parameters should be on device memory.
      */
     virtual void copy_from(const NumType* val, const int* row_ptr, const int* col_idx);
     virtual void copy_from(const BaseMatrix<NumType>& B);
+
+    virtual void copy_to(BaseMatrix<NumType>& B) const;
 
     virtual NumType norm() const;
     virtual void scale(NumType alpha);
@@ -75,5 +78,10 @@ protected:
      * Cusparse handle.
      */
     cusparseHandle_t cusparseHandle_;
+
+    /**
+     * cusparse matrix descriptor.
+     */
+    cusparseMatDescr_t cusparseMatDescr_;
 };
 #endif

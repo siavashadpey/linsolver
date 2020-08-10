@@ -52,6 +52,12 @@ void HostMatrixCOO<NumType>::copy_from(const BaseMatrix<NumType>& )
 }
 
 template <typename NumType>
+void HostMatrixCOO<NumType>::copy_to(BaseMatrix<NumType>& ) const 
+{
+    Error("Method has not yet been implemented.");
+}
+
+template <typename NumType>
 NumType HostMatrixCOO<NumType>::norm() const
 {
     NumType val = static_cast<NumType>(0);

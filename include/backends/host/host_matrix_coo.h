@@ -32,6 +32,7 @@ public:
     void clear();
 
     void copy_from(const BaseMatrix<NumType>& B);
+    void copy_to(BaseMatrix<NumType>& B) const;
     NumType norm() const;
     void scale(NumType alpha);
     void multiply(const BaseVector<NumType>& v_in, 

@@ -39,6 +39,8 @@ public:
     virtual void copy_from(const NumType* val, const int* row_ptr, const int* col_idx);
     virtual void copy_from(const BaseMatrix<NumType>& B);
 
+    virtual void copy_to(BaseMatrix<NumType>& B) const;
+
     virtual NumType norm() const;
     virtual void scale(NumType alpha);
     //virtual void add(NumType alpha, const BaseMatrix<NumType>& B, NumType beta);
@@ -63,6 +65,10 @@ protected:
      * Column indices of the elements in val_. (Compressed Row Storage)
      */
     int* col_idx_;
-    
+
+    // befriending classes
+#ifdef __CUDACC__
+    friend class DeviceMatrix<NumType>;
+#endif
 };
 #endif

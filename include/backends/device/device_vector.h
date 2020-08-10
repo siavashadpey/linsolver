@@ -4,8 +4,7 @@
 #include <cublas_v2.h>
 
 #include "backends/base_vector.h"
-
-//#include "backends/host/device_matrix.h"
+#include "backends/device/device_matrix.h"
 
 /**
  * \brief Implementation of a Vector class on the NVIDIA GPU system, referred to as the device system.
@@ -78,6 +77,6 @@ protected:
 
 private:
     // befriending classes
-    //friend class DeviceMatrix<NumType>; 
+    friend class DeviceMatrix<NumType>; 
 };
 #endif
