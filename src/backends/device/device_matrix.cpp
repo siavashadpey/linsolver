@@ -179,7 +179,6 @@ void DeviceMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
                                   v_in_d->vec_,
                                   &zero,
                                   w_out_d->vec_));
-
 }
 
 template <typename NumType>

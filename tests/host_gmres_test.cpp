@@ -9,7 +9,7 @@
 
 #define tol 1E-9
 
-TEST(GMRES, test_1)
+TEST(host_GMRES, test_1)
 {
     HostMatrix<double> A = HostMatrix<double>();
     int n = 4;
@@ -35,7 +35,7 @@ TEST(GMRES, test_1)
     x_soln.allocate(n);
     x_soln.zeros();
 
-    GMRES<double> solver = GMRES<double>();
+    auto solver = GMRES<HostMatrix<double>, HostVector<double>, double>();
     
     solver.solve(A, b, &x_soln);
 
@@ -44,7 +44,7 @@ TEST(GMRES, test_1)
     }
 }
 
-TEST(GMRES, test_2)
+TEST(host_GMRES, test_2)
 {
     HostMatrix<double> A = HostMatrix<double>();
     const std::string filename = "gre__115.mtx";
@@ -64,7 +64,7 @@ TEST(GMRES, test_2)
     x_soln.allocate(A.n());
     x_soln.zeros();
 
-    GMRES<double> solver = GMRES<double>();
+    auto solver = GMRES<HostMatrix<double>, HostVector<double>, double>();
     
     solver.solve(A, rhs, &x_soln);
 

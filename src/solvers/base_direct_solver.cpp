@@ -1,18 +1,21 @@
 
 #include "solvers/base_direct_solver.h"
-#include "backends/host/host_vector.h"
-#include "backends/host/host_matrix.h"
 
-template <typename NumType>
-BaseDirectSolver<NumType>::BaseDirectSolver()
+template <class MatType, class VecType, typename NumType>
+BaseDirectSolver<MatType, VecType, NumType>::BaseDirectSolver()
 {
 }
 
-template <typename NumType>
-BaseDirectSolver<NumType>::~BaseDirectSolver()
+template <class MatType, class VecType, typename NumType>
+BaseDirectSolver<MatType, VecType, NumType>::~BaseDirectSolver()
 {
 }
 
 // instantiate template classes
-template class BaseDirectSolver<double>;
-template class BaseDirectSolver<float>; 
+template class BaseDirectSolver<HostMatrix<double>, HostVector<double>, double>;
+template class BaseDirectSolver<HostMatrix<float> , HostVector<float> , float>;
+
+#ifdef __CUDACC__
+template class BaseDirectSolver<DeviceMatrix<double>, DeviceVector<double>, double>;
+template class BaseDirectSolver<DeviceMatrix<float> , DeviceVector<float> , float>;
+#endif

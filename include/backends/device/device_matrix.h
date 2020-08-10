@@ -12,7 +12,7 @@ class DeviceVector;
 
 /**
  * \brief Implementation of a Matrix class on the device system.
- *
+ * \tparam NumType Number type (double and float currently supported).
  * This class uses the Compressed Row Storage (CRS) format.
  */
 template <typename NumType>

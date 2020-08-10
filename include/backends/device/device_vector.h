@@ -8,6 +8,7 @@
 
 /**
  * \brief Implementation of a Vector class on the NVIDIA GPU system, referred to as the device system.
+ * \tparam NumType Number type (double and float currently supported).
  */
 template <typename NumType>
 class DeviceVector: public BaseVector<NumType> {
@@ -55,6 +56,7 @@ public:
      */
     virtual void copy_to_host(NumType* w) const;
 
+    virtual NumType& operator[](int i);
     virtual NumType norm() const;
     virtual NumType dot(const BaseVector<NumType>& w) const;
     virtual void zeros();

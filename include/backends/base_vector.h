@@ -2,13 +2,14 @@
 #define BASE_VECTOR_H
 
 /**
- * \brief Base vector class of HostVector and DeviceVector classes.
+ * \brief Base vector class.
+ * \tparam NumType Number type (double and float currently supported).
  */
 template <typename NumType>
 class BaseVector {
 public:
     /**
-     * Default onstructor.
+     * Default constructor.
      */
     BaseVector();
 
@@ -80,6 +81,13 @@ public:
      * Sets all values of the vector to one.
      */
     virtual void ones() = 0;
+
+    /**
+     * Return the \p i -th element of the vector.
+     * @param[in] i The index of the element of interest in the vector.
+     * \return The \p i -th value of the vector (returns by reference).
+     */
+    virtual NumType& operator[](int i) = 0;
 
     /**
      * Scale the vector.

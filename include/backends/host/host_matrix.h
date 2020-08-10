@@ -4,13 +4,17 @@
 #include "backends/base_matrix.h"
 #include "backends/host/host_matrix_coo.h"
 
+#ifdef __CUDACC__
+#include "backends/device/device_matrix.h"
+#endif
+
 // forward declaration
 template <typename NumType> 
 class HostVector;
 
 /**
  * \brief Implementation of a Matrix class on the host system.
- *
+ * \tparam NumType Number type (double and float currently supported).
  * This class uses the Compressed Row Storage (CRS) format.
  */
 template <typename NumType>
@@ -67,6 +71,7 @@ protected:
     int* col_idx_;
 
     // befriending classes
+private:
 #ifdef __CUDACC__
     friend class DeviceMatrix<NumType>;
 #endif

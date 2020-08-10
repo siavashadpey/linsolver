@@ -12,7 +12,7 @@ class HostMatrix;
 
 /**
  * \brief Implementation of a Matrix class on the host system.
- *
+ * \tparam NumType Number type (double and float currently supported).
  * This class uses the Coordinate list (COO) format.
  */
 template <typename NumType>

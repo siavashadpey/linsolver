@@ -3,37 +3,35 @@
 #include <cmath>
 
 #include "solvers/gmres.h"
-#include "backends/host/host_matrix.h"
-#include "backends/host/host_vector.h"
 
-template <typename NumType>
-GMRES<NumType>::GMRES()
+template <class MatType, class VecType, typename NumType>
+GMRES<MatType, VecType, NumType>::GMRES()
     :   krylov_dim_(20),
         V_(nullptr)
 {
 }
 
-template <typename NumType>
-GMRES<NumType>::~GMRES()
+template <class MatType, class VecType, typename NumType>
+GMRES<MatType, VecType, NumType>::~GMRES()
 {
 }
 
-template <typename NumType>
-void GMRES<NumType>::clear() 
+template <class MatType, class VecType, typename NumType>
+void GMRES<MatType, VecType, NumType>::clear() 
 {
     if (krylov_dim_ >= 0) {
         delete[] V_;
     }
 }
 
-template <typename NumType>
-void GMRES<NumType>::set_krylov_dimension(int K_dim) 
+template <class MatType, class VecType, typename NumType>
+void GMRES<MatType, VecType, NumType>::set_krylov_dimension(int K_dim) 
 {
     krylov_dim_ = K_dim;
 }
 
-template <typename NumType>
-void GMRES<NumType>::prepare_solver_(int soln_dim)
+template <class MatType, class VecType, typename NumType>
+void GMRES<MatType, VecType, NumType>::prepare_solver_(int soln_dim)
 {
     assert(krylov_dim_ > 0);
     clear();
@@ -43,26 +41,18 @@ void GMRES<NumType>::prepare_solver_(int soln_dim)
     g_.allocate(krylov_dim_ + 1);
     H_.allocate((krylov_dim_ + 1)*krylov_dim_);
 
-    V_ = new HostVector<NumType>[krylov_dim_ + 1];
+    V_ = new VecType[krylov_dim_ + 1];
     for (int i = 0; i < krylov_dim_ + 1; i++) {
         V_[i].allocate(soln_dim);
     }
 }
 
-template <typename NumType>
-void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumType>& rhs, BaseVector<NumType>* soln)
+template <class MatType, class VecType, typename NumType>
+void GMRES<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rhs, VecType* soln)
 {
     assert(mat.is_square());
 
-    // currently only handles host matrices and vectors
-    const HostMatrix<NumType>* mat_h = dynamic_cast<const HostMatrix<NumType>*>(&mat);
-    const BaseVector<NumType>* rhs_h = dynamic_cast<const HostVector<NumType>*>(&rhs);
-    BaseVector<NumType>* soln_h = dynamic_cast<HostVector<NumType>*>(soln);
-    assert(mat_h  != nullptr);
-    assert(rhs_h  != nullptr);
-    assert(soln_h != nullptr);
-
-    prepare_solver_(mat_h->n());
+    prepare_solver_(mat.n());
 
     this->it_counter_ = 0;
 
@@ -72,8 +62,8 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
     const int ndp1 = krylov_dim_ + 1;
 
     // V[0] = rhs - mat*x;
-    mat_h->multiply(*soln_h, &V_[0]);
-    V_[0].scale_add(minus_one, *rhs_h);
+    mat.multiply(*soln, &V_[0]);
+    V_[0].scale_add(minus_one, rhs);
     g_.zeros();    
     g_[0] = V_[0].norm();
     V_[0].scale(one/g_[0]);
@@ -88,7 +78,7 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
         int j = 0;
         for (; j < nd; ++j) {
             // construct j-th orthonormal basis
-            mat_h->multiply(V_[j], &V_[j+1]);
+            mat.multiply(V_[j], &V_[j+1]);
             for (int i = 0; i < j + 1; i++) {
                 H_[j*ndp1 + i] = V_[i].dot(V_[j+1]); // H[i,j] = V[i]^T*V[j+1]
                 V_[j+1].add_scale(-H_[j*ndp1 + i], V_[i]); // V[j+1] -= H[i,j]*V[i]
@@ -100,7 +90,7 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
             // factorizing H_j
             // apply previous rotations to new column
             for (int i = 0; i < j; i++) {
-                GMRES<NumType>::rotate_inplace_(c_[i], s_[i], H_[j*ndp1 + i], H_[j*ndp1 + i+1]);
+                GMRES<MatType, VecType, NumType>::rotate_inplace_(c_[i], s_[i], H_[j*ndp1 + i], H_[j*ndp1 + i+1]);
             }
             // construct new rotation
             NumType r = H_[j*ndp1 + j]; // H[j,j]
@@ -131,15 +121,15 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
             }
         }
 
-        soln_h->add_scale(g_[0], V_[0]);
+        soln->add_scale(g_[0], V_[0]);
         // update solution
         for (int i = 1; i < j; i++) {
-            soln_h->add_scale(g_[i], V_[i]);
+            soln->add_scale(g_[i], V_[i]);
         }
 
         // prepare for next iteration
-        mat_h->multiply(*soln_h, &V_[0]);
-        V_[0].scale_add(minus_one, *rhs_h);    
+        mat.multiply(*soln, &V_[0]);
+        V_[0].scale_add(minus_one, rhs);    
         g_.zeros();
         g_[0] = V_[0].norm();
         V_[0].scale(one/g_[0]);
@@ -149,8 +139,8 @@ void GMRES<NumType>::solve(const BaseMatrix<NumType>& mat, const BaseVector<NumT
     clear();
 }
 
-template <typename NumType>
-void GMRES<NumType>::rotate_inplace_(NumType c, NumType s, NumType& h, NumType& hp1)
+template <class MatType, class VecType, typename NumType>
+void GMRES<MatType, VecType, NumType>::rotate_inplace_(NumType c, NumType s, NumType& h, NumType& hp1)
 {
     NumType temp = h;
     h = c*h - s*hp1;
@@ -158,7 +148,10 @@ void GMRES<NumType>::rotate_inplace_(NumType c, NumType s, NumType& h, NumType& 
 }
 
 // instantiate template classes
-template class GMRES<double>;
-template class GMRES<float>;
+template class GMRES<HostMatrix<double>, HostVector<double>, double>;
+template class GMRES<HostMatrix<float>, HostVector<float>, float>;
 
-// TODO: template MatType (HostMatrix and DeviceMatrix) and VecType (Hostvector and DeviceVector)
+#ifdef __CUDACC__
+template class GMRES<DeviceMatrix<double>, DeviceVector<double>, double>;
+template class GMRES<DeviceMatrix<float>, DeviceVector<float>, float>;
+#endif

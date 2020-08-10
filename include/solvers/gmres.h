@@ -6,9 +6,12 @@
 
 /**
  * \brief Implementation of the Generalize Mimimal RESidual (GMRES) method.
+ * \tparam MatType Matrix type (HostMatrix<NumType> and DeviceMatrix<NumTyper> currently supported).
+ * \tparam VecType Vector type (HostVector<NumType> and DeviceVector<NumTyper> currently supported).
+ * \tparam NumType Number type (double and float currently supported).
  */
-template <typename NumType>
-class GMRES: public BaseIterativeSolver<NumType> {
+template <class MatType, class VecType, typename NumType>
+class GMRES: public BaseIterativeSolver<MatType, VecType, NumType> {
 public:
     /**
      * Default constructor.
@@ -30,7 +33,7 @@ public:
      */
     void set_krylov_dimension(int K_dim);
 
-    void solve(const BaseMatrix<NumType>& mat, const BaseVector<NumType>& rhs, BaseVector<NumType>* soln);
+    void solve(const MatType& mat, const VecType& rhs, VecType* soln);
 
 private:
     /** 
@@ -45,7 +48,7 @@ private:
     HostVector<NumType> s_;
     HostVector<NumType> g_;
     HostVector<NumType> H_;
-    HostVector<NumType>* V_;
+    VecType* V_;
 
     /**
      * Prepare the GMRES solver. This is called within solve.

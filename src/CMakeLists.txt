@@ -1,13 +1,24 @@
 add_subdirectory(solvers)
 add_subdirectory(backends)
 
-set(SRC 
-	${SOLVERS_SRC}
-	${BASE_SRC}
-	${HOST_SRC}
-)
+if (CUDA_ENABLED)
+    set(HOST_SRC 
+	   ${HOST_SRC}
+       ${BASE_SRC}
+    )
+    set (DEVICE_SRC
+        ${DEVICE_SRC}
+        ${SOLVERS_SRC}
+        )
+else()
+    set(HOST_SRC 
+       ${BASE_SRC}
+       ${HOST_SRC}
+       ${SOLVERS_SRC}
+    )
+endif()
 
-add_library(${LIB_NAME} SHARED ${SRC})
+add_library(${LIB_NAME} SHARED ${HOST_SRC})
 target_link_libraries(${LIB_NAME} ${LINK_LIBS})
 IF (OPENMP_FOUND)
 	target_link_libraries(${LIB_NAME} OpenMP::OpenMP_CXX)

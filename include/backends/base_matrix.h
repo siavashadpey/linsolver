@@ -10,7 +10,8 @@ template <typename NumType>
 class BaseVector;
 
 /**
- * \brief Base matrix class of HostMatrix and DeviceMatrix classes.
+ * \brief Base matrix class.
+ * \tparam NumType Number type (double and float currently supported).
  */
 template <typename NumType>
 class BaseMatrix {

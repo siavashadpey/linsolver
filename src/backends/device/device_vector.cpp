@@ -133,6 +133,12 @@ void DeviceVector<NumType>::copy_to_host(NumType* w) const
 }
 
 template <typename NumType>
+NumType& DeviceVector<NumType>::operator[](int i)
+{
+    Error("Method has not yet been implemented.");
+}
+
+template <typename NumType>
 NumType DeviceVector<NumType>::norm() const
 {
     NumType val = static_cast<NumType>(0);

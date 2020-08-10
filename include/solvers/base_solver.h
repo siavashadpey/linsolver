@@ -4,10 +4,21 @@
 #include "backends/base_vector.h"
 #include "backends/base_matrix.h"
 
+#include "backends/host/host_vector.h"
+#include "backends/host/host_matrix.h"
+
+#ifdef __CUDACC__
+#include "backends/device/device_vector.h"
+#include "backends/device/device_matrix.h"
+#endif
+
 /**
  * \brief Base class for Linear Solvers.
+ * \tparam MatType Matrix type (HostMatrix<NumType> and DeviceMatrix<NumTyper> currently supported).
+ * \tparam VecType Vector type (HostVector<NumType> and DeviceVector<NumTyper> currently supported).
+ * \tparam NumType Number type (double and float currently supported).
  */
-template <typename NumType>
+template <class MatType, class VecType, typename NumType>
 class BaseSolver {
 public:
     /**
@@ -26,6 +37,6 @@ public:
      * @param[in]  rhs  The vector in the above equation.
      * @param[out] soln The vector in the above equation.
      */
-    virtual void solve(const BaseMatrix<NumType>& mat, const BaseVector<NumType>& rhs, BaseVector<NumType>* soln) = 0;
+    virtual void solve(const MatType& mat, const VecType& rhs, VecType* soln) = 0;
 };
 #endif

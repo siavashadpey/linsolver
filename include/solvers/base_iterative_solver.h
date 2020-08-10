@@ -5,11 +5,13 @@
 
 /**
  * \brief Base class for Iterative Linear Solvers.
- * 
+ * \tparam MatType Matrix type (HostMatrix<NumType> and DeviceMatrix<NumTyper> currently supported).
+ * \tparam VecType Vector type (HostVector<NumType> and DeviceVector<NumTyper> currently supported).
+ * \tparam NumType Number type (double and float currently supported). 
  * Manages tasks and information related to convergence.
  */
-template <typename NumType>
-class BaseIterativeSolver: public BaseSolver<NumType> {
+template <class MatType, class VecType, typename NumType>
+class BaseIterativeSolver: public BaseSolver<MatType, VecType, NumType> {
 public:
     BaseIterativeSolver();
 

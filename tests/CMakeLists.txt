@@ -50,7 +50,7 @@ set(HOST_TEST_SET
 	host_vector
 	host_matrix
   host_matrix_coo
-	gmres
+	host_gmres
 )
 
 set(DATA_FILES 
@@ -66,6 +66,7 @@ if (CUDA_ENABLED)
   set(DEVICE_TEST_SET
     device_vector
     device_matrix
+    device_gmres
   )
 
   cuda_add_tests("${DEVICE_TEST_SET}")
