@@ -21,6 +21,11 @@ template <class MatType, class VecType, typename NumType>
 void GMRES<MatType, VecType, NumType>::clear() 
 {
     if (krylov_dim_ >= 0) {
+        c_.clear();
+        s_.clear();
+        g_.clear();
+        H_.clear();
+        
         delete[] V_;
     }
 }

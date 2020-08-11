@@ -1,10 +1,8 @@
 
-Solvers
+Preconditioners
 =======
 
 .. toctree::
    :maxdepth: 2
 
-   base_solvers
-   cg
-   gmres
+   jacobi

@@ -123,6 +123,13 @@ public:
      */
     virtual void elementwise_multiply(const BaseVector<NumType>& w) = 0;
 
+    /**
+     * \p v = \p w .*  z, where \p v is the vector itself and .* is the elementwise multiplication operator.
+     * \param[in] w     The vector in the above equation.
+     * \param[in] z     The vector in the above equation.
+     */
+    virtual void elementwise_multiply(const BaseVector<NumType>& w, const BaseVector<NumType>& z) = 0;
+
 protected:
     /**
      * Size of the vector.
