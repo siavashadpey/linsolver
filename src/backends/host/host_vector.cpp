@@ -213,6 +213,10 @@ void HostVector<NumType>::add_scale(NumType alpha, const BaseVector<NumType>& w)
 template <typename NumType>
 void HostVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& w)
 {
+    const NumType zero = static_cast<NumType>(0);   
+    if (alpha == zero) {
+        copy_from(w); // v = w
+    }
     const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
     assert(w_host != nullptr);
     assert(this->size_ == w_host->size_);

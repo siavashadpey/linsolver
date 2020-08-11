@@ -254,6 +254,11 @@ void DeviceVector<NumType>::add_scale(NumType alpha, const BaseVector<NumType>& 
 template <typename NumType>
 void DeviceVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& w)
 {
+    const NumType zero = static_cast<NumType>(0);   
+    if (alpha == zero) {
+        copy_from(w); // v = w
+    }
+    
     const DeviceVector<NumType>* w_device = dynamic_cast<const DeviceVector<NumType>*>(&w);
     assert(w_device != nullptr);
     assert(this->size_ == w_device->size_);

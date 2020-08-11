@@ -18,7 +18,7 @@ public:
 
     /**
      * Prepares the preconditioner matrix \p M of matrix \p mat.
-     * \param[in] mat Matrix for which the preconditioner is to be used.
+     * \param[in] mat Matrix on which the preconditioner is to be used.
      */
     virtual void prepare_preconditioner(const MatType &mat) = 0;
 
@@ -28,7 +28,7 @@ public:
     virtual void apply(VecType* x) const = 0;
 
     /**
-     * Solve for x in M*x = b. 
+     * Solve for \p x in \p M * \p x = \p b, where \p M is the preconditioning matrix. 
      */
     virtual void apply(const VecType& b, VecType* x) const = 0;
 };
