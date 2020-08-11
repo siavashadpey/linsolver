@@ -26,7 +26,7 @@ void HostVector<NumType>::allocate(int n)
     this->clear();
 
     this->size_ = n;
-    this->vec_ = new NumType[n];
+    this->vec_ = new NumType[n]();
 }
 
 template <typename NumType>

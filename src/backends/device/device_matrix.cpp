@@ -49,6 +49,11 @@ void DeviceMatrix<NumType>::allocate(int m, int n, int nnz)
     CUDA_CALL( cudaMalloc( (void**) &(this->val_), nnz * sizeof(NumType)) );
     CUDA_CALL( cudaMalloc( (void**) &(this->row_ptr_), (m + 1) * sizeof(int)) );
     CUDA_CALL( cudaMalloc( (void**) &(this->col_idx_), nnz * sizeof(int)) );
+
+    const NumType zero = static_cast<NumType>(0);
+    CUDA_CALL(cudaMemset(this->val_, zero, nnz * sizeof(NumType)));
+    CUDA_CALL(cudaMemset(this->row_ptr_, zero, (m + 1) * sizeof(NumType)));
+    CUDA_CALL(cudaMemset(this->col_idx_, zero, nnz * sizeof(NumType)));
 }
 
 template <typename NumType>

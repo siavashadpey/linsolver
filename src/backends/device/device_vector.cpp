@@ -35,6 +35,9 @@ void DeviceVector<NumType>::allocate(int n)
 
     this->size_ = n;
     CUDA_CALL(cudaMalloc((void**) &(this->vec_), n * sizeof(NumType)));
+
+    const NumType zero = static_cast<NumType>(0);
+    CUDA_CALL(cudaMemset(this->vec_, zero, n * sizeof(NumType)));
 }
 
 template <typename NumType>

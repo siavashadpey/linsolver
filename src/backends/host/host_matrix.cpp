@@ -29,9 +29,9 @@ void HostMatrix<NumType>::allocate(int m, int n, int nnz)
     this->n_ = n;
     this->nnz_ = nnz;
 
-    this->val_ = new NumType[nnz];
-    this->row_ptr_ = new int[m+1];
-    this->col_idx_ = new int[nnz];
+    this->val_ = new NumType[nnz]();
+    this->row_ptr_ = new int[m+1]();
+    this->col_idx_ = new int[nnz]();
 }
 
 template <typename NumType>

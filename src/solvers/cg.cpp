@@ -36,7 +36,7 @@ void CG<MatType, VecType, NumType>::prepare_solver_(int soln_dim)
     r_.allocate(soln_dim);
     p_.allocate(soln_dim);
     q_.allocate(soln_dim);
-
+    
     if (this->precond_ != nullptr) {
         z_ = new VecType;
         z_->allocate(soln_dim);
@@ -64,7 +64,7 @@ void CG<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rhs
     mat.multiply(*soln, &r_);
     r_.scale_add(minus_one, rhs);
 
-    NumType rho;
+    NumType rho = zero;
     // solve for z in M*z = r
     if (this->precond_ != nullptr) {
         this->precond_->apply(r_, z_);
@@ -76,7 +76,7 @@ void CG<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rhs
         this->init_res_norm_ = sqrt(rho);
     }
 
-    printf("init res: %e \n", this->init_res_norm_);
+    //printf("init res: %e \n", this->init_res_norm_);
 
     NumType beta = zero;
     for (this->it_counter_ = 0; this->it_counter_ < this->max_its_; ++this->it_counter_) {
@@ -94,7 +94,7 @@ void CG<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rhs
         }
 
         this->res_norm_ = r_.norm();
-        printf("i: %d r: %e \n", this->it_counter_,  this->res_norm_);
+        //printf("i: %d r: %e \n", this->it_counter_,  this->res_norm_);
         if (this->is_converged_()) {
             break;
         }
