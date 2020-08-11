@@ -1,4 +1,4 @@
-
+#include <cassert>
 #include "solvers/jacobi.h"
 
 template <class MatType, class VecType, typename NumType>
