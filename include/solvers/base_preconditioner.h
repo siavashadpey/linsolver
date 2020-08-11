@@ -26,6 +26,5 @@ public:
      * Apply the preconditioner on the provided vector in place. 
      */
     virtual void apply(VecType* x) const = 0;
-
 };
 #endif

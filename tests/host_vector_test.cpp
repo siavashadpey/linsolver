@@ -132,13 +132,11 @@ TEST(HostVector, test_2)
         vw_h[i] = v_h[i] * w_h[i];
     }
 
-    v_h.pointwise_multiply(w_h);
+    v_h.elementwise_multiply(w_h);
 
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(vw_h[i], v_h[i], tol);
     }
-
-
 }
 
 int main(int argc, char **argv) {

@@ -21,7 +21,7 @@ void Jacobi<MatType, VecType, NumType>::prepare_preconditioner(const MatType& ma
 template <class MatType, class VecType, typename NumType>
 void Jacobi<MatType, VecType, NumType>::apply(VecType* x) const
 {
-    x->pointwise_multiply(this->inv_diag_);
+    x->elementwise_multiply(this->inv_diag_);
 }
 
 // instantiate template classes

@@ -90,6 +90,49 @@ TEST(device_GMRES, test_2)
     }
 }
 
+TEST(device_GMRES, test_3)
+{
+    HostMatrix<float> A_h = HostMatrix<float>();
+    int n = 4;
+    int nnz = 10;
+    A_h.allocate(n, n, nnz);
+    float val[] = {3.0f, 1.0f, -3.0f, -1.0f, -5.5f, 2.3f, 4.3f, 0.3f, 3.2f, -3.0f};
+    int row_idx[] = {0, 3, 5, 7, 10};
+    int col_idx[] = {0, 1, 3, 1, 2, 0, 2, 1, 2, 3};
+    A_h.copy_from(val, row_idx, col_idx);
+    
+    DeviceMatrix<float> A_d = DeviceMatrix<float>();
+    A_d.copy_from(A_h);
+
+    auto b_d = DeviceVector<float>();
+    b_d.allocate(n);
+
+    float x_e_vals[] = {9, 6.3, 68, -11.4};
+    HostVector<float> x_e_h = HostVector<float>();
+    x_e_h.allocate(n);
+    x_e_h.copy_from(x_e_vals);
+
+    DeviceVector<float> x_e_d = DeviceVector<float>();
+    x_e_d.allocate(n);
+    x_e_d.copy_from(x_e_h);
+    A_d.multiply(x_e_d, &b_d); // b = A*x
+    DeviceVector<float> x_soln_d = DeviceVector<float>();
+    x_soln_d.allocate(n);
+    x_soln_d.zeros();
+
+    auto solver = GMRES<DeviceMatrix<float>, DeviceVector<float>, float>();
+    auto precond = Jacobi<HostMatrix<double>, HostVector<double>, double>();
+    solver.set_preconditioner(precond);
+    
+    solver.solve(A_d, b_d, &x_soln_d);
+    HostVector<float> x_soln_h = HostVector<float>();
+    x_soln_d.copy_to(x_soln_h);
+
+    for (int i = 0; i < n; i++) {
+        EXPECT_NEAR(x_soln_h[i], x_e_h[i], float_tol);
+    }
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

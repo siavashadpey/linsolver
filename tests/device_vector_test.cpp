@@ -166,6 +166,37 @@ TEST(DeviceVector, test_4)
     }
 }
 
+TEST(HostVector, test_5)
+{
+    HostVector<double> v_h = HostVector<double>();
+    HostVector<double> w_h = HostVector<double>();
+    HostVector<double> vw_h = HostVector<double>();
+
+    const int n = 5;
+    v_h.allocate(n);
+    w_h.allocate(n);
+    vw_h.allocate(n);
+
+    for (int i = 0; i < n; i++) {
+        v_h[i] = (double) 2.3 * i + 10.;
+        w_h[i] = (double) -3. * i + 12.;
+        vw_h[i] = v_h[i] * w_h[i];
+    }
+
+    DeviceVector<double> v_d = DeviceVector<double>();
+    DeviceVector<double> w_d = DeviceVector<double>();
+
+    v_d.copy_from(v_h);
+    w_d.copy_from(w_h);
+
+    v_d.elementwise_multiply(w_d);
+    v_d.copy_to(v_h);
+
+    for (int i = 0; i < n; i++) {
+        EXPECT_NEAR(vw_h[i], v_h[i], tol);
+    }
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

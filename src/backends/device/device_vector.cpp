@@ -266,9 +266,18 @@ void DeviceVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& 
 }
 
 template <typename NumType>
-void DeviceVector<NumType>::pointwise_multiply(const BaseVector<NumType>& w)
+void DeviceVector<NumType>::elementwise_multiply(const BaseVector<NumType>& w)
 {
-    // TODO
+    const DeviceVector<NumType>* w_device = dynamic_cast<const DeviceVector<NumType>*>(&w);
+    assert(w_device != nullptr);
+    assert(this->size_ == w_device->size_);
+
+    const int block = 256;
+    const int grid = (this->size_ + block - 1)/block;
+
+    elementwise_multiply_kernel<<<grid, block>>>(this->size_,
+                                                 w_device->vec_,
+                                                 this->vec_);
 }
 
 // instantiate template classes

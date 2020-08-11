@@ -118,10 +118,10 @@ public:
     virtual void scale_add(NumType alpha, const BaseVector<NumType>& w) = 0;
 
     /**
-     * \p v = \p v .*  w, where \p v is the vector itself and .* is the pointwise multiplication operator.
+     * \p v = \p v .*  w, where \p v is the vector itself and .* is the elementwise multiplication operator.
      * \param[in] w     The vector in the above equation.
      */
-    virtual void pointwise_multiply(const BaseVector<NumType>& w) = 0;
+    virtual void elementwise_multiply(const BaseVector<NumType>& w) = 0;
 
 protected:
     /**

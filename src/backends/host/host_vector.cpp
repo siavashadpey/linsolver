@@ -226,7 +226,7 @@ void HostVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& w)
 }
 
 template <typename NumType>
-void HostVector<NumType>::pointwise_multiply(const BaseVector<NumType>& w)
+void HostVector<NumType>::elementwise_multiply(const BaseVector<NumType>& w)
 {
     const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
     assert(w_host != nullptr);

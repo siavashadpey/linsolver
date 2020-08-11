@@ -29,4 +29,16 @@ __global__ void scale_add_kernel(int size,
     y[idx] = alpha * y[idx] + x[idx];
 }
 
+template <typename NumType>
+__global__ void elementwise_multiply_kernel(int size, 
+                     const NumType* __restrict__ x,
+                     NumType* __restrict__ y)
+{
+    int idx = threadIdx.x + blockDim.x*blockIdx.x;
+    if (idx >= size) {
+        return;
+    }
+    y[idx] = y[idx] * x[idx];
+}
+
 #endif

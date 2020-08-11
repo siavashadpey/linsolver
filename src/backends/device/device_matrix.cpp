@@ -6,6 +6,7 @@
 #include "base/cublas_wrapper.cuh"
 #include "base/cusparse_wrapper.cuh"
 #include "backends/device/device_vector_helper.cuh"
+#include "backends/device/device_matrix_helper.cuh"
 #include "base/error.h"
 
 #include "backends/device/device_matrix.h"
@@ -184,7 +185,25 @@ void DeviceMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 template <typename NumType>
 void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const
 {
-    // TODO
+    assert(this->n_ > 0);
+    assert(this->m_ > 0);
+    assert(inv_diag != nullptr);
+
+    DeviceVector<NumType>* inv_diag_d = dynamic_cast<DeviceVector<NumType>*>(inv_diag);
+    assert(inv_diag_d != nullptr);
+
+    if (inv_diag_d->n() != this->m_) {
+            inv_diag_d->allocate(this->m_,
+                                 this->row_ptr_,
+                                 this->col_idx_,
+                                 this->val_,
+                                 inv_diag_d->vec_);
+    }
+
+    const int block = 256;
+    const int grid = (this->m_ + block - 1)/block;
+    
+    compute_inverse_diag_kernel<<<grid, blocks>>>();
 }
 
 

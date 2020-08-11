@@ -184,6 +184,8 @@ void HostMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 template <typename NumType>
 void HostMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const
 {
+    assert(this->n_ > 0);
+    assert(this->m_ > 0);
     assert(inv_diag != nullptr);
 
     HostVector<NumType>* inv_diag_h = dynamic_cast<HostVector<NumType>*>(inv_diag);
@@ -192,7 +194,7 @@ void HostMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_dia
     const NumType one = static_cast<NumType>(1);
 
     if (inv_diag_h->n() != this->m_) {
-            inv_diag_h->allocate(this->n_);
+            inv_diag_h->allocate(this->m_);
     }
 
 #ifdef _OPENMP
