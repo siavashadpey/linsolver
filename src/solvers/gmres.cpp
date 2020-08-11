@@ -155,6 +155,7 @@ void GMRES<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& 
         g_.zeros();
         g_[0] = V_[0].norm();
         V_[0].scale(one/g_[0]);
+        //printf("i: %d r: %e \n", this->it_counter_,  this->res_norm_);
         this->res_norm_ = std::abs(g_[0]);
     }
 

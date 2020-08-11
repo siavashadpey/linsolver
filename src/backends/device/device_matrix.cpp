@@ -192,18 +192,17 @@ void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_d
     DeviceVector<NumType>* inv_diag_d = dynamic_cast<DeviceVector<NumType>*>(inv_diag);
     assert(inv_diag_d != nullptr);
 
-    if (inv_diag_d->n() != this->m_) {
-            inv_diag_d->allocate(this->m_,
-                                 this->row_ptr_,
-                                 this->col_idx_,
-                                 this->val_,
-                                 inv_diag_d->vec_);
+    if (inv_diag_d->n() != this->m_) {inv_diag_d->allocate(this->m_);
     }
 
     const int block = 256;
     const int grid = (this->m_ + block - 1)/block;
     
-    compute_inverse_diag_kernel<<<grid, blocks>>>();
+    compute_inverse_diag_kernel<<<grid, block>>>(this->m_,
+                                                 this->row_ptr_,
+                                                 this->col_idx_,
+                                                 this->val_,
+                                                 inv_diag_d->vec_);
 }
 
 

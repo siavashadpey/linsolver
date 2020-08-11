@@ -8,8 +8,9 @@
 #include "backends/device/device_matrix.h"
 #include "backends/device/device_vector.h"
 #include "backends/host/host_vector.h"
+#include "solvers/jacobi.h"
 
-#define float_tol 1E-5
+#define float_tol 2E-5
 
 TEST(device_GMRES, test_1)
 {
@@ -28,7 +29,7 @@ TEST(device_GMRES, test_1)
     auto b_d = DeviceVector<float>();
     b_d.allocate(n);
 
-    float x_e_vals[] = {9, 6.3, 68, -11.4};
+    float x_e_vals[] = {9.f, 6.3f, 68.f, -11.4f};
     HostVector<float> x_e_h = HostVector<float>();
     x_e_h.allocate(n);
     x_e_h.copy_from(x_e_vals);
@@ -121,7 +122,7 @@ TEST(device_GMRES, test_3)
     x_soln_d.zeros();
 
     auto solver = GMRES<DeviceMatrix<float>, DeviceVector<float>, float>();
-    auto precond = Jacobi<HostMatrix<double>, HostVector<double>, double>();
+    auto precond = Jacobi<DeviceMatrix<float>, DeviceVector<float>, float>();
     solver.set_preconditioner(precond);
     
     solver.solve(A_d, b_d, &x_soln_d);

@@ -168,9 +168,9 @@ TEST(DeviceVector, test_4)
 
 TEST(HostVector, test_5)
 {
-    HostVector<double> v_h = HostVector<double>();
-    HostVector<double> w_h = HostVector<double>();
-    HostVector<double> vw_h = HostVector<double>();
+    HostVector<float> v_h =  HostVector<float>();
+    HostVector<float> w_h =  HostVector<float>();
+    HostVector<float> vw_h = HostVector<float>();
 
     const int n = 5;
     v_h.allocate(n);
@@ -178,13 +178,13 @@ TEST(HostVector, test_5)
     vw_h.allocate(n);
 
     for (int i = 0; i < n; i++) {
-        v_h[i] = (double) 2.3 * i + 10.;
-        w_h[i] = (double) -3. * i + 12.;
+        v_h[i] = 2.3f * i + 10.f;
+        w_h[i] = -3.f * i + 12.f;
         vw_h[i] = v_h[i] * w_h[i];
     }
 
-    DeviceVector<double> v_d = DeviceVector<double>();
-    DeviceVector<double> w_d = DeviceVector<double>();
+    DeviceVector<float> v_d = DeviceVector<float>();
+    DeviceVector<float> w_d = DeviceVector<float>();
 
     v_d.copy_from(v_h);
     w_d.copy_from(w_h);
@@ -193,7 +193,7 @@ TEST(HostVector, test_5)
     v_d.copy_to(v_h);
 
     for (int i = 0; i < n; i++) {
-        EXPECT_NEAR(vw_h[i], v_h[i], tol);
+        EXPECT_NEAR(vw_h[i], v_h[i], float_tol);
     }
 }
 
