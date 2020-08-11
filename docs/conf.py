@@ -37,6 +37,10 @@ if read_the_docs_build:
     configureDoxyfile(input_dir, output_dir)
     subprocess.call('doxygen', shell=True)
     breathe_projects['linSolver'] = output_dir + '/xml'
+else:
+    import sphinx_rtd_theme
+    html_theme = "sphinx_rtd_theme"
+    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # -- Project information -----------------------------------------------------
 master_doc = "index"
@@ -58,11 +62,15 @@ extensions = [
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
-    "breathe"
+    "breathe",
+    "sphinx.ext.inheritance_diagram"
 ]
 
 # Breathe Configuration
 breathe_default_project = "linSolver"
+
+# TB = Top to Bottom view
+inheritance_graph_attrs = dict(rankdir="TB", size='""')
 
 # Napoleon settings
 napoleon_google_docstring = True

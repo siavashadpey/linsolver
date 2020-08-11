@@ -85,7 +85,6 @@ void CGS<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rh
 
     NumType beta = zero;
     for (this->it_counter_ = 0; this->it_counter_ < this->max_its_; ++this->it_counter_) {
-        
         // u = r + beta * q
         u_.copy_from(r_);
         u_.add_scale(beta, q_);
