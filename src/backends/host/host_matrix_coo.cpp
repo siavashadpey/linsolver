@@ -118,7 +118,7 @@ void HostMatrixCOO<NumType>::multiply(const BaseVector<NumType>& v_in,
 }
 
 template <typename NumType>
-void HostMatrixCOO<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const
+void HostMatrixCOO<NumType>::compute_inverse_diagonals(BaseVector<NumType>* ) const
 {
     Error("Method has not yet been implemented.");
 }
