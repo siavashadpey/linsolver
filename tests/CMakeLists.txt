@@ -51,6 +51,7 @@ set(HOST_TEST_SET
 	host_matrix
   host_matrix_coo
 	host_gmres
+  host_cg
   host_jacobi
 )
 

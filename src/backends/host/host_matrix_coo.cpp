@@ -27,9 +27,9 @@ void HostMatrixCOO<NumType>::allocate(int m, int n, int nnz)
     this->n_ = n;
     this->nnz_ = nnz;
 
-    this->row_idx_ = new int[nnz];
-    this->col_idx_ = new int[nnz];
-    this->val_ = new NumType[nnz];
+    this->row_idx_ = new int[nnz]();
+    this->col_idx_ = new int[nnz]();
+    this->val_ = new NumType[nnz]();
 }
 
 template <typename NumType>

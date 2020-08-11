@@ -26,7 +26,7 @@ void HostVector<NumType>::allocate(int n)
     this->clear();
 
     this->size_ = n;
-    this->vec_ = new NumType[n];
+    this->vec_ = new NumType[n]();
 }
 
 template <typename NumType>
@@ -235,6 +235,22 @@ void HostVector<NumType>::elementwise_multiply(const BaseVector<NumType>& w)
 #endif
     for (int i = 0; i < this->size_; i++) {
         this->vec_[i] *= w_host->vec_[i];
+    }
+}
+
+template <typename NumType>
+void HostVector<NumType>::elementwise_multiply(const BaseVector<NumType>& w, const BaseVector<NumType>& z)
+{
+    const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
+    const HostVector<NumType>* z_host = dynamic_cast<const HostVector<NumType>*>(&z);
+    assert(w_host != nullptr);
+    assert(z_host != nullptr);
+
+#ifdef _OPENMP
+    #pragma omp parallel for
+#endif
+    for (int i = 0; i < this->size_; i++) {
+        this->vec_[i] = w_host->vec_[i] * z_host->vec_[i];
     }
 }
 

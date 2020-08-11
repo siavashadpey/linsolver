@@ -21,6 +21,11 @@ template <class MatType, class VecType, typename NumType>
 void GMRES<MatType, VecType, NumType>::clear() 
 {
     if (krylov_dim_ >= 0) {
+        c_.clear();
+        s_.clear();
+        g_.clear();
+        H_.clear();
+        
         delete[] V_;
     }
 }
@@ -155,6 +160,7 @@ void GMRES<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& 
         g_.zeros();
         g_[0] = V_[0].norm();
         V_[0].scale(one/g_[0]);
+        //printf("i: %d r: %e \n", this->it_counter_,  this->res_norm_);
         this->res_norm_ = std::abs(g_[0]);
     }
 

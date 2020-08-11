@@ -24,6 +24,12 @@ void Jacobi<MatType, VecType, NumType>::apply(VecType* x) const
     x->elementwise_multiply(this->inv_diag_);
 }
 
+template <class MatType, class VecType, typename NumType>
+void Jacobi<MatType, VecType, NumType>::apply(const VecType& b, VecType* x) const
+{
+    x->elementwise_multiply(this->inv_diag_, b);
+}
+
 // instantiate template classes
 template class Jacobi<HostMatrix<double>, HostVector<double>, double>;
 template class Jacobi<HostMatrix<float> , HostVector<float> , float>;

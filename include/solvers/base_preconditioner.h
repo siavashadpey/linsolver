@@ -26,5 +26,10 @@ public:
      * Apply the preconditioner on the provided vector in place. 
      */
     virtual void apply(VecType* x) const = 0;
+
+    /**
+     * Solve for x in M*x = b. 
+     */
+    virtual void apply(const VecType& b, VecType* x) const = 0;
 };
 #endif

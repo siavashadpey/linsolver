@@ -17,6 +17,7 @@ public:
     void prepare_preconditioner(const MatType& mat);
 
     void apply(VecType* x) const;
+    virtual void apply(const VecType& b, VecType* x) const;
 
 protected:
     VecType inv_diag_;

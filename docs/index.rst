@@ -15,4 +15,6 @@ Welcome to linSolver's documentation!
 
    solvers
 
+   preconditioners
+
 .. include:: contact.rst
