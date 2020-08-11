@@ -32,6 +32,11 @@ public:
     virtual ~BaseSolver();
 
     /**
+     * Clear memory.
+     */
+    virtual void clear() = 0;
+
+    /**
      * Solves for \p soln in \p mat * \p soln = \p rhs.
      * @param[in]  mat  The matrix in the above equation.
      * @param[in]  rhs  The vector in the above equation.

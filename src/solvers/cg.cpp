@@ -29,10 +29,12 @@ void CG<MatType, VecType, NumType>::clear()
 }
 
 template <class MatType, class VecType, typename NumType>
-void CG<MatType, VecType, NumType>::prepare_solver_(int soln_dim)
+void CG<MatType, VecType, NumType>::prepare_solver_(const MatType& mat)
 {
     clear();
 
+    int soln_dim = mat.n();
+    
     r_.allocate(soln_dim);
     p_.allocate(soln_dim);
     q_.allocate(soln_dim);
@@ -40,6 +42,8 @@ void CG<MatType, VecType, NumType>::prepare_solver_(int soln_dim)
     if (this->precond_ != nullptr) {
         z_ = new VecType;
         z_->allocate(soln_dim);
+
+        this->precond_->prepare_preconditioner(mat);
     }
     else {
         z_ = &r_;
@@ -51,10 +55,7 @@ void CG<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rhs
 {
     assert(mat.is_square());
 
-    prepare_solver_(mat.n());
-    if (this->precond_ != nullptr) {
-        this->precond_->prepare_preconditioner(mat);
-    }
+    prepare_solver_(mat);
 
     const NumType zero = static_cast<NumType>(0);
     const NumType one = static_cast<NumType>(1);
@@ -65,8 +66,8 @@ void CG<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rhs
     r_.scale_add(minus_one, rhs);
 
     NumType rho = zero;
-    // solve for z in M*z = r
     if (this->precond_ != nullptr) {
+        // solve for z in M*z = r
         this->precond_->apply(r_, z_);
         rho = r_.dot(*z_);
         this->init_res_norm_ = r_.norm();
@@ -88,8 +89,8 @@ void CG<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rhs
         soln->add_scale(alpha, p_); // x = x + alpha * p
         r_.add_scale(-alpha, q_);   // r = r - alpha * q
 
-        // solve for z in M*z = r
         if (this->precond_ != nullptr) {
+            // solve for z in M*z = r
             this->precond_->apply(r_, z_);
         }
 

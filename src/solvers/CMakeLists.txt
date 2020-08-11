@@ -6,6 +6,7 @@ set(SOLVERS_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/base_iterative_solver.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/gmres.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/cg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/cgs.cpp
 )
 
 # add preconditioner source files

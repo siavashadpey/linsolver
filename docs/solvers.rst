@@ -6,5 +6,6 @@ Solvers
    :maxdepth: 2
 
    base_solvers
-   cg
    gmres
+   cg
+   cgs

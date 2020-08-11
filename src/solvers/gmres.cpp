@@ -37,7 +37,7 @@ void GMRES<MatType, VecType, NumType>::set_krylov_dimension(int K_dim)
 }
 
 template <class MatType, class VecType, typename NumType>
-void GMRES<MatType, VecType, NumType>::prepare_solver_(int soln_dim)
+void GMRES<MatType, VecType, NumType>::prepare_solver_(const MatType& mat)
 {
     assert(krylov_dim_ > 0);
     clear();
@@ -49,7 +49,11 @@ void GMRES<MatType, VecType, NumType>::prepare_solver_(int soln_dim)
 
     V_ = new VecType[krylov_dim_ + 1];
     for (int i = 0; i < krylov_dim_ + 1; i++) {
-        V_[i].allocate(soln_dim);
+        V_[i].allocate(mat.n());
+    }
+
+    if (this->precond_ != nullptr) {
+        this->precond_->prepare_preconditioner(mat);
     }
 }
 
@@ -58,10 +62,7 @@ void GMRES<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& 
 {
     assert(mat.is_square());
 
-    prepare_solver_(mat.n());
-    if (this->precond_ != nullptr) {
-        this->precond_->prepare_preconditioner(mat);
-    }
+    prepare_solver_(mat);
 
     this->it_counter_ = 0;
 

@@ -23,9 +23,6 @@ public:
      */
     ~GMRES();
 
-    /**
-     * Clear all dynamically allocated memory by this class' methods.
-     */
     void clear();
 
     /**
@@ -53,7 +50,7 @@ private:
     /**
      * Prepare the GMRES solver. This is called within solve.
      */
-    void prepare_solver_(int soln_dim);
+    void prepare_solver_(const MatType& mat);
 
     static void rotate_inplace_(NumType c, NumType s, NumType& h, NumType& hp1);
 };
