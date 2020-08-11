@@ -104,6 +104,29 @@ TEST(HostMatrix, test_2)
     }
 }
 
+TEST(HostMatrix, test_3)
+{
+    HostMatrix<double> A = HostMatrix<double>();
+
+    int m = 4;
+    int n = 4; 
+    int nnz = 9;
+    A.allocate(m, n, nnz);
+
+    double val[] = {-1., 2., -3.2,  4., 7., 10., .4, 3., 1.1};
+    int row_ptr[] = {0, 3, 5, 7, 9};
+    int col_idx[] = {0, 2, 3, 1, 3, 0, 2, 2, 3};
+    double inv_diag_e [] = {-1., 1./4., 1./.4, 1./1.1};
+    
+    A.copy_from(val, row_ptr, col_idx);
+    HostVector<double> inv_diag = HostVector<double>();
+    A.compute_inverse_diagonals(&inv_diag);
+
+    for (int i = 0; i < n; i++) {
+        EXPECT_NEAR(inv_diag[i], inv_diag_e[i], tol);
+    }
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

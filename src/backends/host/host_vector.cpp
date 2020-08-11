@@ -225,6 +225,18 @@ void HostVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& w)
     }
 }
 
+template <typename NumType>
+void HostVector<NumType>::pointwise_multiply(const BaseVector<NumType>& w)
+{
+    const HostVector<NumType>* w_host = dynamic_cast<const HostVector<NumType>*>(&w);
+    assert(w_host != nullptr);
+#ifdef _OPENMP
+    #pragma omp parallel for
+#endif
+    for (int i = 0; i < this->size_; i++) {
+        this->vec_[i] *= w_host->vec_[i];
+    }
+}
 
 // instantiate template classes
 template class HostVector<double>;

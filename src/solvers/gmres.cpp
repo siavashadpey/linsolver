@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "solvers/gmres.h"
+#include "solvers/base_preconditioner.h"
 
 template <class MatType, class VecType, typename NumType>
 GMRES<MatType, VecType, NumType>::GMRES()
@@ -53,6 +54,9 @@ void GMRES<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& 
     assert(mat.is_square());
 
     prepare_solver_(mat.n());
+    if (this->precond_ != nullptr) {
+        this->precond_->prepare_preconditioner(mat);
+    }
 
     this->it_counter_ = 0;
 
@@ -64,6 +68,12 @@ void GMRES<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& 
     // V[0] = rhs - mat*x;
     mat.multiply(*soln, &V_[0]);
     V_[0].scale_add(minus_one, rhs);
+
+    // V[0] <- M^-1 * V[0]
+    if (this->precond_ != nullptr) {
+        this->precond_->apply(&V_[0]);
+    }
+
     g_.zeros();    
     g_[0] = V_[0].norm();
     V_[0].scale(one/g_[0]);
@@ -78,7 +88,15 @@ void GMRES<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& 
         int j = 0;
         for (; j < nd; ++j) {
             // construct j-th orthonormal basis
+
+            // v[j+1] = mat * v[j]
             mat.multiply(V_[j], &V_[j+1]);
+
+            // v[j+1] <-- M^-1 * v[j+1]
+            if (this->precond_ != nullptr) {
+                this->precond_->apply(&V_[j+1]);
+            }
+
             for (int i = 0; i < j + 1; i++) {
                 H_[j*ndp1 + i] = V_[i].dot(V_[j+1]); // H[i,j] = V[i]^T*V[j+1]
                 V_[j+1].add_scale(-H_[j*ndp1 + i], V_[i]); // V[j+1] -= H[i,j]*V[i]
@@ -106,7 +124,8 @@ void GMRES<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& 
             // have we converged?
             // if no, no need to solve for y
             this->res_norm_ = std::abs(g_[j+1]);
-            //printf("i: %d. j: %d. res: %e \n", this->it_counter_, j, g_[j+1]);
+
+            //printf("i: %d j: %d r: %e \n", this->it_counter_, j, this->res_norm_);
             if (this->is_converged_()) {
                 break;
             }
@@ -129,7 +148,10 @@ void GMRES<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& 
 
         // prepare for next iteration
         mat.multiply(*soln, &V_[0]);
-        V_[0].scale_add(minus_one, rhs);    
+        V_[0].scale_add(minus_one, rhs);
+        if (this->precond_ != nullptr) {
+            this->precond_->apply(&V_[0]);
+        }
         g_.zeros();
         g_[0] = V_[0].norm();
         V_[0].scale(one/g_[0]);

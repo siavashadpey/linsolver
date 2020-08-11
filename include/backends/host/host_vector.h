@@ -40,6 +40,7 @@ public:
     virtual void add(NumType alpha, const BaseVector<NumType>& w, NumType beta);
     virtual void add_scale(NumType alpha, const BaseVector<NumType>& w);
     virtual void scale_add(NumType alpha, const BaseVector<NumType>& w);
+    virtual void pointwise_multiply(const BaseVector<NumType>& w);
 
 protected:
     /**

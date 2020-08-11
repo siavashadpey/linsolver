@@ -182,6 +182,13 @@ void DeviceMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 }
 
 template <typename NumType>
+void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const
+{
+    // TODO
+}
+
+
+template <typename NumType>
 bool DeviceMatrix<NumType>::read_matrix_market(const std::string filename) {
     Error("Method has not yet been implemented.");
 }

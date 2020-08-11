@@ -8,7 +8,8 @@ BaseIterativeSolver<MatType, VecType, NumType>::BaseIterativeSolver()
         max_its_(1E3),
         it_counter_(0),
         init_res_norm_(1E10),
-        res_norm_(1E12)
+        res_norm_(1E12),
+        precond_(nullptr)
 {
 }
 
@@ -42,6 +43,11 @@ void BaseIterativeSolver<MatType, VecType, NumType>::set_max_iterations(int max_
     max_its_ = max_it;
 }
 
+template <class MatType, class VecType, typename NumType>
+void BaseIterativeSolver<MatType, VecType, NumType>::set_preconditioner(BasePreconditioner<MatType, VecType, NumType>& precond)
+{
+    precond_ = &precond;
+}
 
 template <class MatType, class VecType, typename NumType>
 bool BaseIterativeSolver<MatType, VecType, NumType>::is_converged_() const {

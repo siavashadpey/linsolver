@@ -2,6 +2,7 @@
 #define BASE_ITERATIVE_SOLVER_H
 
 #include "solvers/base_solver.h"
+#include "solvers/base_preconditioner.h"
 
 /**
  * \brief Base class for Iterative Linear Solvers.
@@ -37,10 +38,15 @@ public:
     void set_abs_rel_tolerances(double abs_tol, double rel_tol);
 
     /**
-     * @param[in] max_it The maximum number of iterations before 
+     * @param[in] max_it The maximum number of iterations before. 
      * stopping, if the solution has not yet converged (default is 1000).
      */
     void set_max_iterations(int max_it);
+
+    /**
+     * @param[in] precond The preconditioner to be used by the solver.
+     */
+    void set_preconditioner(BasePreconditioner<MatType, VecType, NumType>& precond);
 
 protected:
     /**
@@ -73,6 +79,10 @@ protected:
      */
     double res_norm_;
 
+    /**
+     * Precondition of the solver.
+     */
+    BasePreconditioner<MatType, VecType, NumType>* precond_;
 
     /**
      * \return If the solution has converged or not.

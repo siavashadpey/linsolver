@@ -95,6 +95,12 @@ public:
         BaseVector<NumType>* w_out) const = 0;
 
     /**
+     * Compute the inverse of the diagonal entries of the matrix.
+     * \param[out] w_out The outputted vector storing the inverse of the diagonal entries.
+     */
+    virtual void compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const = 0;
+
+    /**
      * Read a matrix market.
      * @param[in] filename The matrix market file.
      * \returns True if successfully read, and False otherwise.

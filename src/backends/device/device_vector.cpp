@@ -265,6 +265,12 @@ void DeviceVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& 
     CUDA_CALL( cudaDeviceSynchronize());
 }
 
+template <typename NumType>
+void DeviceVector<NumType>::pointwise_multiply(const BaseVector<NumType>& w)
+{
+    // TODO
+}
+
 // instantiate template classes
 template class DeviceVector<double>;
 template class DeviceVector<float>;

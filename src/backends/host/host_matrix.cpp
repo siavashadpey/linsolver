@@ -182,6 +182,34 @@ void HostMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 }
 
 template <typename NumType>
+void HostMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const
+{
+    assert(inv_diag != nullptr);
+
+    HostVector<NumType>* inv_diag_h = dynamic_cast<HostVector<NumType>*>(inv_diag);
+    assert(inv_diag_h != nullptr);
+
+    const NumType one = static_cast<NumType>(1);
+
+    if (inv_diag_h->n() != this->m_) {
+            inv_diag_h->allocate(this->n_);
+    }
+
+#ifdef _OPENMP
+    #pragma omp parallel for
+#endif
+    for (int irow = 0; irow < this->m_; irow++) {
+        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
+            int jcol = this->col_idx_[val_idx];
+            if (irow == jcol) {
+                inv_diag_h->vec_[irow] = one/this->val_[val_idx];
+                break;
+            }
+        }
+    }
+}
+
+template <typename NumType>
 bool HostMatrix<NumType>::read_matrix_market(const std::string filename) {
     HostMatrixCOO<NumType> mat_coo = HostMatrixCOO<NumType>();
     bool success = mat_coo.read_matrix_market(filename);

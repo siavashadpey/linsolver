@@ -37,6 +37,7 @@ public:
     void scale(NumType alpha);
     void multiply(const BaseVector<NumType>& v_in, 
         BaseVector<NumType>* w_out) const;
+    void compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const;
     bool read_matrix_market(const std::string filename);
 
     /**

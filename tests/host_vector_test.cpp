@@ -115,6 +115,32 @@ TEST(HostVector, test_1)
     EXPECT_EQ(v.n(), 0); // cleared data
 }
 
+TEST(HostVector, test_2)
+{
+    HostVector<double> v_h = HostVector<double>();
+    HostVector<double> w_h = HostVector<double>();
+    HostVector<double> vw_h = HostVector<double>();
+
+    const int n = 5;
+    v_h.allocate(n);
+    w_h.allocate(n);
+    vw_h.allocate(n);
+
+    for (int i = 0; i < n; i++) {
+        v_h[i] = (double) 2.3 * i + 10.;
+        w_h[i] = (double) -3. * i + 12.;
+        vw_h[i] = v_h[i] * w_h[i];
+    }
+
+    v_h.pointwise_multiply(w_h);
+
+    for (int i = 0; i < n; i++) {
+        EXPECT_NEAR(vw_h[i], v_h[i], tol);
+    }
+
+
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
