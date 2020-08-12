@@ -1,8 +1,6 @@
 #ifndef DEVICE_VECTOR_H
 #define DEVICE_VECTOR_H
 
-#include <cublas_v2.h>
-
 #include "backends/base_vector.h"
 #include "backends/device/device_matrix.h"
 
@@ -72,11 +70,6 @@ protected:
      * Values of the vector.
      */
     NumType* vec_;
-
-    /**
-     * Cublas handle.
-     */
-    cublasHandle_t cublasHandle_;
 
 private:
     // befriending classes

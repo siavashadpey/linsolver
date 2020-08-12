@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "base/cuda_header.cuh"
+#include "base/backend_wrapper.h"
 #include "base/cublas_wrapper.cuh"
 #include "base/cusparse_wrapper.cuh"
 #include "backends/device/device_vector_helper.cuh"
@@ -19,9 +20,6 @@ DeviceMatrix<NumType>::DeviceMatrix()
         row_ptr_(nullptr),
         col_idx_(nullptr)
 {
-    CUBLAS_CALL( cublasCreate(&cublasHandle_) );
-    CUSPARSE_CALL( cusparseCreate(&cusparseHandle_) );
-
     CUSPARSE_CALL( cusparseCreateMatDescr(&cusparseMatDescr_));
     CUSPARSE_CALL( cusparseSetMatIndexBase(cusparseMatDescr_, CUSPARSE_INDEX_BASE_ZERO));
     CUSPARSE_CALL( cusparseSetMatType(cusparseMatDescr_, CUSPARSE_MATRIX_TYPE_GENERAL));
@@ -30,8 +28,6 @@ DeviceMatrix<NumType>::DeviceMatrix()
 template <typename NumType>
 DeviceMatrix<NumType>::~DeviceMatrix()
 {
-    CUBLAS_CALL( cublasDestroy(cublasHandle_) );
-    CUSPARSE_CALL( cusparseDestroy(cusparseHandle_) );
     CUSPARSE_CALL( cusparseDestroyMatDescr(cusparseMatDescr_));
     this->clear();
 }

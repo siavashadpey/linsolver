@@ -81,7 +81,7 @@ void CG<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rhs
 
     NumType beta = zero;
     for (this->it_counter_ = 0; this->it_counter_ < this->max_its_; ++this->it_counter_) {
-        p_.scale_add(beta, *z_); // p = r + beta * p
+        p_.scale_add(beta, *z_); // p = z + beta * p
 
         mat.multiply(p_, &q_); // q = A*p
         NumType alpha = rho / (q_.dot(p_));
@@ -89,15 +89,15 @@ void CG<MatType, VecType, NumType>::solve(const MatType& mat, const VecType& rhs
         soln->add_scale(alpha, p_); // x = x + alpha * p
         r_.add_scale(-alpha, q_);   // r = r - alpha * q
 
-        if (this->precond_ != nullptr) {
-            // solve for z in M*z = r
-            this->precond_->apply(r_, z_);
-        }
-
         this->res_norm_ = r_.norm();
         //printf("i: %d r: %e \n", this->it_counter_,  this->res_norm_);
         if (this->is_converged_()) {
             break;
+        }
+
+        if (this->precond_ != nullptr) {
+            // solve for z in M*z = r
+            this->precond_->apply(r_, z_);
         }
 
         // prepara for next iteration

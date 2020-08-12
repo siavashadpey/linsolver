@@ -6,6 +6,7 @@
 #include <thrust/fill.h>
 
 #include "base/cuda_header.cuh"
+#include "base/backend_wrapper.h"
 #include "base/cublas_wrapper.cuh"
 #include "backends/device/device_vector_helper.cuh"
 #include "base/error.h"
@@ -17,13 +18,11 @@ template <typename NumType>
 DeviceVector<NumType>::DeviceVector()
     :   vec_(nullptr)
 {
-    CUBLAS_CALL( cublasCreate(&cublasHandle_) );
 }
 
 template <typename NumType>
 DeviceVector<NumType>::~DeviceVector()
 {
-    CUBLAS_CALL( cublasDestroy(cublasHandle_) );
     this->clear();
 }
 
