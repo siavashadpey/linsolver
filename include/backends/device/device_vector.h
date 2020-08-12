@@ -54,7 +54,6 @@ public:
      */
     virtual void copy_to_host(NumType* w) const;
 
-    virtual NumType& operator[](int i);
     virtual NumType norm() const;
     virtual NumType dot(const BaseVector<NumType>& w) const;
     virtual void zeros();
@@ -64,6 +63,7 @@ public:
     virtual void add_scale(NumType alpha, const BaseVector<NumType>& w);
     virtual void scale_add(NumType alpha, const BaseVector<NumType>& w);
     virtual void elementwise_multiply(const BaseVector<NumType>& w);
+    virtual void elementwise_multiply(const BaseVector<NumType>& w, const BaseVector<NumType>& z);
 
 protected:
     /**

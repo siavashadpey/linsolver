@@ -113,7 +113,7 @@ void DeviceMatrix<NumType>::copy_from(const BaseMatrix<NumType>& B)
 }
 
 template <typename NumType>
-void DeviceMatrix<NumType>::copy_to(BaseMatrix<NumType>& B) const {
+void DeviceMatrix<NumType>::copy_to(BaseMatrix<NumType>& ) const {
     Error("Method has not yet been implemented.");
 }
 
@@ -208,7 +208,7 @@ void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_d
 
 
 template <typename NumType>
-bool DeviceMatrix<NumType>::read_matrix_market(const std::string filename) {
+bool DeviceMatrix<NumType>::read_matrix_market(const std::string ) {
     Error("Method has not yet been implemented.");
 }
 

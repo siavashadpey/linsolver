@@ -31,7 +31,14 @@ public:
     virtual void copy_from(const BaseVector<NumType>& w);
     virtual void copy_to(NumType* w) const;
     virtual void copy_to(BaseVector<NumType>& w) const;
+
+    /**
+     * Return the \p i -th element of the vector.
+     * @param[in] i The index of the element of interest in the vector.
+     * \return The \p i -th value of the vector (returns by reference).
+     */
     virtual NumType& operator[](int i);
+    
     virtual NumType norm() const;
     virtual NumType dot(const BaseVector<NumType>& w) const;
     virtual void zeros();

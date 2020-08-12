@@ -135,12 +135,6 @@ void DeviceVector<NumType>::copy_to_host(NumType* w) const
 }
 
 template <typename NumType>
-NumType& DeviceVector<NumType>::operator[](int i)
-{
-    Error("Method has not yet been implemented.");
-}
-
-template <typename NumType>
 NumType DeviceVector<NumType>::norm() const
 {
     NumType val = static_cast<NumType>(0);
@@ -286,6 +280,13 @@ void DeviceVector<NumType>::elementwise_multiply(const BaseVector<NumType>& w)
                                                  w_device->vec_,
                                                  this->vec_);
 }
+
+template <typename NumType>
+void DeviceVector<NumType>::elementwise_multiply(const BaseVector<NumType>& , const BaseVector<NumType>& )
+{
+    Error("Method has not yet been implemented.");
+}
+
 
 // instantiate template classes
 template class DeviceVector<double>;
