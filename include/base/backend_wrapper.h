@@ -8,20 +8,20 @@ struct BackendInfoStruct {
     cusparseHandle_t cusparseHandle;
     int              dim_block_1d;
 
-    extern struct BackendInfoStruct BackendInfo;
+    extern struct BackendInfoStruct Backend;
 
     void start_backend() {
         BackendInfo.dim_block_1d = 256;
 
-        CUBLAS_CALL( cublasCreate(&(BackendInfo.cublasHandle) ));
-        CUSPARSE_CALL( cusparseCreate(&(BackendInfo.cusparseHandle) ));
+        CUBLAS_CALL( cublasCreate(&(Backend.cublasHandle) ));
+        CUSPARSE_CALL( cusparseCreate(&(Backend.cusparseHandle) ));
     }
 
     void stop_backend() {
-        CUBLAS_CALL( cublasDestroy(BackendInfo.cublasHandle) );
-        CUSPARSE_CALL( cusparseDestroy(BackendInfo.cusparseHandle) );
+        CUBLAS_CALL( cublasDestroy(Backend.cublasHandle) );
+        CUSPARSE_CALL( cusparseDestroy(Backend.cusparseHandle) );
     }
-    
+
 }
 
 #endif

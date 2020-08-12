@@ -124,7 +124,7 @@ NumType DeviceMatrix<NumType>::norm() const
 
     assert(this->nnz_ > 0);
 
-    CUBLAS_CALL( cublasTnrm2(cublasHandle_, 
+    CUBLAS_CALL( cublasTnrm2(Backend.cublasHandle, 
                              this->nnz_, 
                              this->val_, 
                              1,             // increment of 1
@@ -143,7 +143,7 @@ void DeviceMatrix<NumType>::scale(NumType alpha)
     }
     
     assert(this->nnz_ > 0);
-    CUBLAS_CALL( cublasTscal(cublasHandle_,
+    CUBLAS_CALL( cublasTscal(Backend.cublasHandle,
                               this->nnz_, 
                               &alpha,
                               this->val_, 1 // increment of 1
@@ -168,7 +168,7 @@ void DeviceMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
     const NumType zero = static_cast<NumType>(0);
     const NumType one = static_cast<NumType>(1);
 
-    CUSPARSE_CALL( cusparseTcsrmv(cusparseHandle_,
+    CUSPARSE_CALL( cusparseTcsrmv(Backend.cusparseHandle,
                                   CUSPARSE_OPERATION_NON_TRANSPOSE,
                                   this->m_,
                                   this->n_,
@@ -196,7 +196,7 @@ void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_d
     if (inv_diag_d->n() != this->m_) {inv_diag_d->allocate(this->m_);
     }
 
-    const int block = 256;
+    const int block = Backend.dim_block_1d;
     const int grid = (this->m_ + block - 1)/block;
     
     compute_inverse_diag_kernel<<<grid, block>>>(this->m_,
