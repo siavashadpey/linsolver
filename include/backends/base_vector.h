@@ -83,13 +83,6 @@ public:
     virtual void ones() = 0;
 
     /**
-     * Return the \p i -th element of the vector.
-     * @param[in] i The index of the element of interest in the vector.
-     * \return The \p i -th value of the vector (returns by reference).
-     */
-    virtual NumType& operator[](int i) = 0;
-
-    /**
      * Scale the vector.
      * \param[in] alpha the value by which to scale the vector.
      */

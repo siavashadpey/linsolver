@@ -1,6 +1,5 @@
 #ifndef CUBLAS_WRAPPER_CUH
 #define CUBLAS_WRAPPER_CUH
-#include <cublas_v2.h>
 
 #include "base/cuda_header.cuh"
 

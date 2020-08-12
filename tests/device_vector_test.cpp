@@ -4,6 +4,7 @@
 #include "gtest/gtest.h"
 
 #include "base/cuda_header.cuh"
+#include "base/backend_wrapper.h"
 #include "backends/device/device_vector.h"
 #include "backends/host/host_vector.h"
 
@@ -11,6 +12,8 @@
 
 TEST(DeviceVector, test_1)
 {
+    manager::start_backend();
+
     DeviceVector<float> v_device = DeviceVector<float>();
     
     HostVector<float> v_host = HostVector<float>();
@@ -33,10 +36,14 @@ TEST(DeviceVector, test_1)
     EXPECT_NEAR(v_device.norm(), 0.f, float_tol);
     v_device.ones();
     EXPECT_NEAR(v_device.norm(), sqrtf(n), float_tol);
+
+    manager::stop_backend();
 }
 
 TEST(DeviceVector, test_2)
 {
+    manager::start_backend();
+
     DeviceVector<float> v_device = DeviceVector<float>();
 
     const int n = 6;
@@ -61,10 +68,14 @@ TEST(DeviceVector, test_2)
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(v_host[i], v_data[i], float_tol);
     }
+
+    manager::stop_backend();
 }
 
 TEST(DeviceVecotr, test_3)
 {
+    manager::start_backend();
+
     const int n = 5;
 
     float* v_data_d;
@@ -106,10 +117,14 @@ TEST(DeviceVecotr, test_3)
 
     CUDA_CALL( cudaFree(v_data_d));
     CUDA_CALL( cudaFree(w_data_d));
+
+    manager::stop_backend();
 }
 
 TEST(DeviceVector, test_4)
 {
+    manager::start_backend();
+
     HostVector<float> v_h = HostVector<float>();
     HostVector<float> w_h = HostVector<float>();
 
@@ -164,10 +179,14 @@ TEST(DeviceVector, test_4)
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(v_h[i], v_data[i], float_tol);
     }
+
+    manager::stop_backend();
 }
 
 TEST(HostVector, test_5)
 {
+    manager::start_backend();
+
     HostVector<float> v_h =  HostVector<float>();
     HostVector<float> w_h =  HostVector<float>();
     HostVector<float> vw_h = HostVector<float>();
@@ -195,6 +214,8 @@ TEST(HostVector, test_5)
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(vw_h[i], v_h[i], float_tol);
     }
+
+    manager::stop_backend();
 }
 
 int main(int argc, char **argv) {

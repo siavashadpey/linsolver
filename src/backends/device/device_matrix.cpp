@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "base/cuda_header.cuh"
+#include "base/backend_wrapper.h"
 #include "base/cublas_wrapper.cuh"
 #include "base/cusparse_wrapper.cuh"
 #include "backends/device/device_vector_helper.cuh"
@@ -19,9 +20,6 @@ DeviceMatrix<NumType>::DeviceMatrix()
         row_ptr_(nullptr),
         col_idx_(nullptr)
 {
-    CUBLAS_CALL( cublasCreate(&cublasHandle_) );
-    CUSPARSE_CALL( cusparseCreate(&cusparseHandle_) );
-
     CUSPARSE_CALL( cusparseCreateMatDescr(&cusparseMatDescr_));
     CUSPARSE_CALL( cusparseSetMatIndexBase(cusparseMatDescr_, CUSPARSE_INDEX_BASE_ZERO));
     CUSPARSE_CALL( cusparseSetMatType(cusparseMatDescr_, CUSPARSE_MATRIX_TYPE_GENERAL));
@@ -30,8 +28,6 @@ DeviceMatrix<NumType>::DeviceMatrix()
 template <typename NumType>
 DeviceMatrix<NumType>::~DeviceMatrix()
 {
-    CUBLAS_CALL( cublasDestroy(cublasHandle_) );
-    CUSPARSE_CALL( cusparseDestroy(cusparseHandle_) );
     CUSPARSE_CALL( cusparseDestroyMatDescr(cusparseMatDescr_));
     this->clear();
 }
@@ -52,8 +48,8 @@ void DeviceMatrix<NumType>::allocate(int m, int n, int nnz)
 
     const NumType zero = static_cast<NumType>(0);
     CUDA_CALL(cudaMemset(this->val_, zero, nnz * sizeof(NumType)));
-    CUDA_CALL(cudaMemset(this->row_ptr_, zero, (m + 1) * sizeof(NumType)));
-    CUDA_CALL(cudaMemset(this->col_idx_, zero, nnz * sizeof(NumType)));
+    CUDA_CALL(cudaMemset(this->row_ptr_, zero, (m + 1) * sizeof(int)));
+    CUDA_CALL(cudaMemset(this->col_idx_, zero, nnz * sizeof(int)));
 }
 
 template <typename NumType>
@@ -117,7 +113,7 @@ void DeviceMatrix<NumType>::copy_from(const BaseMatrix<NumType>& B)
 }
 
 template <typename NumType>
-void DeviceMatrix<NumType>::copy_to(BaseMatrix<NumType>& B) const {
+void DeviceMatrix<NumType>::copy_to(BaseMatrix<NumType>& ) const {
     Error("Method has not yet been implemented.");
 }
 
@@ -128,7 +124,7 @@ NumType DeviceMatrix<NumType>::norm() const
 
     assert(this->nnz_ > 0);
 
-    CUBLAS_CALL( cublasTnrm2(cublasHandle_, 
+    CUBLAS_CALL( cublasTnrm2(manager::get_backend_struct().cublasHandle, 
                              this->nnz_, 
                              this->val_, 
                              1,             // increment of 1
@@ -147,7 +143,7 @@ void DeviceMatrix<NumType>::scale(NumType alpha)
     }
     
     assert(this->nnz_ > 0);
-    CUBLAS_CALL( cublasTscal(cublasHandle_,
+    CUBLAS_CALL( cublasTscal(manager::get_backend_struct().cublasHandle,
                               this->nnz_, 
                               &alpha,
                               this->val_, 1 // increment of 1
@@ -172,7 +168,7 @@ void DeviceMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
     const NumType zero = static_cast<NumType>(0);
     const NumType one = static_cast<NumType>(1);
 
-    CUSPARSE_CALL( cusparseTcsrmv(cusparseHandle_,
+    CUSPARSE_CALL( cusparseTcsrmv(manager::get_backend_struct().cusparseHandle,
                                   CUSPARSE_OPERATION_NON_TRANSPOSE,
                                   this->m_,
                                   this->n_,
@@ -200,7 +196,7 @@ void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_d
     if (inv_diag_d->n() != this->m_) {inv_diag_d->allocate(this->m_);
     }
 
-    const int block = 256;
+    const int block = manager::get_backend_struct().dim_block_1d;
     const int grid = (this->m_ + block - 1)/block;
     
     compute_inverse_diag_kernel<<<grid, block>>>(this->m_,
@@ -212,7 +208,7 @@ void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_d
 
 
 template <typename NumType>
-bool DeviceMatrix<NumType>::read_matrix_market(const std::string filename) {
+bool DeviceMatrix<NumType>::read_matrix_market(const std::string ) {
     Error("Method has not yet been implemented.");
 }
 

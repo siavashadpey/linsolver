@@ -71,16 +71,6 @@ protected:
     int* col_idx_;
 
     /**
-     * Cublas handle.
-     */
-    cublasHandle_t cublasHandle_;
-
-    /**
-     * Cusparse handle.
-     */
-    cusparseHandle_t cusparseHandle_;
-
-    /**
      * cusparse matrix descriptor.
      */
     cusparseMatDescr_t cusparseMatDescr_;

@@ -1,18 +1,20 @@
 add_subdirectory(solvers)
 add_subdirectory(backends)
+add_subdirectory(base)
 
 if (CUDA_ENABLED)
     set(HOST_SRC 
-	   ${HOST_SRC}
-       ${BASE_SRC}
+	     ${HOST_SRC}
+       ${BASE_BACKEND_SRC}
     )
     set (DEVICE_SRC
         ${DEVICE_SRC}
         ${SOLVERS_SRC}
+        ${BASE_SRC}
         )
 else()
     set(HOST_SRC 
-       ${BASE_SRC}
+       ${BASE_BACKEND_SRC}
        ${HOST_SRC}
        ${SOLVERS_SRC}
     )

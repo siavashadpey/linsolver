@@ -41,4 +41,17 @@ __global__ void elementwise_multiply_kernel(int size,
     y[idx] = y[idx] * x[idx];
 }
 
+template <typename NumType>
+__global__ void elementwise_multiply_kernel(int size, 
+                     const NumType* __restrict__ a,
+                     const NumType* __restrict__ b,
+                     NumType* __restrict__ c)
+{
+    int idx = threadIdx.x + blockDim.x*blockIdx.x;
+    if (idx >= size) {
+        return;
+    }
+    c[idx] = a[idx] * b[idx];
+}
+
 #endif

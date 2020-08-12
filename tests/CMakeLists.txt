@@ -70,6 +70,7 @@ if (CUDA_ENABLED)
     device_vector
     device_matrix
     device_gmres
+    device_cgs
   )
 
   cuda_add_tests("${DEVICE_TEST_SET}")
