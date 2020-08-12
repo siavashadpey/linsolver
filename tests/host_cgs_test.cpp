@@ -129,7 +129,7 @@ TEST(host_CGS, test_4)
     x_soln.allocate(A.n());
     x_soln.zeros();
 
-    auto solver = CGS<HostMatrix<double>, HostVector<double>, double>();
+    auto solver =     CGS<HostMatrix<double>, HostVector<double>, double>();
     auto precond = Jacobi<HostMatrix<double>, HostVector<double>, double>();
     solver.set_preconditioner(precond);
     
