@@ -108,7 +108,7 @@ public:
 
     /**
      * Solvers for \p x in (\p L + \p D) * \p x = \p b, 
-     * where \p L and \p D are respectively the lower triangular and diagonal parts of the matrix itself.
+     * where \p L and \p D are respectively the strictly lower triangular and diagonal parts of the matrix itself.
      * @\param[in] b The vector in the above equation
      * @\param[out] x The vector in the above equation
      */
@@ -116,7 +116,7 @@ public:
 
     /**
      * Solvers for \p x in (\p U + \p D) * \p x = \p b, 
-     * where \p U and \p D are respectively the upper triangular and diagonal parts of the matrix itself.
+     * where \p U and \p D are respectively the stricly upper triangular and diagonal parts of the matrix itself.
      * @\param[in] b The vector in the above equation
      * @\param[out] x The vector in the above equation
      */
