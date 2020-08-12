@@ -6,3 +6,4 @@ Preconditioners
    :maxdepth: 2
 
    jacobi
+   ssor

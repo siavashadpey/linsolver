@@ -184,6 +184,43 @@ void DeviceMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 }
 
 template <typename NumType>
+void DeviceMatrix<NumType>::lower_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const
+{
+    Error("Method has not yet been implemented.");
+}
+
+template <typename NumType>
+void DeviceMatrix<NumType>::upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const
+{
+    Error("Method has not yet been implemented.");
+}
+
+
+template <typename NumType>
+void DeviceMatrix<NumType>::get_diagonals(BaseVector<NumType>* diag) const
+{
+    assert(this->n_ > 0);
+    assert(this->m_ > 0);
+    assert(diag != nullptr);
+
+    DeviceVector<NumType>* diag_d = dynamic_cast<DeviceVector<NumType>*>(diag);
+    assert(diag_d != nullptr);
+
+    if (diag_d->n() != this->m_) {
+      diag_d->allocate(this->m_);
+    }
+
+    const int block = manager::get_backend_struct().dim_block_1d;
+    const int grid = (this->m_ + block - 1)/block;
+    
+    get_diag_kernel<<<grid, block>>>(this->m_,
+                                     this->row_ptr_,
+                                     this->col_idx_,
+                                     this->val_,
+                                     diag_d->vec_);
+}
+
+template <typename NumType>
 void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const
 {
     assert(this->n_ > 0);
@@ -193,7 +230,8 @@ void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_d
     DeviceVector<NumType>* inv_diag_d = dynamic_cast<DeviceVector<NumType>*>(inv_diag);
     assert(inv_diag_d != nullptr);
 
-    if (inv_diag_d->n() != this->m_) {inv_diag_d->allocate(this->m_);
+    if (inv_diag_d->n() != this->m_) {
+      inv_diag_d->allocate(this->m_);
     }
 
     const int block = manager::get_backend_struct().dim_block_1d;

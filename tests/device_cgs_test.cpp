@@ -56,7 +56,6 @@ TEST(device_CGS, test_1)
     }
 
     manager::stop_backend();
-
 }
 
 int main(int argc, char **argv) {
