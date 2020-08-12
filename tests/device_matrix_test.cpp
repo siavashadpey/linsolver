@@ -134,21 +134,28 @@ TEST(DeviceMatrix, test_3)
     double val[] = {-1., 2., -3.2,  4., 7., 10., .4, 3., 1.1};
     int row_ptr[] = {0, 3, 5, 7, 9};
     int col_idx[] = {0, 2, 3, 1, 3, 0, 2, 2, 3};
-    double inv_diag_e [] = {-1., 1./4., 1./.4, 1./1.1};
+    double diag_e [] = {-1., 4., .4, 1.1};
     
     A_h.copy_from(val, row_ptr, col_idx);
     
     DeviceMatrix<double> A_d = DeviceMatrix<double>();
     A_d.copy_from(A_h);
 
+    DeviceVector<double> diag_d = DeviceVector<double>();
+    A_d.get_diagonals(&diag_d);
+
+    HostVector<double> diag_h = HostVector<double>();
+    diag_d.copy_to(diag_h);
+
     DeviceVector<double> inv_diag_d = DeviceVector<double>();
     A_d.compute_inverse_diagonals(&inv_diag_d);
-
+    
     HostVector<double> inv_diag_h = HostVector<double>();
     inv_diag_d.copy_to(inv_diag_h);
 
     for (int i = 0; i < n; i++) {
-        EXPECT_NEAR(inv_diag_h[i], inv_diag_e[i], tol);
+        EXPECT_NEAR(diag_h[i], diag_e[i], tol);
+        EXPECT_NEAR(inv_diag_h[i], 1./diag_e[i], tol);
     }
 
     manager::stop_backend();

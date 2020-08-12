@@ -118,11 +118,28 @@ void HostMatrixCOO<NumType>::multiply(const BaseVector<NumType>& v_in,
 }
 
 template <typename NumType>
-void HostMatrixCOO<NumType>::compute_inverse_diagonals(BaseVector<NumType>* ) const
+void HostMatrixCOO<NumType>::lower_solve(const BaseVector<NumType>& , BaseVector<NumType>* ) const
 {
     Error("Method has not yet been implemented.");
 }
 
+template <typename NumType>
+void HostMatrixCOO<NumType>::upper_solve(const BaseVector<NumType>& , BaseVector<NumType>* ) const
+{
+    Error("Method has not yet been implemented.");
+}
+
+template <typename NumType>
+void HostMatrixCOO<NumType>::get_diagonals(BaseVector<NumType>* ) const
+{
+    Error("Method has not yet been implemented.");
+}
+
+template <typename NumType>
+void HostMatrixCOO<NumType>::compute_inverse_diagonals(BaseVector<NumType>* ) const
+{
+    Error("Method has not yet been implemented.");
+}
 
 template <typename NumType>
 bool HostMatrixCOO<NumType>::read_matrix_market(const std::string filename)

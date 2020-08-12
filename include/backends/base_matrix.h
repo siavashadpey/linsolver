@@ -95,10 +95,32 @@ public:
         BaseVector<NumType>* w_out) const = 0;
 
     /**
+     * Outputs the diagonal entries of the matrix.
+     * \param[out] w_out The outputted vector storing the diagonal entries.
+     */
+    virtual void get_diagonals(BaseVector<NumType>* diag) const = 0;
+
+    /**
      * Compute the inverse of the diagonal entries of the matrix.
      * \param[out] w_out The outputted vector storing the inverse of the diagonal entries.
      */
     virtual void compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const = 0;
+
+    /**
+     * Solvers for \p x in (\p L + \p D) * \p x = \p b, 
+     * where \p L and \p D are respectively the lower triangular and diagonal parts of the matrix itself.
+     * @\param[in] b The vector in the above equation
+     * @\param[out] x The vector in the above equation
+     */
+    virtual void lower_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const = 0;
+
+    /**
+     * Solvers for \p x in (\p U + \p D) * \p x = \p b, 
+     * where \p U and \p D are respectively the upper triangular and diagonal parts of the matrix itself.
+     * @\param[in] b The vector in the above equation
+     * @\param[out] x The vector in the above equation
+     */
+    virtual void upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const = 0;
 
     /**
      * Read a matrix market.
