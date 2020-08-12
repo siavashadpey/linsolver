@@ -282,9 +282,22 @@ void DeviceVector<NumType>::elementwise_multiply(const BaseVector<NumType>& w)
 }
 
 template <typename NumType>
-void DeviceVector<NumType>::elementwise_multiply(const BaseVector<NumType>& , const BaseVector<NumType>& )
+void DeviceVector<NumType>::elementwise_multiply(const BaseVector<NumType>& w, const BaseVector<NumType>& z)
 {
-    Error("Method has not yet been implemented.");
+    const DeviceVector<NumType>* w_device = dynamic_cast<const DeviceVector<NumType>*>(&w);
+    const DeviceVector<NumType>* z_device = dynamic_cast<const DeviceVector<NumType>*>(&z);
+    assert(w_device != nullptr);
+    assert(z_device != nullptr);
+    assert(this->size_ == w_device->size_);
+    assert(this->size_ == z_device->size_);
+
+    const int block = manager::get_backend_struct().dim_block_1d;
+    const int grid = (this->size_ + block - 1)/block;
+
+    elementwise_multiply_kernel<<<grid, block>>>(this->size_,
+                                                 w_device->vec_,
+                                                 z_device->vec_,
+                                                 this->vec_);
 }
 
 
