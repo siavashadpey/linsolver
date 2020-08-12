@@ -4,6 +4,7 @@
 #include "gtest/gtest.h"
 
 #include "base/cuda_header.cuh"
+#include "base/backend_wrapper.h"
 #include "backends/device/device_matrix.h"
 #include "backends/device/device_vector.h"
 #include "backends/host/host_matrix.h"
@@ -14,6 +15,8 @@
 
 TEST(DeviceMatrix, test_1)
 {
+    manager::start_backend();
+
     int m = 3;
     int n = 4;
     int nnz = 7;
@@ -46,10 +49,14 @@ TEST(DeviceMatrix, test_1)
 
     A_d.scale(1.0);
     EXPECT_NEAR(A_d.norm(), norm_e, tol); // scale (special scenario)
+
+    manager::stop_backend();
 }
 
 TEST(DeviceMatrix, test_2)
 {
+    manager::start_backend();
+
     int n = 4;
     int m = n;
     int nnz = 11;
@@ -109,10 +116,14 @@ TEST(DeviceMatrix, test_2)
     CUDA_CALL( cudaFree(val_d));
     CUDA_CALL( cudaFree(row_ptr_d));
     CUDA_CALL( cudaFree(col_idx_d));
+
+    manager::stop_backend();
 }
 
 TEST(DeviceMatrix, test_3)
 {
+    manager::start_backend();
+
     HostMatrix<double> A_h = HostMatrix<double>();
 
     int m = 4;
@@ -139,6 +150,8 @@ TEST(DeviceMatrix, test_3)
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(inv_diag_h[i], inv_diag_e[i], tol);
     }
+
+    manager::stop_backend();
 }
 
 int main(int argc, char **argv) {

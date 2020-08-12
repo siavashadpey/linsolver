@@ -140,7 +140,7 @@ NumType DeviceVector<NumType>::norm() const
     NumType val = static_cast<NumType>(0);
     assert(this->size_ > 0);
 
-    CUBLAS_CALL( cublasTnrm2(Backend.cublasHandle, 
+    CUBLAS_CALL( cublasTnrm2(manager::get_backend_struct().cublasHandle, 
                              this->size_, 
                              this->vec_, 
                              1,             // increment of 1
@@ -157,7 +157,7 @@ NumType DeviceVector<NumType>::dot(const BaseVector<NumType>& w) const
 
     NumType val = static_cast<NumType>(0);
 
-    CUBLAS_CALL( cublasTdot(Backend.cublasHandle,
+    CUBLAS_CALL( cublasTdot(manager::get_backend_struct().cublasHandle,
                             this->size_, 
                             this->vec_, 1, // increment of 1
                             w_device->vec_, 1, // increment of 1 
@@ -185,7 +185,7 @@ template <typename NumType>
 void DeviceVector<NumType>::scale(NumType alpha)
 {
     assert(this->size_ > 0);
-    CUBLAS_CALL( cublasTscal(Backend.cublasHandle,
+    CUBLAS_CALL( cublasTscal(manager::get_backend_struct().cublasHandle,
                               this->size_, 
                               &alpha,
                               this->vec_, 1 // increment of 1
@@ -213,7 +213,7 @@ void DeviceVector<NumType>::add(NumType alpha, const BaseVector<NumType>& w, Num
     assert(this->size_ == w_device->size_);
 
 
-    const int block = Backend.dim_block_1d;
+    const int block = manager::get_backend_struct().dim_block_1d;
     const int grid = (this->size_ + block - 1)/block;
 
     add_kernel<<<grid, block>>>(this->size_,
@@ -236,7 +236,7 @@ void DeviceVector<NumType>::add_scale(NumType alpha, const BaseVector<NumType>& 
     assert(w_device != nullptr);
     assert(this->size_ == w_device->size_);
 
-    CUBLAS_CALL( cublasTaxpy(Backend.cublasHandle,
+    CUBLAS_CALL( cublasTaxpy(manager::get_backend_struct().cublasHandle,
                              this->size_,
                              &alpha,
                              w_device->vec_, 1, // increment of 1
@@ -256,7 +256,7 @@ void DeviceVector<NumType>::scale_add(NumType alpha, const BaseVector<NumType>& 
     assert(w_device != nullptr);
     assert(this->size_ == w_device->size_);
 
-    const int block = Backend.dim_block_1d;
+    const int block = manager::get_backend_struct().dim_block_1d;
     const int grid = (this->size_ + block - 1)/block;
     
     scale_add_kernel<<<grid, block>>>(this->size_,
@@ -273,7 +273,7 @@ void DeviceVector<NumType>::elementwise_multiply(const BaseVector<NumType>& w)
     assert(w_device != nullptr);
     assert(this->size_ == w_device->size_);
 
-    const int block = Backend.dim_block_1d;
+    const int block = manager::get_backend_struct().dim_block_1d;
     const int grid = (this->size_ + block - 1)/block;
 
     elementwise_multiply_kernel<<<grid, block>>>(this->size_,

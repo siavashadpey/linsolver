@@ -12,6 +12,7 @@ struct BackendInfoStruct {
 namespace manager {
     void start_backend();
     void stop_backend();
+    BackendInfoStruct get_backend_struct();
 }
 
 extern struct BackendInfoStruct Backend;

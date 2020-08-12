@@ -4,6 +4,7 @@
 #include "gtest/gtest.h"
 
 #include "base/cuda_header.cuh"
+#include "base/backend_wrapper.h"
 #include "solvers/gmres.h"
 #include "backends/device/device_matrix.h"
 #include "backends/device/device_vector.h"
@@ -14,6 +15,8 @@
 
 TEST(device_GMRES, test_1)
 {
+    manager::start_backend();
+
     HostMatrix<float> A_h = HostMatrix<float>();
     int n = 4;
     int nnz = 10;
@@ -51,10 +54,14 @@ TEST(device_GMRES, test_1)
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(x_soln_h[i], x_e_h[i], float_tol);
     }
+
+    manager::stop_backend();
 }
 
 TEST(device_GMRES, test_2)
 {
+    manager::start_backend();
+
     auto A_h = HostMatrix<float>();
     const std::string filename = "gre__115.mtx";
     bool success = A_h.read_matrix_market(filename);
@@ -89,10 +96,14 @@ TEST(device_GMRES, test_2)
     for (int i = 0; i < A_d.n(); i++) {
         EXPECT_NEAR(x_soln_h[i], x_e_h[i], float_tol);
     }
+
+    manager::stop_backend();
 }
 
 TEST(device_GMRES, test_3)
 {
+    manager::start_backend();
+
     HostMatrix<float> A_h = HostMatrix<float>();
     int n = 4;
     int nnz = 10;
@@ -132,6 +143,8 @@ TEST(device_GMRES, test_3)
     for (int i = 0; i < n; i++) {
         EXPECT_NEAR(x_soln_h[i], x_e_h[i], float_tol);
     }
+
+    manager::stop_backend();
 }
 
 int main(int argc, char **argv) {
