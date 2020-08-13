@@ -39,6 +39,7 @@ public:
         BaseVector<NumType>* w_out) const;
     void lower_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const;
     void upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const;
+    void lower_upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const;
     void get_diagonals(BaseVector<NumType>* diag) const;
     void compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const;
     bool read_matrix_market(const std::string filename);

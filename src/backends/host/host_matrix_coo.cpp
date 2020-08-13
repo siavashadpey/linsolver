@@ -130,6 +130,12 @@ void HostMatrixCOO<NumType>::upper_solve(const BaseVector<NumType>& , BaseVector
 }
 
 template <typename NumType>
+void HostMatrixCOO<NumType>::lower_upper_solve(const BaseVector<NumType>& , BaseVector<NumType>* ) const
+{
+    Error("Method has not yet been implemented.");
+}
+
+template <typename NumType>
 void HostMatrixCOO<NumType>::get_diagonals(BaseVector<NumType>* ) const
 {
     Error("Method has not yet been implemented.");

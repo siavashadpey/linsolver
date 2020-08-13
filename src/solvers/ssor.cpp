@@ -34,11 +34,11 @@ void SSOR<MatType, VecType, NumType>::apply(const VecType& b, VecType* x) const
 {
     // We solve for x in (D + L) * D^-1 * (D + U) * x = b
 
-    // Solve for y in (D + L) * y = b 
+    // First, solve for y in (D + L) * y = b 
     // for memory efficiency, use x as place of y
     mat_->lower_solve(b, x);
 
-    // Solve for z in D^-1 * z = y (in place)
+    // Then, solve for z in D^-1 * z = y (in place)
     x->elementwise_multiply(this->diag_);
 
     // Finally, sol for x in (D + U) * x = z

@@ -7,7 +7,7 @@
  * \tparam MatType Matrix type (HostMatrix<NumType> and DeviceMatrix<NumTyper> currently supported).
  * \tparam VecType Vector type (HostVector<NumType> and DeviceVector<NumTyper> currently supported).
  * \tparam NumType Number type (double and float currently supported).
- * The relaxation parameter :math:`\omega` is set to 1 here.
+ * @note The SSOR relaxation parameter is set to one.
  */
 template <class MatType, class VecType, typename NumType>
 class SSOR: public BasePreconditioner<MatType, VecType, NumType> {

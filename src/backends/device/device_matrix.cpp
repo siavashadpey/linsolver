@@ -20,15 +20,21 @@ DeviceMatrix<NumType>::DeviceMatrix()
         row_ptr_(nullptr),
         col_idx_(nullptr)
 {
-    CUSPARSE_CALL( cusparseCreateMatDescr(&cusparseMatDescr_));
-    CUSPARSE_CALL( cusparseSetMatIndexBase(cusparseMatDescr_, CUSPARSE_INDEX_BASE_ZERO));
-    CUSPARSE_CALL( cusparseSetMatType(cusparseMatDescr_, CUSPARSE_MATRIX_TYPE_GENERAL));
+    CUSPARSE_CALL( cusparseCreateMatDescr(&cusparseGenMatDescr_));
+    CUSPARSE_CALL( cusparseCreateMatDescr(&cusparseLowMatDescr_));
+    CUSPARSE_CALL( cusparseCreateMatDescr(&cusparseUppMatDescr_));
+
+
+    CUSPARSE_CALL( cusparseSetMatIndexBase(cusparseGenMatDescr_, CUSPARSE_INDEX_BASE_ZERO));
+    CUSPARSE_CALL( cusparseSetMatType(cusparseGenMatDescr_, CUSPARSE_MATRIX_TYPE_GENERAL));
+
+
 }
 
 template <typename NumType>
 DeviceMatrix<NumType>::~DeviceMatrix()
 {
-    CUSPARSE_CALL( cusparseDestroyMatDescr(cusparseMatDescr_));
+    CUSPARSE_CALL( cusparseDestroyMatDescr(cusparseGenMatDescr_));
     this->clear();
 }
 
@@ -174,7 +180,7 @@ void DeviceMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
                                   this->n_,
                                   this->nnz_,
                                   &one,
-                                  this->cusparseMatDescr_,
+                                  this->cusparseGenMatDescr_,
                                   this->val_,
                                   this->row_ptr_,
                                   this->col_idx_,
@@ -184,17 +190,22 @@ void DeviceMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 }
 
 template <typename NumType>
-void DeviceMatrix<NumType>::lower_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const
+void DeviceMatrix<NumType>::lower_solve(const BaseVector<NumType>& , BaseVector<NumType>* ) const
 {
     Error("Method has not yet been implemented.");
 }
 
 template <typename NumType>
-void DeviceMatrix<NumType>::upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const
+void DeviceMatrix<NumType>::upper_solve(const BaseVector<NumType>& , BaseVector<NumType>* ) const
 {
     Error("Method has not yet been implemented.");
 }
 
+template <typename NumType>
+void DeviceMatrix<NumType>::lower_upper_solve(const BaseVector<NumType>& , BaseVector<NumType>* ) const
+{
+    Error("Method has not yet been implemented.");
+}
 
 template <typename NumType>
 void DeviceMatrix<NumType>::get_diagonals(BaseVector<NumType>* diag) const

@@ -244,6 +244,48 @@ void HostMatrix<NumType>::upper_solve(const BaseVector<NumType>& b, BaseVector<N
 }
 
 template <typename NumType>
+void HostMatrix<NumType>::lower_upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const
+{
+    // Note: we do not assume that the elements in each row of the matrix are sorted
+    
+    assert(this->n_ > 0);
+    assert(this->m_ > 0);
+    assert(b.n() == this->n_);
+    assert(x->n() == this->m_);
+
+    const HostVector<NumType>* b_h = dynamic_cast<const HostVector<NumType>*>(&b);    
+    HostVector<NumType>* x_h = dynamic_cast<HostVector<NumType>*>(x);
+    assert(b_h != nullptr);
+    assert(x_h != nullptr);
+
+    // Solve the lower part (forward substitution)
+    for (int irow = 0; irow < this->m_; irow++) {
+        x_h->vec_[irow] = b_h->vec_[irow];
+        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
+            int jcol = this->col_idx_[val_idx];
+            if (jcol < irow) {
+                x_h->vec_[irow] -= this->val_[val_idx]*x_h->vec_[jcol];
+            }
+        }
+    }
+
+    // Solve the upper part (backward substitution)
+    NumType val_ii;
+    for (int irow = this->m_ - 1; irow >= 0; irow--) {
+        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
+            int jcol = this->col_idx_[val_idx];
+            if (jcol > irow) {
+                x_h->vec_[irow] -= this->val_[val_idx]*x_h->vec_[jcol];
+            }
+            if (jcol == irow) {
+                val_ii = this->val_[val_idx];
+            }
+        }
+        x_h->vec_[irow] /= val_ii;
+    }
+}
+
+template <typename NumType>
 void HostMatrix<NumType>::get_diagonals(BaseVector<NumType>* diag) const
 {
     assert(this->n_ > 0);
@@ -305,8 +347,9 @@ template <typename NumType>
 bool HostMatrix<NumType>::read_matrix_market(const std::string filename) {
     HostMatrixCOO<NumType> mat_coo = HostMatrixCOO<NumType>();
     bool success = mat_coo.read_matrix_market(filename);
-    mat_coo.convert_to_CSR(*this);
-
+    if (success) {
+        mat_coo.convert_to_CSR(*this);
+    }
     return success;
 }
 

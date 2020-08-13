@@ -108,19 +108,29 @@ public:
 
     /**
      * Solvers for \p x in (\p L + \p D) * \p x = \p b, 
-     * where \p L and \p D are respectively the strictly lower triangular and diagonal parts of the matrix itself.
-     * @\param[in] b The vector in the above equation
-     * @\param[out] x The vector in the above equation
+     * where \p L and \p D are respectively the strictly lower triangular and diagonal parts of the matrix.
+     * @\param[in] b The vector in the above equation.
+     * @\param[out] x The vector in the above equation.
      */
     virtual void lower_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const = 0;
 
     /**
      * Solvers for \p x in (\p U + \p D) * \p x = \p b, 
-     * where \p U and \p D are respectively the stricly upper triangular and diagonal parts of the matrix itself.
-     * @\param[in] b The vector in the above equation
-     * @\param[out] x The vector in the above equation
+     * where \p U and \p D are respectively the stricly upper triangular and diagonal parts of the matrix.
+     * @\param[in] b The vector in the above equation.
+     * @\param[out] x The vector in the above equation.
      */
     virtual void upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const = 0;
+
+    /**
+     * Solvers for \p L * \p U * \p x = \p b, 
+     * where \p L and \p U are respectively the lower unitriangular and upper triangular matrices obtained
+     * from the LU or ILU factorization of the matrix.
+     * @\param[in] b The vector in the above equation.
+     * @\param[out] x The vector in the above equation.
+     * @note L is assumed to have unit diagonal entries.
+     */
+    virtual void lower_upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const = 0;
 
     /**
      * Read a matrix market.
