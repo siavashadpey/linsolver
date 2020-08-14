@@ -56,6 +56,7 @@ public:
     virtual void lower_upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const;
     virtual void get_diagonals(BaseVector<NumType>* diag) const;
     virtual void compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const;
+    virtual void ILU0_factorize();
     bool read_matrix_market(const std::string filename);
 
 protected:

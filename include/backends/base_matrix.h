@@ -133,6 +133,11 @@ public:
     virtual void lower_upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const = 0;
 
     /**
+     * Performs ILU(0) factorization on the matrix.
+     */
+    virtual void ILU0_factorize() = 0;
+
+    /**
      * Read a matrix market.
      * @param[in] filename The matrix market file.
      * \returns True if successfully read, and False otherwise.

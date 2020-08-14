@@ -173,9 +173,9 @@ void HostMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 #endif
     for (int irow = 0; irow < this->m_; irow++) {
         NumType val_i = zero;
-        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
-            int jcol = this->col_idx_[val_idx];
-            val_i += this->val_[val_idx]*v_in_h->vec_[jcol];
+        for (int ij = this->row_ptr_[irow]; ij < this->row_ptr_[irow+1]; ij++) {
+            int jcol = this->col_idx_[ij];
+            val_i += this->val_[ij]*v_in_h->vec_[jcol];
         }
         w_out_h->vec_[irow] = val_i;
     }
@@ -184,8 +184,6 @@ void HostMatrix<NumType>::multiply(const BaseVector<NumType>& v_in,
 template <typename NumType>
 void HostMatrix<NumType>::lower_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const
 {
-    // Note: we do not assume that the elements in each row of the matrix are sorted
-
     assert(this->n_ > 0);
     assert(this->m_ > 0);
     assert(b.n() == this->n_);
@@ -196,27 +194,25 @@ void HostMatrix<NumType>::lower_solve(const BaseVector<NumType>& b, BaseVector<N
     assert(b_h != nullptr);
     assert(x_h != nullptr);
 
-    NumType val_ii;
     for (int irow = 0; irow < this->m_; irow++) {
         NumType sum = b_h->vec_[irow];
-        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
-            int jcol = this->col_idx_[val_idx];
+        for (int ij = this->row_ptr_[irow]; ij < this->row_ptr_[irow+1]; ij++) {
+            int jcol = this->col_idx_[ij];
             if (jcol < irow) {
-                sum -= this->val_[val_idx]*x_h->vec_[jcol];
+                sum -= this->val_[ij]*x_h->vec_[jcol];
             }
-            if (jcol == irow) {
-                val_ii = this->val_[val_idx];
+            else { // jcol == irow
+                x_h->vec_[irow] = sum/this->val_[ij];
+                break;
             }
         }
-        x_h->vec_[irow] = sum/val_ii;
+        
     }
 }
 
 template <typename NumType>
 void HostMatrix<NumType>::upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const
 {
-    // Note: we do not assume that the elements in each row of the matrix are sorted
-
     assert(this->n_ > 0);
     assert(this->m_ > 0);
     assert(b.n() == this->n_);
@@ -227,26 +223,24 @@ void HostMatrix<NumType>::upper_solve(const BaseVector<NumType>& b, BaseVector<N
     assert(b_h != nullptr);
     assert(x_h != nullptr);
 
-    NumType val_ii;
     for (int irow = this->m_ - 1; irow >= 0; irow--) {
         NumType sum = b_h->vec_[irow];
-        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
-            int jcol = this->col_idx_[val_idx];
+        for (int ij = this->row_ptr_[irow+1] - 1; ij >= this->row_ptr_[irow]; ij--) {
+            int jcol = this->col_idx_[ij];
             if (jcol > irow) {
-                sum -= this->val_[val_idx]*x_h->vec_[jcol];
+                sum -= this->val_[ij]*x_h->vec_[jcol];
             }
-            if (jcol == irow) {
-                val_ii = this->val_[val_idx];
+            else { // jcol == irow
+                x_h->vec_[irow] = sum/this->val_[ij];
+                break;
             }
         }
-        x_h->vec_[irow] = sum/val_ii;
     }
 }
 
 template <typename NumType>
 void HostMatrix<NumType>::lower_upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const
 {
-    // Note: we do not assume that the elements in each row of the matrix are sorted
     
     assert(this->n_ > 0);
     assert(this->m_ > 0);
@@ -261,27 +255,27 @@ void HostMatrix<NumType>::lower_upper_solve(const BaseVector<NumType>& b, BaseVe
     // Solve the lower part (forward substitution)
     for (int irow = 0; irow < this->m_; irow++) {
         x_h->vec_[irow] = b_h->vec_[irow];
-        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
-            int jcol = this->col_idx_[val_idx];
-            if (jcol < irow) {
-                x_h->vec_[irow] -= this->val_[val_idx]*x_h->vec_[jcol];
+        for (int ij = this->row_ptr_[irow]; ij < this->row_ptr_[irow+1]; ij++) {
+            int jcol = this->col_idx_[ij];
+            if (jcol >= irow) {
+               break;
             }
+            x_h->vec_[irow] -= this->val_[ij]*x_h->vec_[jcol];
         }
     }
 
     // Solve the upper part (backward substitution)
-    NumType val_ii;
     for (int irow = this->m_ - 1; irow >= 0; irow--) {
-        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
-            int jcol = this->col_idx_[val_idx];
+        for (int ij = this->row_ptr_[irow+1] - 1; ij >= this->row_ptr_[irow]; ij--) {
+            int jcol = this->col_idx_[ij];
             if (jcol > irow) {
-                x_h->vec_[irow] -= this->val_[val_idx]*x_h->vec_[jcol];
+                x_h->vec_[irow] -= this->val_[ij]*x_h->vec_[jcol];
             }
-            if (jcol == irow) {
-                val_ii = this->val_[val_idx];
+            else { // (jcol == irow)
+                x_h->vec_[irow] /= this->val_[ij];
+                break;
             }
         }
-        x_h->vec_[irow] /= val_ii;
     }
 }
 
@@ -303,10 +297,10 @@ void HostMatrix<NumType>::get_diagonals(BaseVector<NumType>* diag) const
     #pragma omp parallel for
 #endif
     for (int irow = 0; irow < this->m_; irow++) {
-        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
-            int jcol = this->col_idx_[val_idx];
+        for (int ij = this->row_ptr_[irow]; ij < this->row_ptr_[irow+1]; ij++) {
+            int jcol = this->col_idx_[ij];
             if (irow == jcol) {
-                diag_h->vec_[irow] = this->val_[val_idx];
+                diag_h->vec_[irow] = this->val_[ij];
                 break;
             }
         }
@@ -333,14 +327,68 @@ void HostMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_dia
     #pragma omp parallel for
 #endif
     for (int irow = 0; irow < this->m_; irow++) {
-        for (int val_idx = this->row_ptr_[irow]; val_idx < this->row_ptr_[irow+1]; val_idx++) {
-            int jcol = this->col_idx_[val_idx];
+        for (int ij = this->row_ptr_[irow]; ij < this->row_ptr_[irow+1]; ij++) {
+            int jcol = this->col_idx_[ij];
             if (irow == jcol) {
-                inv_diag_h->vec_[irow] = one/this->val_[val_idx];
+                inv_diag_h->vec_[irow] = one/this->val_[ij];
                 break;
             }
         }
     }
+}
+
+template <typename NumType>
+void HostMatrix<NumType>::ILU0_factorize()
+{
+    // from SAAD 03 Chapter 10.3
+
+    assert(this->n_ > 0);
+    assert(this->m_ = this->n_);
+
+    NumType zero = static_cast<NumType>(0);
+    
+    int* diag_ptr = new int[this->n_]();
+    int* irow_nnz_idx = new int[this->n_]();
+
+    // loop through each row
+    for (int irow = 0; irow < this->m_; irow++) {
+        
+        // set indices of nonzero entries in current row
+        for (int ik = this->row_ptr_[irow]; ik < this->row_ptr_[irow+1]; ik++) {
+            irow_nnz_idx[this->col_idx_[ik]] = ik;
+        }
+
+        // loop through all nonzero entries in current row until diagonal entry (i.e. A[k,i] for k < i)
+        int ik = this->row_ptr_[irow];
+        for (; ik < this->row_ptr_[irow+1]; ik++) {
+            int kcol = this->col_idx_[ik];
+            if (kcol >= irow) {
+                break;
+            }
+
+            if (this->val_[diag_ptr[kcol]] != zero) {
+                this->val_[ik] /= this->val_[diag_ptr[kcol]]; // A(i, k) = A(i, k) / A(k, k)
+    
+                // loop through A[irow, j] for all j > k
+                for (int kj = diag_ptr[kcol] + 1; kj < this->row_ptr_[kcol+1]; kj++) {
+                    int jcol = this->col_idx_[kj];
+                    int ij = irow_nnz_idx[jcol];
+                    if (ij != 0) {
+                        this->val_[ij] -= this->val_[ik] * this->val_[kj];
+                    }
+                }
+            }
+        }
+        diag_ptr[irow] = ik;
+
+        // reset nnz indices for next row
+        for (ik = this->row_ptr_[irow]; ik < this->row_ptr_[irow+1]; ik++) {
+            irow_nnz_idx[this->col_idx_[ik]] = 0;
+        }
+    }
+
+    delete[] diag_ptr;
+    delete[] irow_nnz_idx;
 }
 
 template <typename NumType>

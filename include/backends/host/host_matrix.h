@@ -52,11 +52,34 @@ public:
     //virtual void scale_add(NumType alpha, const BaseMatrix<NumType>& B);
     virtual void multiply(const BaseVector<NumType>& v_in, 
         BaseVector<NumType>* w_out) const;
+
+    /**
+     * @copydoc BaseMatrix<NumType>::lower_solve()
+     * @note We assume the entries in each row of the matrix are sorted. 
+     */
     virtual void lower_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const;
+
+    /**
+     * @copydoc BaseMatrix<NumType>::upper_solve()
+     * @note We assume the entries in each row of the matrix are sorted. 
+     */
     virtual void upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const;
+
+    /**
+     * @copydoc BaseMatrix<NumType>::lower_upper_solve()
+     * @note We assume the entries in each row of the matrix are sorted. 
+     */
     virtual void lower_upper_solve(const BaseVector<NumType>& b, BaseVector<NumType>* x) const;
+
     virtual void get_diagonals(BaseVector<NumType>* diag) const;
     virtual void compute_inverse_diagonals(BaseVector<NumType>* inv_diag) const;
+
+    /**
+     * @copydoc BaseMatrix<NumType>::ILU0_factorize()
+     * @note We assume the entries in each row of the matrix are sorted. 
+     */
+    virtual void ILU0_factorize();
+
     bool read_matrix_market(const std::string filename);
 
 protected:

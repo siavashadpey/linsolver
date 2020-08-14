@@ -15,5 +15,6 @@ set(SOLVERS_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/base_preconditioner.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/jacobi.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ssor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ilu.cpp
     PARENT_SCOPE
 )

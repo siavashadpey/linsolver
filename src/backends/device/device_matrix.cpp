@@ -255,6 +255,11 @@ void DeviceMatrix<NumType>::compute_inverse_diagonals(BaseVector<NumType>* inv_d
                                                  inv_diag_d->vec_);
 }
 
+template <typename NumType>
+void DeviceMatrix<NumType>::ILU0_factorize()
+{
+    Error("Method has not yet been implemented.");
+}
 
 template <typename NumType>
 bool DeviceMatrix<NumType>::read_matrix_market(const std::string ) {

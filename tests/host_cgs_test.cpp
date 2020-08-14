@@ -7,8 +7,9 @@
 #include "backends/host/host_matrix.h"
 #include "backends/host/host_vector.h"
 #include "solvers/jacobi.h"
+#include "solvers/ilu.h"
 
-#define tol 2E-8
+#define tol 5E-8
 
 TEST(host_CGS, test_1)
 {

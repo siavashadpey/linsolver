@@ -148,6 +148,12 @@ void HostMatrixCOO<NumType>::compute_inverse_diagonals(BaseVector<NumType>* ) co
 }
 
 template <typename NumType>
+void HostMatrixCOO<NumType>::ILU0_factorize()
+{
+    Error("Method has not yet been implemented.");
+}
+
+template <typename NumType>
 bool HostMatrixCOO<NumType>::read_matrix_market(const std::string filename)
 {
     FILE* file = fopen(filename.c_str(), "r");

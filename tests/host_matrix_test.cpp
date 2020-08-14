@@ -138,9 +138,9 @@ TEST(HostMatrix, test_4)
     int n = 4;
     int nnz = 7;
     A.allocate(n, n, nnz);
-    double val[] = {3., -2.1, 1.5, 0.5, 4.5, 4.3, 6.05};
+    double val[] = {3., 1.5, -2.1, 0.5, 4.5, 4.3, 6.05};
     int row_idx[] = {0, 1, 3, 5, 7};
-    int col_idx[] = {0, 1, 0, 0, 2, 1, 3};
+    int col_idx[] = {0, 0, 1, 0, 2, 1, 3};
     A.copy_from(val, row_idx, col_idx);
     
     HostVector<double> b = HostVector<double>();
@@ -170,9 +170,9 @@ TEST(HostMatrix, test_5)
     int n = 4;
     int nnz = 8;
     A.allocate(n, n, nnz);
-    double val[] = {3., 0.5, 1.5, 4.5, -2.1, 4.75, 4.3, 6.05};
+    double val[] = {3., 1.5, 0.5, 4.5, -2.1, 4.75, 4.3, 6.05};
     int row_idx[] = {0, 3, 5, 7, 8};
-    int col_idx[] = {0, 2, 1, 3, 1, 2, 3, 3};
+    int col_idx[] = {0, 1, 2, 1, 3, 2, 3, 3};
     A.copy_from(val, row_idx, col_idx);
     
     HostVector<double> b = HostVector<double>();
@@ -204,31 +204,114 @@ TEST(HostMatrix, test_6)
     int nnz = 9;
     A.allocate(n, n, nnz);
     LU.allocate(n, n, nnz);
-    double A_val[] = {2., 1., 1., 3., 4., 3., 10., 7., 8.};
-    double LU_val[] = {2., 1., 1., 1., 2., 1., 3., 3., 4.};
+    double A_val[] =  {2., 1., 1., 4., 3., 3., 8., 7., 10.};
+    double LU_val[] = {2., 1., 1., 2., 1., 1., 4., 3., 3.};
     int row_idx[] = {0, 3, 6, 9};
-    int col_idx[] = {0, 1, 2, 2, 0, 1, 2, 1, 0};
+    int col_idx[] = {0, 1, 2, 0, 1, 2, 0, 1, 2};
     A.copy_from(A_val, row_idx, col_idx);
     LU.copy_from(LU_val, row_idx, col_idx);
     
+    HostVector<double> x_e = HostVector<double>();
+    x_e.allocate(n);
+    double x_val[] = {1., 2., -0.4};
+    x_e.copy_from(x_val);
+
     HostVector<double> b = HostVector<double>();
     b.allocate(n);
-    double b_val[] = {1., 2., -0.4};
-    b.copy_from(b_val);
+    A.multiply(x_e, &b);
 
     HostVector<double> x_soln = HostVector<double>();
     x_soln.allocate(n);
 
     LU.lower_upper_solve(b, &x_soln);
 
-    HostVector<double> b_soln = HostVector<double>();
-    b_soln.allocate(n);
-    A.multiply(x_soln, &b_soln);
-
     for (int i = 0; i < n; i++) {
-        EXPECT_NEAR(b_soln[i], b[i], tol);
+        EXPECT_NEAR(x_soln[i], x_e[i], tol);
     }
 }
+
+TEST(HostMatrix, test_7)
+{
+    HostMatrix<double> A = HostMatrix<double>();
+    int n = 3;
+    int nnz = 9;
+    A.allocate(n, n, nnz);
+    double A_val[] =  {2., 1., 1., 4., 3., 3., 8., 7., 10.};
+    int row_idx[] = {0, 3, 6, 9};
+    int col_idx[] = {0, 1, 2, 0, 1, 2, 0, 1, 2};
+    A.copy_from(A_val, row_idx, col_idx);
+    
+    HostVector<double> x_e = HostVector<double>();
+    x_e.allocate(n);
+    double x_e_val[] = {1., 2., -0.4};
+    x_e.copy_from(x_e_val);
+
+    HostVector<double> b;
+    b.allocate(n);
+    A.multiply(x_e, &b);
+
+    HostVector<double> x_soln = HostVector<double>();
+    x_soln.allocate(n);
+
+    A.ILU0_factorize();
+    A.lower_upper_solve(b, &x_soln);
+
+    for (int i = 0; i < n; i++) {
+        EXPECT_NEAR(x_soln[i], x_e[i], tol);
+    }
+}
+
+TEST(HostMatrix, test_8)
+{
+    HostMatrix<double> A = HostMatrix<double>();
+    int n = 4;
+    int nnz = 8;
+    A.allocate(n, n, nnz);
+    double A_val[] = {3.0, 1.5, 2.2, 0.5, 1.5, 4.2, 0.5, 6.02};
+    int row_idx[] = {0, 2, 4, 6, 8};
+    int col_idx[] = {0, 2, 1, 3, 0, 2, 1, 3};
+    A.copy_from(A_val, row_idx, col_idx);
+    
+    HostMatrix<double> B;
+    B.copy_from(A);
+
+    HostVector<double> x_e = HostVector<double>();
+    x_e.allocate(n);
+    double x_e_val[] = {9, 6.3, 68, -11.4};
+    x_e.copy_from(x_e_val);
+
+    HostVector<double> b;
+    b.allocate(n);
+    A.multiply(x_e, &b);
+
+    HostVector<double> x_soln = HostVector<double>();
+    x_soln.allocate(n);
+
+    B.ILU0_factorize();
+}
+
+
+//TEST(HostMatrix, test_7)
+//{
+//    HostMatrix<double> A;
+//    int n = 4; 
+//    
+//    //int nnz = 16;
+//    //double val[] = {100, 101, 102, 103, 110, 111, 112, 113, 120, 121, 122, 123, 130, 131, 132, 133};
+//    //int row_ptr[] = {0, 4, 8, 12, 16};
+//    //int col_idx[] = {0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3};
+//
+//    int nnz = 12;
+//    double val[] = {100, 102, 103, 111, 112, 120, 122, 123, 130, 131, 132, 133};
+//    int row_ptr[] = {0, 3, 5, 8, 12};
+//    int col_idx[] = {0, 2, 3, 1, 2, 0, 2, 3, 0, 1, 2, 3};
+//
+//    A.allocate(n, n, nnz);
+//    A.copy_from(val, row_ptr, col_idx);
+//
+//    A.ILU0_factorize();
+//
+//}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
